@@ -31,19 +31,34 @@ import org.slf4j.LoggerFactory;
  */
 public class BaseStrategy implements Strategy {
 
-    /** The logger */
+    /**
+     * The logger
+     */
     protected final transient Logger log = LoggerFactory.getLogger(getClass());
 
-    /** The class name */
+    /**
+     * The class name
+     */
     private final String className = getClass().getSimpleName();
 
-    /** Name of the strategy */
+    /**
+     * Name of the strategy
+     */
     private String name;
 
-    /** The entry rule */
+    /**
+     * Description of the strategy
+     */
+    private String description;
+
+    /**
+     * The entry rule
+     */
     private Rule entryRule;
 
-    /** The exit rule */
+    /**
+     * The exit rule
+     */
     private Rule exitRule;
 
     /**
@@ -56,47 +71,59 @@ public class BaseStrategy implements Strategy {
 
     /**
      * Constructor.
-     * 
+     *
      * @param entryRule the entry rule
-     * @param exitRule  the exit rule
+     * @param exitRule the exit rule
      */
     public BaseStrategy(Rule entryRule, Rule exitRule) {
-        this(null, entryRule, exitRule, 0);
+        this(null, null, entryRule, exitRule, 0);
     }
 
     /**
      * Constructor.
-     * 
-     * @param entryRule      the entry rule
-     * @param exitRule       the exit rule
+     *
+     * @param entryRule the entry rule
+     * @param exitRule the exit rule
      * @param unstablePeriod strategy will ignore possible signals at
-     *                       <code>index</code> < <code>unstablePeriod</code>
+     * <code>index</code> < <code>unstablePeriod</code>
      */
     public BaseStrategy(Rule entryRule, Rule exitRule, int unstablePeriod) {
-        this(null, entryRule, exitRule, unstablePeriod);
+        this(null, null, entryRule, exitRule, unstablePeriod);
     }
-
-    /**
-     * Constructor.
+    
+    /***
      * 
-     * @param name      the name of the strategy
-     * @param entryRule the entry rule
-     * @param exitRule  the exit rule
+     * @param name
+     * @param entryRule
+     * @param exitRule 
      */
     public BaseStrategy(String name, Rule entryRule, Rule exitRule) {
-        this(name, entryRule, exitRule, 0);
+        this(name, null, entryRule, exitRule);
     }
 
     /**
      * Constructor.
-     * 
-     * @param name           the name of the strategy
-     * @param entryRule      the entry rule
-     * @param exitRule       the exit rule
-     * @param unstablePeriod strategy will ignore possible signals at
-     *                       <code>index</code> < <code>unstablePeriod</code>
+     *
+     * @param name the name of the strategy
+     * @param description
+     * @param entryRule the entry rule
+     * @param exitRule the exit rule
      */
-    public BaseStrategy(String name, Rule entryRule, Rule exitRule, int unstablePeriod) {
+    public BaseStrategy(String name, String description, Rule entryRule, Rule exitRule) {
+        this(name, description, entryRule, exitRule, 0);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param name the name of the strategy
+     * @param description
+     * @param entryRule the entry rule
+     * @param exitRule the exit rule
+     * @param unstablePeriod strategy will ignore possible signals at
+     * <code>index</code> < <code>unstablePeriod</code>
+     */
+    public BaseStrategy(String name, String description, Rule entryRule, Rule exitRule, int unstablePeriod) {
         if (entryRule == null || exitRule == null) {
             throw new IllegalArgumentException("Rules cannot be null");
         }
@@ -104,6 +131,7 @@ public class BaseStrategy implements Strategy {
             throw new IllegalArgumentException("Unstable period bar count must be >= 0");
         }
         this.name = name;
+        this.description = description;
         this.entryRule = entryRule;
         this.exitRule = exitRule;
         this.unstablePeriod = unstablePeriod;
@@ -112,6 +140,11 @@ public class BaseStrategy implements Strategy {
     @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
     }
 
     @Override
@@ -169,24 +202,22 @@ public class BaseStrategy implements Strategy {
 
     @Override
     public Strategy opposite() {
-        return new BaseStrategy("opposite(" + name + ")", exitRule, entryRule, unstablePeriod);
+        return new BaseStrategy("opposite(" + name + ")", null, exitRule, entryRule, unstablePeriod);
     }
 
     @Override
     public Strategy and(String name, Strategy strategy, int unstablePeriod) {
-        return new BaseStrategy(name, entryRule.and(strategy.getEntryRule()), exitRule.and(strategy.getExitRule()),
-                unstablePeriod);
+        return new BaseStrategy(name, null, entryRule.and(strategy.getEntryRule()), exitRule.and(strategy.getExitRule()), unstablePeriod);
     }
 
     @Override
     public Strategy or(String name, Strategy strategy, int unstablePeriod) {
-        return new BaseStrategy(name, entryRule.or(strategy.getEntryRule()), exitRule.or(strategy.getExitRule()),
-                unstablePeriod);
+        return new BaseStrategy(name, null, entryRule.or(strategy.getEntryRule()), exitRule.or(strategy.getExitRule()), unstablePeriod);
     }
 
     /**
      * Traces the shouldEnter() method calls.
-     * 
+     *
      * @param index the bar index
      * @param enter true if the strategy should enter, false otherwise
      */
@@ -198,9 +229,9 @@ public class BaseStrategy implements Strategy {
 
     /**
      * Traces the shouldExit() method calls.
-     * 
+     *
      * @param index the bar index
-     * @param exit  true if the strategy should exit, false otherwise
+     * @param exit true if the strategy should exit, false otherwise
      */
     protected void traceShouldExit(int index, boolean exit) {
         if (log.isTraceEnabled()) {

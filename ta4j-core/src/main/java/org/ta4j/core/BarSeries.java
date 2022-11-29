@@ -51,6 +51,32 @@ public interface BarSeries extends Serializable {
      * @return the name of the series
      */
     String getName();
+    
+    /***
+     * The base currency identifier used in the series
+     * @return 
+     */
+    public String getBaseCurrency();
+
+    /***
+     * the counter currency identifier used in the series
+     * @return 
+     */
+    public String getCounterCurrency();
+    
+    /***
+     * The time period of the series
+     * @return 
+     */
+    public Duration getTimePeriod();
+
+    /***
+     * the base and counter currency identifiers return as a single string
+     * @return 
+     */
+    default String getCurrencyPair() {
+        return getBaseCurrency() + "_" + getCounterCurrency();
+    }
 
     /**
      * @param i an index

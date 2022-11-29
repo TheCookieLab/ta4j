@@ -1,8 +1,7 @@
 /**
  * The MIT License (MIT)
  *
- * Copyright (c) 2017-2022 Ta4j Organization & respective
- * authors (see AUTHORS)
+ * Copyright (c) 2014-2016 Marc de Verdelhan & respective authors (see AUTHORS)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -21,57 +20,40 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package org.ta4j.core.rules;
+package org.ta4j.core.indicators.helpers;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.ta4j.core.Rule;
+import org.ta4j.core.BarSeries;
+import org.ta4j.core.indicators.CachedIndicator;
+import org.ta4j.core.num.DoubleNum;
+import org.ta4j.core.num.Num;
 
 /**
- * An abstract trading {@link Rule rule}.
+ * Directional movement indicator.
+ * <p>
  */
-public abstract class AbstractRule implements Rule {
+public class DirectionalMovementIndicator extends CachedIndicator<Num>{
 
-    /**
-     * The logger
-     */
-    protected final transient Logger log = LoggerFactory.getLogger(getClass());
+    private final int timeFrame;
+    private final DirectionalUpIndicator dup;
+    private final DirectionalDownIndicator ddown;
 
-    /**
-     * The class name
-     */
-    private final String className = getClass().getSimpleName();
-
-    /**
-     * *
-     * The rule name
-     */
-    private String name;
-
-    /**
-     * Traces the isSatisfied() method calls.
-     *
-     * @param index the bar index
-     * @param isSatisfied true if the rule is satisfied, false otherwise
-     */
-    protected void traceIsSatisfied(int index, boolean isSatisfied) {
-        if (log.isTraceEnabled()) {
-            log.trace("{}#isSatisfied({}): {}", className, index, isSatisfied);
-        }
+    public DirectionalMovementIndicator(BarSeries series, int timeFrame) {
+        super(series);
+        this.timeFrame = timeFrame;
+        dup = new DirectionalUpIndicator(series, timeFrame);
+        ddown = new DirectionalDownIndicator(series, timeFrame);
     }
 
     @Override
-    public void setName(String name) {
-        this.name = name;
+    protected Num calculate(int index) {
+        Num dupValue = dup.getValue(index);
+        Num ddownValue = ddown.getValue(index);
+        Num difference = dupValue.minus(ddownValue);
+        return difference.abs().dividedBy(dupValue.plus(ddownValue)).multipliedBy(DoubleNum.valueOf(100));
     }
 
     @Override
     public String toString() {
-        return this.name;
-    }
-
-    @Override
-    public String getName() {
-        return this.name;
+        return getClass().getSimpleName() + " timeFrame: " + timeFrame;
     }
 }

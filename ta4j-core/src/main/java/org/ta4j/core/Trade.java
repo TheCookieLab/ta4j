@@ -24,6 +24,7 @@
 package org.ta4j.core;
 
 import java.io.Serializable;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 import org.ta4j.core.analysis.cost.CostModel;
@@ -107,6 +108,11 @@ public class Trade implements Serializable {
      * The cost model for trade execution
      */
     private CostModel costModel;
+    
+    /***
+     * The trade date time
+     */
+    private ZonedDateTime dateTime;
 
     /**
      * Constructor.
@@ -144,6 +150,7 @@ public class Trade implements Serializable {
         this.type = type;
         this.index = index;
         this.amount = amount;
+        this.dateTime = series.getBar(index).getEndTime();
         setPricesAndCost(series.getBar(index).getClosePrice(), amount, transactionCostModel);
     }
 
@@ -167,24 +174,38 @@ public class Trade implements Serializable {
      * @param amount        the trade amount
      */
     protected Trade(int index, TradeType type, Num pricePerAsset, Num amount) {
-        this(index, type, pricePerAsset, amount, new ZeroCostModel());
+        this(index, ZonedDateTime.now(), type, pricePerAsset, amount, new ZeroCostModel());
     }
 
     /**
      * Constructor.
      *
      * @param index                the index the trade is executed
+     * @param dateTime
      * @param type                 the trade type
      * @param pricePerAsset        the trade price per asset
      * @param amount               the trade amount
      * @param transactionCostModel the cost model for trade execution
      */
-    protected Trade(int index, TradeType type, Num pricePerAsset, Num amount, CostModel transactionCostModel) {
-        this.type = type;
+    protected Trade(int index, ZonedDateTime dateTime, TradeType type, Num pricePerAsset, Num amount, CostModel transactionCostModel) {
+        this.dateTime = dateTime;
+        this.type = type;        
         this.index = index;
         this.amount = amount;
 
         setPricesAndCost(pricePerAsset, amount, transactionCostModel);
+    }
+    
+    /***
+     * 
+     * @param index
+     * @param type
+     * @param pricePerAsset
+     * @param amount
+     * @param transactionCostModel 
+     */
+    protected Trade(int index, TradeType type, Num pricePerAsset, Num amount, CostModel transactionCostModel) {
+        this(index, ZonedDateTime.now(), type, pricePerAsset, amount, transactionCostModel);
     }
 
     /**
@@ -213,6 +234,14 @@ public class Trade implements Serializable {
      */
     public Num getPricePerAsset() {
         return pricePerAsset;
+    }
+    
+    /***
+     * The trade date time
+     * @return 
+     */
+    public ZonedDateTime getDateTime() {
+        return dateTime;
     }
 
     /**

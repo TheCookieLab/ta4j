@@ -28,6 +28,7 @@ import java.util.List;
 
 import org.ta4j.core.Trade.TradeType;
 import org.ta4j.core.analysis.cost.CostModel;
+import org.ta4j.core.analysis.cost.FixedTransactionCostModel;
 import org.ta4j.core.analysis.cost.ZeroCostModel;
 import org.ta4j.core.num.Num;
 
@@ -110,9 +111,9 @@ public class BaseTradingRecord implements TradingRecord {
     /**
      * Constructor.
      *
-     * @param name           the name of the trading record
+     * @param name the name of the trading record
      * @param entryTradeType the {@link TradeType trade type} of entries in the
-     *                       trading session
+     * trading session
      */
     public BaseTradingRecord(String name, TradeType tradeType) {
         this(tradeType, new ZeroCostModel(), new ZeroCostModel());
@@ -123,19 +124,48 @@ public class BaseTradingRecord implements TradingRecord {
      * Constructor.
      *
      * @param entryTradeType the {@link TradeType trade type} of entries in the
-     *                       trading session
+     * trading session
      */
     public BaseTradingRecord(TradeType tradeType) {
         this(tradeType, new ZeroCostModel(), new ZeroCostModel());
     }
 
     /**
+     * *
      * Constructor.
      *
-     * @param entryTradeType       the {@link TradeType trade type} of entries in
-     *                             the trading session
+     * @param tradeType
+     * @param transactionCostModel
+     */
+    public BaseTradingRecord(TradeType tradeType, CostModel transactionCostModel) {
+        this(tradeType, transactionCostModel, new ZeroCostModel());
+    }
+
+    /**
+     * *
+     * Constructor.
+     *
+     * @param transactionCostModel
+     */
+    public BaseTradingRecord(CostModel transactionCostModel) {
+        this(TradeType.BUY, transactionCostModel);
+    }
+
+    /***
+     * Constructor
+     * @param transactionCost 
+     */
+    public BaseTradingRecord(Double transactionCost) {
+        this(new FixedTransactionCostModel(transactionCost));
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param entryTradeType the {@link TradeType trade type} of entries in the
+     * trading session
      * @param transactionCostModel the cost model for transactions of the asset
-     * @param holdingCostModel     the cost model for holding asset (e.g. borrowing)
+     * @param holdingCostModel the cost model for holding asset (e.g. borrowing)
      */
     public BaseTradingRecord(TradeType entryTradeType, CostModel transactionCostModel, CostModel holdingCostModel) {
         if (entryTradeType == null) {
@@ -160,8 +190,8 @@ public class BaseTradingRecord implements TradingRecord {
      * Constructor.
      *
      * @param transactionCostModel the cost model for transactions of the asset
-     * @param holdingCostModel     the cost model for holding asset (e.g. borrowing)
-     * @param trades               the trades to be recorded (cannot be empty)
+     * @param holdingCostModel the cost model for holding asset (e.g. borrowing)
+     * @param trades the trades to be recorded (cannot be empty)
      */
     public BaseTradingRecord(CostModel transactionCostModel, CostModel holdingCostModel, Trade... trades) {
         this(trades[0].getType(), transactionCostModel, holdingCostModel);
@@ -266,7 +296,7 @@ public class BaseTradingRecord implements TradingRecord {
     /**
      * Records a trade and the corresponding position (if closed).
      *
-     * @param trade   the trade to be recorded
+     * @param trade the trade to be recorded
      * @param isEntry true if the trade is an entry, false otherwise (exit)
      */
     private void recordTrade(Trade trade, boolean isEntry) {
