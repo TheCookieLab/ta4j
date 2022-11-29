@@ -35,10 +35,13 @@ public class BaseBarSeriesBuilder implements BarSeriesBuilder {
 
     /**
      * Default Num type function
-     **/
+     *
+     */
     private static Function<Number, Num> defaultFunction = DecimalNum::valueOf;
     private List<Bar> bars;
     private String name;
+    private String baseCurrency;
+    private String counterCurrency;
     private Function<Number, Num> numFunction;
     private boolean constrained;
     private int maxBarCount;
@@ -54,6 +57,8 @@ public class BaseBarSeriesBuilder implements BarSeriesBuilder {
     private void initValues() {
         this.bars = new ArrayList<>();
         this.name = "unnamed_series";
+        this.baseCurrency = "unknown_currency";
+        this.counterCurrency = "unknown_currency";
         this.numFunction = BaseBarSeriesBuilder.defaultFunction;
         this.constrained = false;
         this.maxBarCount = Integer.MAX_VALUE;
@@ -67,7 +72,7 @@ public class BaseBarSeriesBuilder implements BarSeriesBuilder {
             beginIndex = 0;
             endIndex = bars.size() - 1;
         }
-        BaseBarSeries series = new BaseBarSeries(name, bars, beginIndex, endIndex, constrained, numFunction);
+        BaseBarSeries series = new BaseBarSeries(name, baseCurrency, counterCurrency, bars, beginIndex, endIndex, constrained, numFunction);
         series.setMaximumBarCount(maxBarCount);
         initValues(); // reinitialize values for next series
         return series;
@@ -80,6 +85,16 @@ public class BaseBarSeriesBuilder implements BarSeriesBuilder {
 
     public BaseBarSeriesBuilder withName(String name) {
         this.name = name;
+        return this;
+    }
+
+    public BaseBarSeriesBuilder withBaseCurrency(String baseCurrency) {
+        this.baseCurrency = baseCurrency;
+        return this;
+    }
+
+    public BaseBarSeriesBuilder withCounterCurrency(String counterCurrency) {
+        this.counterCurrency = counterCurrency;
         return this;
     }
 

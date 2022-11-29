@@ -40,8 +40,8 @@ public interface Rule {
 
     /**
      * @param rule another trading rule
-     * @return a rule which is the AND combination of this rule with the provided
-     *         one
+     * @return a rule which is the AND combination of this rule with the
+     * provided one
      */
     default Rule and(Rule rule) {
         return new AndRule(this, rule);
@@ -49,7 +49,8 @@ public interface Rule {
 
     /**
      * @param rule another trading rule
-     * @return a rule which is the OR combination of this rule with the provided one
+     * @return a rule which is the OR combination of this rule with the provided
+     * one
      */
     default Rule or(Rule rule) {
         return new OrRule(this, rule);
@@ -57,8 +58,8 @@ public interface Rule {
 
     /**
      * @param rule another trading rule
-     * @return a rule which is the XOR combination of this rule with the provided
-     *         one
+     * @return a rule which is the XOR combination of this rule with the
+     * provided one
      */
     default Rule xor(Rule rule) {
         return new XorRule(this, rule);
@@ -74,17 +75,29 @@ public interface Rule {
     /**
      * @param index the bar index
      * @return true if this rule is satisfied for the provided index, false
-     *         otherwise
+     * otherwise
      */
     default boolean isSatisfied(int index) {
         return isSatisfied(index, null);
     }
 
     /**
-     * @param index         the bar index
+     * @param index the bar index
      * @param tradingRecord the potentially needed trading history
      * @return true if this rule is satisfied for the provided index, false
-     *         otherwise
+     * otherwise
      */
     boolean isSatisfied(int index, TradingRecord tradingRecord);
+
+    /***
+     * Set the Rule's name
+     * @param name 
+     */
+    void setName(String name);
+
+    /***
+     * Get the Rule's name
+     * @return 
+     */
+    String getName();
 }

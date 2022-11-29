@@ -23,12 +23,12 @@
  */
 package org.ta4j.core;
 
-import static org.ta4j.core.num.NaN.NaN;
-
 import java.io.Serializable;
 import java.util.List;
 
 import org.ta4j.core.Trade.TradeType;
+import org.ta4j.core.num.DoubleNum;
+import static org.ta4j.core.num.NaN.NaN;
 import org.ta4j.core.num.Num;
 
 /**
@@ -41,11 +41,11 @@ import org.ta4j.core.num.Num;
  * <li>analyze the performance of a trading strategy
  * </ul>
  */
-public interface TradingRecord extends Serializable {
+public interface TradingRecord extends Serializable, Comparable<TradingRecord> {
 
     /**
      * @return the entry type (BUY or SELL) of the first trade in the trading
-     *         session
+     * session
      */
     TradeType getStartingType();
 
@@ -56,7 +56,7 @@ public interface TradingRecord extends Serializable {
 
     /**
      * Places a trade in the trading record.
-     * 
+     *
      * @param index the index to place the trade
      */
     default void operate(int index) {
@@ -65,16 +65,16 @@ public interface TradingRecord extends Serializable {
 
     /**
      * Places a trade in the trading record.
-     * 
-     * @param index  the index to place the trade
-     * @param price  the trade price
+     *
+     * @param index the index to place the trade
+     * @param price the trade price
      * @param amount the trade amount
      */
     void operate(int index, Num price, Num amount);
 
     /**
      * Places an entry trade in the trading record.
-     * 
+     *
      * @param index the index to place the entry
      * @return true if the entry has been placed, false otherwise
      */
@@ -84,9 +84,9 @@ public interface TradingRecord extends Serializable {
 
     /**
      * Places an entry trade in the trading record.
-     * 
-     * @param index  the index to place the entry
-     * @param price  the trade price
+     *
+     * @param index the index to place the entry
+     * @param price the trade price
      * @param amount the trade amount
      * @return true if the entry has been placed, false otherwise
      */
@@ -94,7 +94,7 @@ public interface TradingRecord extends Serializable {
 
     /**
      * Places an exit trade in the trading record.
-     * 
+     *
      * @param index the index to place the exit
      * @return true if the exit has been placed, false otherwise
      */
@@ -104,9 +104,9 @@ public interface TradingRecord extends Serializable {
 
     /**
      * Places an exit trade in the trading record.
-     * 
-     * @param index  the index to place the exit
-     * @param price  the trade price
+     *
+     * @param index the index to place the exit
+     * @param price the trade price
      * @param amount the trade amount
      * @return true if the exit has been placed, false otherwise
      */
@@ -167,4 +167,76 @@ public interface TradingRecord extends Serializable {
      * @return the last exit trade recorded
      */
     Trade getLastExit();
+
+    /**
+     * *
+     * Cumulative profit across all trades
+     *
+     * @return
+     */
+    default Num getNetProfit() {
+        return this.getNetProfit(this.getPositions());
+    }
+
+    /**
+     * *
+     * Cumulative profit across the most recent n trades
+     *
+     * @param ofLastNPositions
+     * @return
+     */
+    default Num getNetProfit(int ofLastNPositions) {
+        int startingIndex = this.getPositionCount() > ofLastNPositions ? this.getPositionCount() - ofLastNPositions : 0;
+        List<Position> mostRecentPositions = this.getPositions().subList(startingIndex, this.getPositionCount());
+        return this.getNetProfit(mostRecentPositions);
+    }
+
+    /**
+     * *
+     * Cumulative profit across the given trades
+     *
+     * @param positions
+     * @return
+     */
+    default Num getNetProfit(List<Position> positions) {
+        Num profit = DoubleNum.valueOf(0);
+
+        for (Position position : positions) {
+            profit = profit.plus(position.getProfit());
+        }
+
+        return profit != NaN ? profit : DoubleNum.valueOf(0);
+    }
+
+    /**
+     * *
+     * The percentage of trades that have net profit > 0
+     *
+     * @return
+     */
+    default Num getPercentageProfitableTrades() {
+        if (this.getPositions().isEmpty()) {
+            return DoubleNum.valueOf(0);
+        }
+
+        int profitableTradeCount = 0;
+
+        for (Position trade : this.getPositions()) {
+            if (trade.getProfit().isPositive()) {
+                profitableTradeCount++;
+            }
+        }
+
+        return DoubleNum.valueOf(profitableTradeCount).dividedBy(DoubleNum.valueOf(this.getPositionCount()));
+    }
+
+    default Num getPerformance() {
+        return ((this.getPercentageProfitableTrades().pow(2)).multipliedBy(DoubleNum.valueOf(this.getPositionCount())))
+                .multipliedBy(this.getNetProfit());
+    }
+
+    @Override
+    default int compareTo(TradingRecord o) {
+        return this.getPerformance().compareTo(o.getPerformance());
+    }
 }
