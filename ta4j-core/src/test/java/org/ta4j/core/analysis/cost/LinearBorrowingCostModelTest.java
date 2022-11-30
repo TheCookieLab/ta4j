@@ -23,6 +23,7 @@
  */
 package org.ta4j.core.analysis.cost;
 
+import java.time.ZonedDateTime;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.ta4j.core.TestUtils.assertNumEquals;
@@ -57,8 +58,8 @@ public class LinearBorrowingCostModelTest {
     public void calculateBuyPosition() {
         // Holding a bought asset should not incur borrowing costs
         int holdingPeriod = 2;
-        Trade entry = Trade.buyAt(0, DoubleNum.valueOf(100), DoubleNum.valueOf(1));
-        Trade exit = Trade.sellAt(holdingPeriod, DoubleNum.valueOf(110), DoubleNum.valueOf(1));
+        Trade entry = Trade.buyAt(0, ZonedDateTime.now(), DoubleNum.valueOf(100), DoubleNum.valueOf(1));
+        Trade exit = Trade.sellAt(holdingPeriod, ZonedDateTime.now(), DoubleNum.valueOf(110), DoubleNum.valueOf(1));
 
         Position position = new Position(entry, exit, new ZeroCostModel(), borrowingModel);
 
@@ -73,8 +74,8 @@ public class LinearBorrowingCostModelTest {
     public void calculateSellPosition() {
         // Short selling incurs borrowing costs
         int holdingPeriod = 2;
-        Trade entry = Trade.sellAt(0, DoubleNum.valueOf(100), DoubleNum.valueOf(1));
-        Trade exit = Trade.buyAt(holdingPeriod, DoubleNum.valueOf(110), DoubleNum.valueOf(1));
+        Trade entry = Trade.sellAt(0, ZonedDateTime.now(), DoubleNum.valueOf(100), DoubleNum.valueOf(1));
+        Trade exit = Trade.buyAt(holdingPeriod, ZonedDateTime.now(), DoubleNum.valueOf(110), DoubleNum.valueOf(1));
 
         Position position = new Position(entry, exit, new ZeroCostModel(), borrowingModel);
 
@@ -91,7 +92,7 @@ public class LinearBorrowingCostModelTest {
         // for until current index
         int currentIndex = 4;
         Position position = new Position(Trade.TradeType.SELL, new ZeroCostModel(), borrowingModel);
-        position.operate(0, DoubleNum.valueOf(100), DoubleNum.valueOf(1));
+        position.operate(0, ZonedDateTime.now(), DoubleNum.valueOf(100), DoubleNum.valueOf(1));
 
         Num costsFromPosition = position.getHoldingCost(currentIndex);
         Num costsFromModel = borrowingModel.calculate(position, currentIndex);

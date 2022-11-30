@@ -24,6 +24,7 @@
 package org.ta4j.core;
 
 import java.io.Serializable;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 import org.ta4j.core.Trade.TradeType;
@@ -60,17 +61,18 @@ public interface TradingRecord extends Serializable, Comparable<TradingRecord> {
      * @param index the index to place the trade
      */
     default void operate(int index) {
-        operate(index, NaN, NaN);
+        operate(index, ZonedDateTime.now(), NaN, NaN);
     }
 
     /**
      * Places a trade in the trading record.
      *
      * @param index the index to place the trade
+     * @param dateTime
      * @param price the trade price
      * @param amount the trade amount
      */
-    void operate(int index, Num price, Num amount);
+    void operate(int index, ZonedDateTime dateTime, Num price, Num amount);
 
     /**
      * Places an entry trade in the trading record.
@@ -79,18 +81,19 @@ public interface TradingRecord extends Serializable, Comparable<TradingRecord> {
      * @return true if the entry has been placed, false otherwise
      */
     default boolean enter(int index) {
-        return enter(index, NaN, NaN);
+        return enter(index, ZonedDateTime.now(), NaN, NaN);
     }
 
     /**
      * Places an entry trade in the trading record.
      *
      * @param index the index to place the entry
+     * @param dateTime
      * @param price the trade price
      * @param amount the trade amount
      * @return true if the entry has been placed, false otherwise
      */
-    boolean enter(int index, Num price, Num amount);
+    boolean enter(int index, ZonedDateTime dateTime, Num price, Num amount);
 
     /**
      * Places an exit trade in the trading record.
@@ -99,18 +102,19 @@ public interface TradingRecord extends Serializable, Comparable<TradingRecord> {
      * @return true if the exit has been placed, false otherwise
      */
     default boolean exit(int index) {
-        return exit(index, NaN, NaN);
+        return exit(index, ZonedDateTime.now(), NaN, NaN);
     }
 
     /**
      * Places an exit trade in the trading record.
      *
      * @param index the index to place the exit
+     * @param dateTime
      * @param price the trade price
      * @param amount the trade amount
      * @return true if the exit has been placed, false otherwise
      */
-    boolean exit(int index, Num price, Num amount);
+    boolean exit(int index, ZonedDateTime dateTime, Num price, Num amount);
 
     /**
      * @return true if no position is open, false otherwise

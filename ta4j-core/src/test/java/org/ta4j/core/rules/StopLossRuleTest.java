@@ -23,6 +23,7 @@
  */
 package org.ta4j.core.rules;
 
+import java.time.ZonedDateTime;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -64,7 +65,7 @@ public class StopLossRuleTest extends AbstractIndicatorTest<BarSeries, Num> {
         assertFalse(rule.isSatisfied(1, tradingRecord));
 
         // Enter at 114
-        tradingRecord.enter(2, numOf(114), tradedAmount);
+        tradingRecord.enter(2, ZonedDateTime.now(), numOf(114), tradedAmount);
         assertFalse(rule.isSatisfied(2, tradingRecord));
         assertFalse(rule.isSatisfied(3, tradingRecord));
         assertTrue(rule.isSatisfied(4, tradingRecord));
@@ -72,7 +73,7 @@ public class StopLossRuleTest extends AbstractIndicatorTest<BarSeries, Num> {
         tradingRecord.exit(5);
 
         // Enter at 128
-        tradingRecord.enter(5, numOf(128), tradedAmount);
+        tradingRecord.enter(5, ZonedDateTime.now(), numOf(128), tradedAmount);
         assertFalse(rule.isSatisfied(5, tradingRecord));
         assertTrue(rule.isSatisfied(6, tradingRecord));
         assertTrue(rule.isSatisfied(7, tradingRecord));
@@ -90,7 +91,7 @@ public class StopLossRuleTest extends AbstractIndicatorTest<BarSeries, Num> {
         assertFalse(rule.isSatisfied(1, tradingRecord));
 
         // Enter at 108
-        tradingRecord.enter(1, numOf(108), tradedAmount);
+        tradingRecord.enter(1, ZonedDateTime.now(), numOf(108), tradedAmount);
         assertFalse(rule.isSatisfied(1, tradingRecord));
         assertFalse(rule.isSatisfied(2, tradingRecord));
         assertTrue(rule.isSatisfied(3, tradingRecord));
@@ -98,7 +99,7 @@ public class StopLossRuleTest extends AbstractIndicatorTest<BarSeries, Num> {
         tradingRecord.exit(4);
 
         // Enter at 114
-        tradingRecord.enter(2, numOf(114), tradedAmount);
+        tradingRecord.enter(2, ZonedDateTime.now(), numOf(114), tradedAmount);
         assertFalse(rule.isSatisfied(2, tradingRecord));
         assertTrue(rule.isSatisfied(3, tradingRecord));
         assertFalse(rule.isSatisfied(4, tradingRecord));

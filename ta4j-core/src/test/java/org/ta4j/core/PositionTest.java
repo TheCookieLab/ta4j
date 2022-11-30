@@ -23,6 +23,7 @@
  */
 package org.ta4j.core;
 
+import java.time.ZonedDateTime;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
@@ -77,13 +78,13 @@ public class PositionTest {
 
         enter = Trade.buyAt(1, DoubleNum.valueOf(2), DoubleNum.valueOf(1), transactionModel);
         exitSameType = Trade.sellAt(2, DoubleNum.valueOf(2), DoubleNum.valueOf(1), transactionModel);
-        exitDifferentType = Trade.buyAt(2, DoubleNum.valueOf(2), DoubleNum.valueOf(1));
+        exitDifferentType = Trade.buyAt(2, ZonedDateTime.now(), DoubleNum.valueOf(2), DoubleNum.valueOf(1));
     }
 
     @Test
     public void whenNewShouldCreateBuyOrderWhenEntering() {
         newPosition.operate(0);
-        assertEquals(Trade.buyAt(0, NaN, NaN), newPosition.getEntry());
+        assertEquals(Trade.buyAt(0, ZonedDateTime.now(), NaN, NaN), newPosition.getEntry());
     }
 
     @Test
@@ -95,7 +96,7 @@ public class PositionTest {
     public void whenOpenedShouldCreateSellOrderWhenExiting() {
         newPosition.operate(0);
         newPosition.operate(1);
-        assertEquals(Trade.sellAt(1, NaN, NaN), newPosition.getExit());
+        assertEquals(Trade.sellAt(1, ZonedDateTime.now(), NaN, NaN), newPosition.getExit());
     }
 
     @Test
@@ -127,20 +128,20 @@ public class PositionTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void shouldThrowIllegalArgumentExceptionWhenOrdersHaveSameType() {
-        new Position(Trade.buyAt(0, NaN, NaN), Trade.buyAt(1, NaN, NaN));
+        new Position(Trade.buyAt(0, ZonedDateTime.now(), NaN, NaN), Trade.buyAt(1, ZonedDateTime.now(), NaN, NaN));
     }
 
     @Test
     public void whenNewShouldCreateSellOrderWhenEnteringUncovered() {
         uncoveredPosition.operate(0);
-        assertEquals(Trade.sellAt(0, NaN, NaN), uncoveredPosition.getEntry());
+        assertEquals(Trade.sellAt(0, ZonedDateTime.now(), NaN, NaN), uncoveredPosition.getEntry());
     }
 
     @Test
     public void whenOpenedShouldCreateBuyOrderWhenExitingUncovered() {
         uncoveredPosition.operate(0);
         uncoveredPosition.operate(1);
-        assertEquals(Trade.buyAt(1, NaN, NaN), uncoveredPosition.getExit());
+        assertEquals(Trade.buyAt(1, ZonedDateTime.now(), NaN, NaN), uncoveredPosition.getExit());
     }
 
     @Test
@@ -197,8 +198,8 @@ public class PositionTest {
     public void testGetProfitForLongPositions() {
         Position position = new Position(TradeType.BUY);
 
-        position.operate(0, DoubleNum.valueOf(10.00), DoubleNum.valueOf(2));
-        position.operate(0, DoubleNum.valueOf(12.00), DoubleNum.valueOf(2));
+        position.operate(0, ZonedDateTime.now(), DoubleNum.valueOf(10.00), DoubleNum.valueOf(2));
+        position.operate(0, ZonedDateTime.now(), DoubleNum.valueOf(12.00), DoubleNum.valueOf(2));
 
         final Num profit = position.getProfit();
 
@@ -209,8 +210,8 @@ public class PositionTest {
     public void testGetProfitForShortPositions() {
         Position position = new Position(TradeType.SELL);
 
-        position.operate(0, DoubleNum.valueOf(12.00), DoubleNum.valueOf(2));
-        position.operate(0, DoubleNum.valueOf(10.00), DoubleNum.valueOf(2));
+        position.operate(0, ZonedDateTime.now(), DoubleNum.valueOf(12.00), DoubleNum.valueOf(2));
+        position.operate(0, ZonedDateTime.now(), DoubleNum.valueOf(10.00), DoubleNum.valueOf(2));
 
         final Num profit = position.getProfit();
 
@@ -221,8 +222,8 @@ public class PositionTest {
     public void testGetGrossReturnForLongPositions() {
         Position position = new Position(TradeType.BUY);
 
-        position.operate(0, DoubleNum.valueOf(10.00), DoubleNum.valueOf(2));
-        position.operate(0, DoubleNum.valueOf(12.00), DoubleNum.valueOf(2));
+        position.operate(0, ZonedDateTime.now(), DoubleNum.valueOf(10.00), DoubleNum.valueOf(2));
+        position.operate(0, ZonedDateTime.now(), DoubleNum.valueOf(12.00), DoubleNum.valueOf(2));
 
         final Num profit = position.getGrossReturn();
 
@@ -233,8 +234,8 @@ public class PositionTest {
     public void testGetGrossReturnForShortPositions() {
         Position position = new Position(TradeType.SELL);
 
-        position.operate(0, DoubleNum.valueOf(10.00), DoubleNum.valueOf(2));
-        position.operate(0, DoubleNum.valueOf(8.00), DoubleNum.valueOf(2));
+        position.operate(0, ZonedDateTime.now(), DoubleNum.valueOf(10.00), DoubleNum.valueOf(2));
+        position.operate(0, ZonedDateTime.now(), DoubleNum.valueOf(8.00), DoubleNum.valueOf(2));
 
         final Num profit = position.getGrossReturn();
 
@@ -244,14 +245,14 @@ public class PositionTest {
     @Test
     public void testGetGrossReturnForLongPositionsUsingBarCloseOnNaN() {
         MockBarSeries series = new MockBarSeries(DoubleNum::valueOf, 100, 105);
-        Position position = new Position(new Trade(0, TradeType.BUY, NaN, NaN), new Trade(1, TradeType.SELL, NaN, NaN));
+        Position position = new Position(new Trade(0, ZonedDateTime.now(), TradeType.BUY, NaN, NaN), new Trade(1, ZonedDateTime.now(), TradeType.SELL, NaN, NaN));
         assertNumEquals(DoubleNum.valueOf(1.05), position.getGrossReturn(series));
     }
 
     @Test
     public void testGetGrossReturnForShortPositionsUsingBarCloseOnNaN() {
         MockBarSeries series = new MockBarSeries(DoubleNum::valueOf, 100, 95);
-        Position position = new Position(new Trade(0, TradeType.SELL, NaN, NaN), new Trade(1, TradeType.BUY, NaN, NaN));
+        Position position = new Position(new Trade(0, ZonedDateTime.now(), TradeType.SELL, NaN, NaN), new Trade(1, ZonedDateTime.now(), TradeType.BUY, NaN, NaN));
         assertNumEquals(DoubleNum.valueOf(1.05), position.getGrossReturn(series));
     }
 
@@ -274,7 +275,7 @@ public class PositionTest {
     public void getProfitLongNoFinalBarTest() {
         Position closedPosition = new Position(enter, exitSameType, transactionModel, holdingModel);
         Position openPosition = new Position(TradeType.BUY, transactionModel, holdingModel);
-        openPosition.operate(5, DoubleNum.valueOf(100), DoubleNum.valueOf(1));
+        openPosition.operate(5, ZonedDateTime.now(), DoubleNum.valueOf(100), DoubleNum.valueOf(1));
 
         Num profitOfClosedPosition = closedPosition.getProfit();
         Num proftOfOpenPosition = openPosition.getProfit();
@@ -287,7 +288,7 @@ public class PositionTest {
     public void getProfitLongWithFinalBarTest() {
         Position closedPosition = new Position(enter, exitSameType, transactionModel, holdingModel);
         Position openPosition = new Position(TradeType.BUY, transactionModel, holdingModel);
-        openPosition.operate(5, DoubleNum.valueOf(2), DoubleNum.valueOf(1));
+        openPosition.operate(5, ZonedDateTime.now(), DoubleNum.valueOf(2), DoubleNum.valueOf(1));
 
         Num profitOfClosedPosition = closedPosition.getProfit(10, DoubleNum.valueOf(12));
         Num profitOfOpenPosition = openPosition.getProfit(10, DoubleNum.valueOf(12));
@@ -303,7 +304,7 @@ public class PositionTest {
 
         Position closedPosition = new Position(sell, buyBack, transactionModel, holdingModel);
         Position openPosition = new Position(TradeType.SELL, transactionModel, holdingModel);
-        openPosition.operate(5, DoubleNum.valueOf(100), DoubleNum.valueOf(1));
+        openPosition.operate(5, ZonedDateTime.now(), DoubleNum.valueOf(100), DoubleNum.valueOf(1));
 
         Num profitOfClosedPosition = closedPosition.getProfit();
         Num proftOfOpenPosition = openPosition.getProfit();
@@ -322,7 +323,7 @@ public class PositionTest {
 
         Position closedPosition = new Position(sell, buyBack, transactionModel, holdingModel);
         Position openPosition = new Position(TradeType.SELL, transactionModel, holdingModel);
-        openPosition.operate(5, DoubleNum.valueOf(2), DoubleNum.valueOf(1));
+        openPosition.operate(5, ZonedDateTime.now(), DoubleNum.valueOf(2), DoubleNum.valueOf(1));
 
         Num profitOfClosedPositionFinalAfter = closedPosition.getProfit(20, DoubleNum.valueOf(3));
         Num profitOfOpenPositionFinalAfter = openPosition.getProfit(20, DoubleNum.valueOf(3));

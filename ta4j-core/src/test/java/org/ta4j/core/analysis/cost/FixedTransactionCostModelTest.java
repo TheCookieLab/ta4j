@@ -23,6 +23,7 @@
  */
 package org.ta4j.core.analysis.cost;
 
+import java.time.ZonedDateTime;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.ta4j.core.TestUtils.assertNumEquals;
@@ -51,7 +52,7 @@ public class FixedTransactionCostModelTest {
         FixedTransactionCostModel model = new FixedTransactionCostModel(feePerTrade);
 
         Position position = new Position(TradeType.BUY, model, null);
-        position.operate(0, PRICE, AMOUNT);
+        position.operate(0, ZonedDateTime.now(), PRICE, AMOUNT);
         Num cost = model.calculate(position);
 
         assertNumEquals(cost, DoubleNum.valueOf(feePerTrade * positionTrades));

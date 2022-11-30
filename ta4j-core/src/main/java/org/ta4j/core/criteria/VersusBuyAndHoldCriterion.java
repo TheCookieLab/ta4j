@@ -73,8 +73,8 @@ public class VersusBuyAndHoldCriterion extends AbstractAnalysisCriterion {
 
     private TradingRecord createBuyAndHoldTradingRecord(BarSeries series, int beginIndex, int endIndex) {
         TradingRecord fakeRecord = new BaseTradingRecord();
-        fakeRecord.enter(beginIndex, series.getBar(beginIndex).getClosePrice(), series.numOf(1));
-        fakeRecord.exit(endIndex, series.getBar(endIndex).getClosePrice(), series.numOf(1));
+        fakeRecord.enter(beginIndex, series.getBar(beginIndex).getEndTime(), series.getBar(beginIndex).getClosePrice(), series.numOf(1));
+        fakeRecord.exit(endIndex, series.getBar(beginIndex).getEndTime(), series.getBar(endIndex).getClosePrice(), series.numOf(1));
         return fakeRecord;
     }
 }

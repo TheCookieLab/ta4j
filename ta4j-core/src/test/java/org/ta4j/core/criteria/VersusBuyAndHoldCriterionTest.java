@@ -23,6 +23,7 @@
  */
 package org.ta4j.core.criteria;
 
+import java.time.ZonedDateTime;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.ta4j.core.TestUtils.assertNumEquals;
@@ -86,8 +87,8 @@ public class VersusBuyAndHoldCriterionTest extends AbstractCriterionTest {
     @Test
     public void calculateWithAverageProfit() {
         MockBarSeries series = new MockBarSeries(numFunction, 100, 95, 100, 80, 85, 130);
-        TradingRecord tradingRecord = new BaseTradingRecord(Trade.buyAt(0, NaN, NaN), Trade.sellAt(1, NaN, NaN),
-                Trade.buyAt(2, NaN, NaN), Trade.sellAt(5, NaN, NaN));
+        TradingRecord tradingRecord = new BaseTradingRecord(Trade.buyAt(0, ZonedDateTime.now(), NaN, NaN), Trade.sellAt(1, ZonedDateTime.now(), NaN, NaN),
+                Trade.buyAt(2, ZonedDateTime.now(), NaN, NaN), Trade.sellAt(5, ZonedDateTime.now(), NaN, NaN));
 
         AnalysisCriterion buyAndHold = getCriterion(new AverageReturnPerBarCriterion());
 

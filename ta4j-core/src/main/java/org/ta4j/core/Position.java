@@ -26,6 +26,7 @@ package org.ta4j.core;
 import static org.ta4j.core.num.NaN.NaN;
 
 import java.io.Serializable;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 import org.ta4j.core.Trade.TradeType;
@@ -183,27 +184,27 @@ public class Position implements Serializable {
      * @return the trade
      */
     public Trade operate(int index) {
-        return operate(index, NaN, NaN);
+        return operate(index, ZonedDateTime.now(), NaN, NaN);
     }
-
-    /**
-     * Operates the position at the index-th position
-     *
-     * @param index the bar index
-     * @param price the price
-     * @param amount the amount
-     * @return the trade
+    
+    /***
+     * 
+     * @param index
+     * @param dateTime
+     * @param price
+     * @param amount
+     * @return 
      */
-    public Trade operate(int index, Num price, Num amount) {
+    public Trade operate(int index, ZonedDateTime dateTime, Num price, Num amount) {
         Trade trade = null;
         if (isNew()) {
-            trade = new Trade(index, startingType, price, amount, transactionCostModel);
+            trade = new Trade(index, dateTime, startingType, price, amount, transactionCostModel);
             entry = trade;
         } else if (isOpened()) {
             if (index < entry.getIndex()) {
                 throw new IllegalStateException("The index i is less than the entryTrade index");
             }
-            trade = new Trade(index, startingType.complementType(), price, amount, transactionCostModel);
+            trade = new Trade(index, dateTime, startingType.complementType(), price, amount, transactionCostModel);
             exit = trade;
         }
         return trade;

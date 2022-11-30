@@ -23,6 +23,7 @@
  */
 package org.ta4j.core;
 
+import java.time.ZonedDateTime;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
@@ -45,11 +46,11 @@ public class TradeTest {
 
     @Before
     public void setUp() {
-        opEquals1 = Trade.buyAt(1, NaN, NaN);
-        opEquals2 = Trade.buyAt(1, NaN, NaN);
+        opEquals1 = Trade.buyAt(1, ZonedDateTime.now(), NaN, NaN);
+        opEquals2 = Trade.buyAt(1, ZonedDateTime.now(), NaN, NaN);
 
-        opNotEquals1 = Trade.sellAt(1, NaN, NaN);
-        opNotEquals2 = Trade.buyAt(2, NaN, NaN);
+        opNotEquals1 = Trade.sellAt(1, ZonedDateTime.now(), NaN, NaN);
+        opNotEquals2 = Trade.buyAt(2, ZonedDateTime.now(), NaN, NaN);
     }
 
     @Test
@@ -89,7 +90,7 @@ public class TradeTest {
     @Test
     public void testReturnBarSeriesCloseOnNaN() {
         MockBarSeries series = new MockBarSeries(DoubleNum::valueOf, 100, 95, 100, 80, 85, 130);
-        Trade trade = new Trade(1, TradeType.BUY, NaN);
+        Trade trade = new Trade(1, series.getBar(1).getEndTime(), TradeType.BUY, NaN);
         assertNumEquals(DoubleNum.valueOf(95), trade.getPricePerAsset(series));
     }
 }

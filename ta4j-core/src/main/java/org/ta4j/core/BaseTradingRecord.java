@@ -23,6 +23,7 @@
  */
 package org.ta4j.core;
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -112,8 +113,7 @@ public class BaseTradingRecord implements TradingRecord {
      * Constructor.
      *
      * @param name the name of the trading record
-     * @param entryTradeType the {@link TradeType trade type} of entries in the
-     * trading session
+     * @param tradeType
      */
     public BaseTradingRecord(String name, TradeType tradeType) {
         this(tradeType, new ZeroCostModel(), new ZeroCostModel());
@@ -123,8 +123,7 @@ public class BaseTradingRecord implements TradingRecord {
     /**
      * Constructor.
      *
-     * @param entryTradeType the {@link TradeType trade type} of entries in the
-     * trading session
+     * @param tradeType
      */
     public BaseTradingRecord(TradeType tradeType) {
         this(tradeType, new ZeroCostModel(), new ZeroCostModel());
@@ -205,7 +204,7 @@ public class BaseTradingRecord implements TradingRecord {
                 // BUY, SELL
                 currentPosition = new Position(o.getType(), transactionCostModel, holdingCostModel);
             }
-            Trade newTrade = currentPosition.operate(o.getIndex(), o.getPricePerAsset(), o.getAmount());
+            Trade newTrade = currentPosition.operate(o.getIndex(), o.getDateTime(), o.getPricePerAsset(), o.getAmount());
             recordTrade(newTrade, newTradeWillBeAnEntry);
         }
     }
@@ -226,29 +225,29 @@ public class BaseTradingRecord implements TradingRecord {
     }
 
     @Override
-    public void operate(int index, Num price, Num amount) {
+    public void operate(int index, ZonedDateTime dateTime, Num price, Num amount) {
         if (currentPosition.isClosed()) {
             // Current position closed, should not occur
             throw new IllegalStateException("Current position should not be closed");
         }
         boolean newTradeWillBeAnEntry = currentPosition.isNew();
-        Trade newTrade = currentPosition.operate(index, price, amount);
+        Trade newTrade = currentPosition.operate(index, dateTime, price, amount);
         recordTrade(newTrade, newTradeWillBeAnEntry);
     }
 
     @Override
-    public boolean enter(int index, Num price, Num amount) {
+    public boolean enter(int index, ZonedDateTime dateTime, Num price, Num amount) {
         if (currentPosition.isNew()) {
-            operate(index, price, amount);
+            operate(index, dateTime, price, amount);
             return true;
         }
         return false;
     }
 
     @Override
-    public boolean exit(int index, Num price, Num amount) {
+    public boolean exit(int index, ZonedDateTime dateTime, Num price, Num amount) {
         if (currentPosition.isOpened()) {
-            operate(index, price, amount);
+            operate(index, dateTime, price, amount);
             return true;
         }
         return false;

@@ -40,7 +40,7 @@ public class OpenedPositionUtils {
         MockBarSeries series = new MockBarSeries(numFunction, 100, 105, 110, 100, 95, 105);
 
         Position trade = new Position(Trade.TradeType.BUY);
-        trade.operate(0, series.numOf(2.5), series.numOf(1));
+        trade.operate(0, series.getBar(0).getEndTime(), series.numOf(2.5), series.numOf(1));
 
         final Num value = criterion.calculate(series, trade);
 
