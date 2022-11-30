@@ -32,6 +32,9 @@ import static org.ta4j.core.num.NaN.NaN;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.ta4j.core.analysis.cost.FixedTransactionCostModel;
+import org.ta4j.core.num.DoubleNum;
+import org.ta4j.core.num.Num;
 
 public class TradingRecordTest {
 
@@ -135,5 +138,149 @@ public class TradingRecordTest {
         assertNull(emptyRecord.getLastExit());
         assertEquals(Trade.sellAt(3, ZonedDateTime.now(), NaN, NaN), openedRecord.getLastExit());
         assertEquals(Trade.sellAt(8, ZonedDateTime.now(), NaN, NaN), closedRecord.getLastExit());
+    }
+
+    @Test
+    public void getNetProfitIsZero() {
+        assertEquals(DoubleNum.valueOf(0), emptyRecord.getNetProfit());
+        assertEquals(DoubleNum.valueOf(0), openedRecord.getNetProfit());
+        assertEquals(DoubleNum.valueOf(0), closedRecord.getNetProfit());
+    }
+
+    @Test
+    public void getNetProfitIsNonZero() {
+        Trade buyOrder = Trade.buyAt(0, ZonedDateTime.now(), DoubleNum.valueOf(1), DoubleNum.valueOf(1));
+        Trade sellOrder = Trade.sellAt(1, ZonedDateTime.now(), DoubleNum.valueOf(2), DoubleNum.valueOf(1));
+
+        TradingRecord tradingRecord = new BaseTradingRecord(buyOrder, sellOrder);
+
+        assertEquals(DoubleNum.valueOf(1), tradingRecord.getNetProfit());
+    }
+
+    @Test
+    public void getNetProfitForSellEntry() {
+        TradingRecord tradingRecord = new BaseTradingRecord(Trade.TradeType.SELL, new FixedTransactionCostModel(0.025));
+        assertTrue(tradingRecord.enter(0, ZonedDateTime.now(), DoubleNum.valueOf(2), DoubleNum.valueOf(1)));
+        assertTrue(tradingRecord.exit(1, ZonedDateTime.now(), DoubleNum.valueOf(1), DoubleNum.valueOf(1)));
+
+        TestUtils.assertNumEquals(0.95, tradingRecord.getNetProfit());
+    }
+
+    @Test
+    public void getNetProfitForNumberOfMostRecentTrades() {
+        TradingRecord tradingRecord = new BaseTradingRecord(Trade.TradeType.BUY, new FixedTransactionCostModel(0.025));
+        assertTrue(tradingRecord.enter(0, ZonedDateTime.now(), DoubleNum.valueOf(1), DoubleNum.valueOf(1)));
+        assertTrue(tradingRecord.exit(1, ZonedDateTime.now(), DoubleNum.valueOf(2), DoubleNum.valueOf(1)));
+        assertTrue(tradingRecord.enter(2, ZonedDateTime.now(), DoubleNum.valueOf(1), DoubleNum.valueOf(1)));
+        assertTrue(tradingRecord.exit(3, ZonedDateTime.now(), DoubleNum.valueOf(3), DoubleNum.valueOf(1)));
+
+        TestUtils.assertNumEquals(1.95, tradingRecord.getNetProfit(1));
+    }
+
+    @Test
+    public void getNetProfitForNumberOfMostRecentTradesIsTheSameAsNotSpecifying() {
+        TradingRecord tradingRecord = new BaseTradingRecord(Trade.TradeType.BUY);
+        assertTrue(tradingRecord.enter(0, ZonedDateTime.now(), DoubleNum.valueOf(1), DoubleNum.valueOf(1)));
+        assertTrue(tradingRecord.exit(1, ZonedDateTime.now(), DoubleNum.valueOf(2), DoubleNum.valueOf(1)));
+        assertTrue(tradingRecord.enter(2, ZonedDateTime.now(), DoubleNum.valueOf(1), DoubleNum.valueOf(1)));
+        assertTrue(tradingRecord.exit(3, ZonedDateTime.now(), DoubleNum.valueOf(3), DoubleNum.valueOf(1)));
+
+        assertEquals(tradingRecord.getNetProfit(), tradingRecord.getNetProfit(2));
+    }
+
+    @Test
+    public void getNetProfitForNumberOfMostRecentTradesIsTheSameAsNotSpecifyingWhenNumberIsMoreThanCount() {
+        TradingRecord tradingRecord = new BaseTradingRecord(Trade.TradeType.BUY);
+        assertTrue(tradingRecord.enter(0, ZonedDateTime.now(), DoubleNum.valueOf(1), DoubleNum.valueOf(1)));
+        assertTrue(tradingRecord.exit(1, ZonedDateTime.now(), DoubleNum.valueOf(2), DoubleNum.valueOf(1)));
+        assertTrue(tradingRecord.enter(2, ZonedDateTime.now(), DoubleNum.valueOf(1), DoubleNum.valueOf(1)));
+        assertTrue(tradingRecord.exit(3, ZonedDateTime.now(), DoubleNum.valueOf(3), DoubleNum.valueOf(1)));
+
+        assertEquals(tradingRecord.getNetProfit(), tradingRecord.getNetProfit(5));
+    }
+
+    @Test
+    public void getPercentageProfitableTrades() {
+        TradingRecord tradingRecord = new BaseTradingRecord(Trade.TradeType.BUY);
+        tradingRecord.enter(0, ZonedDateTime.now(), DoubleNum.valueOf(1), DoubleNum.valueOf(1));
+        tradingRecord.exit(1, ZonedDateTime.now(), DoubleNum.valueOf(2), DoubleNum.valueOf(1));
+
+        tradingRecord.enter(2, ZonedDateTime.now(), DoubleNum.valueOf(1), DoubleNum.valueOf(1));
+        tradingRecord.exit(3, ZonedDateTime.now(), DoubleNum.valueOf(0), DoubleNum.valueOf(1));
+
+        tradingRecord.enter(4, ZonedDateTime.now(), DoubleNum.valueOf(1), DoubleNum.valueOf(1));
+        tradingRecord.exit(5, ZonedDateTime.now(), DoubleNum.valueOf(3), DoubleNum.valueOf(1));
+
+        tradingRecord.enter(6, ZonedDateTime.now(), DoubleNum.valueOf(1), DoubleNum.valueOf(1));
+        tradingRecord.exit(7, ZonedDateTime.now(), DoubleNum.valueOf(0.5), DoubleNum.valueOf(1));
+
+        TestUtils.assertNumEquals(0.5, tradingRecord.getPercentageProfitableTrades());
+    }
+
+    @Test
+    public void getPercentageProfitableTradesWhenOnlyTradeIsNotClosed() {
+        TradingRecord tradingRecord = new BaseTradingRecord(Trade.TradeType.BUY);
+        tradingRecord.enter(0, ZonedDateTime.now(), DoubleNum.valueOf(1), DoubleNum.valueOf(1));
+
+        assertEquals(DoubleNum.valueOf(0), tradingRecord.getPercentageProfitableTrades());
+    }
+
+    @Test
+    public void getPercentageProfitableTradesWhenNoTradesExist() {
+        TradingRecord tradingRecord = new BaseTradingRecord(Trade.TradeType.BUY);
+
+        assertEquals(DoubleNum.valueOf(0), tradingRecord.getPercentageProfitableTrades());
+    }
+
+    @Test
+    public void testCompareTo() {
+        // 25% profitable trades, 1.5 net profit, 4 trades
+        TradingRecord tradingRecord1 = new BaseTradingRecord(Trade.TradeType.BUY);
+        tradingRecord1.enter(0, ZonedDateTime.now(), DoubleNum.valueOf(1), DoubleNum.valueOf(1));
+        tradingRecord1.exit(1, ZonedDateTime.now(), DoubleNum.valueOf(4.5), DoubleNum.valueOf(1));
+
+        tradingRecord1.enter(2, ZonedDateTime.now(), DoubleNum.valueOf(1), DoubleNum.valueOf(1));
+        tradingRecord1.exit(3, ZonedDateTime.now(), DoubleNum.valueOf(0), DoubleNum.valueOf(1));
+
+        tradingRecord1.enter(4, ZonedDateTime.now(), DoubleNum.valueOf(1), DoubleNum.valueOf(1));
+        tradingRecord1.exit(5, ZonedDateTime.now(), DoubleNum.valueOf(0.5), DoubleNum.valueOf(1));
+
+        tradingRecord1.enter(6, ZonedDateTime.now(), DoubleNum.valueOf(1), DoubleNum.valueOf(1));
+        tradingRecord1.exit(7, ZonedDateTime.now(), DoubleNum.valueOf(0.5), DoubleNum.valueOf(1));
+
+        TestUtils.assertNumEquals(0.25, tradingRecord1.getPercentageProfitableTrades());
+        TestUtils.assertNumEquals(0.375, tradingRecord1.getPerformance());
+        TestUtils.assertNumEquals(1.5, tradingRecord1.getNetProfit());
+        assertEquals(4, tradingRecord1.getPositionCount());
+
+        // 50% profitable trades, 1.5 net profit, 2 trades
+        TradingRecord tradingRecord2 = new BaseTradingRecord(Trade.TradeType.BUY);
+        tradingRecord2.enter(0, ZonedDateTime.now(), DoubleNum.valueOf(1), DoubleNum.valueOf(1));
+        tradingRecord2.exit(1, ZonedDateTime.now(), DoubleNum.valueOf(4), DoubleNum.valueOf(1));
+
+        tradingRecord2.enter(2, ZonedDateTime.now(), DoubleNum.valueOf(2), DoubleNum.valueOf(1));
+        tradingRecord2.exit(3, ZonedDateTime.now(), DoubleNum.valueOf(0.5), DoubleNum.valueOf(1));
+
+        TestUtils.assertNumEquals(0.5, tradingRecord2.getPercentageProfitableTrades());
+        TestUtils.assertNumEquals(0.75, tradingRecord2.getPerformance());
+        TestUtils.assertNumEquals(1.5, tradingRecord2.getNetProfit());
+        assertEquals(2, tradingRecord2.getPositionCount());
+
+        // 100% profitable trades, 3.0 net profit, 2 trades
+        TradingRecord tradingRecord3 = new BaseTradingRecord(Trade.TradeType.SELL);
+        tradingRecord3.enter(0, ZonedDateTime.now(), DoubleNum.valueOf(3), DoubleNum.valueOf(1));
+        tradingRecord3.exit(1, ZonedDateTime.now(), DoubleNum.valueOf(1), DoubleNum.valueOf(1));
+
+        tradingRecord3.enter(2, ZonedDateTime.now(), DoubleNum.valueOf(2), DoubleNum.valueOf(1));
+        tradingRecord3.exit(3, ZonedDateTime.now(), DoubleNum.valueOf(1), DoubleNum.valueOf(1));
+
+        TestUtils.assertNumEquals(1, tradingRecord3.getPercentageProfitableTrades());
+        TestUtils.assertNumEquals(6, tradingRecord3.getPerformance());
+        TestUtils.assertNumEquals(3.0, tradingRecord3.getNetProfit());
+        assertEquals(2, tradingRecord3.getPositionCount());
+
+        assertEquals(-1, tradingRecord1.compareTo(tradingRecord2));
+        assertEquals(-1, tradingRecord1.compareTo(tradingRecord3));
+        assertEquals(1, tradingRecord3.compareTo(tradingRecord2));
     }
 }
