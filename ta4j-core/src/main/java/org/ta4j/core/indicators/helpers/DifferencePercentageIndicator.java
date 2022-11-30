@@ -35,7 +35,7 @@ import org.ta4j.core.num.Num;
  * reached.
  *
  * Or if you don't pass the threshold you will always just get the difference
- * percentage from the precious value.
+ * percentage from the previous value.
  *
  */
 public class DifferencePercentageIndicator extends CachedIndicator<Num> {

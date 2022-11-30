@@ -125,6 +125,15 @@ public abstract class CachedIndicator<T> extends AbstractIndicator<T> {
                 } else {
                     // Result covered by current cache
                     int resultInnerIndex = results.size() - 1 - (highestResultIndex - index);
+                    
+                    if (resultInnerIndex < 0) {
+                        log.warn("resultInnerIndex calculated from highestResultIndex {} is {} and is out of range of results cache limit {}. Setting resultInnerIndex to 0", highestResultIndex, resultInnerIndex, results.size());
+                        resultInnerIndex = 0;
+                    } else if (resultInnerIndex > results.size() - 1) {
+                        log.warn("resultInnerIndex calculated from highestResultIndex {} is {} and is out of range of results cache limit {}. Setting resultInnerIndex to {}", highestResultIndex, resultInnerIndex, results.size(), results.size() - 1);
+                        resultInnerIndex = results.size() - 1;
+                    }
+                    
                     result = results.get(resultInnerIndex);
                     if (result == null) {
                         result = calculate(index);
