@@ -36,6 +36,7 @@ import java.util.function.Function;
 import org.junit.Before;
 import org.junit.Test;
 import org.ta4j.core.indicators.AbstractIndicatorTest;
+import org.ta4j.core.num.DoubleNum;
 import org.ta4j.core.num.Num;
 
 public class BarTest extends AbstractIndicatorTest<BarSeries, Num> {
@@ -72,6 +73,32 @@ public class BarTest extends AbstractIndicatorTest<BarSeries, Num> {
         assertNumEquals(198, bar.getLowPrice());
         assertNumEquals(201, bar.getHighPrice());
         assertNumEquals(9, bar.getVolume());
+    }
+
+    @Test
+    public void addTrade() {
+        Num openPrice = DoubleNum.valueOf(10);
+        Num highPrice = DoubleNum.valueOf(15);
+        Num lowPrice = DoubleNum.valueOf(5);
+        Num closePrice = DoubleNum.valueOf(12);
+        Num volume = DoubleNum.valueOf(50);
+        Num amount = DoubleNum.valueOf(2);
+        long trades = 0;
+
+        Bar subject = new BaseBar(Duration.ofDays(1), ZonedDateTime.now(), openPrice, highPrice, lowPrice, closePrice, volume, amount, trades);
+
+        Num tradePricePerAsset = DoubleNum.valueOf(197);
+        Num tradeAmount = DoubleNum.valueOf(1);
+        Trade trade = new Trade(0, ZonedDateTime.now(), Trade.TradeType.BUY, tradePricePerAsset, tradeAmount);
+        subject.addTrade(trade);
+
+        assertEquals(1, subject.getTrades());
+        assertNumEquals(amount.plus(tradePricePerAsset), subject.getAmount());
+        assertNumEquals(openPrice, subject.getOpenPrice());
+        assertNumEquals(tradePricePerAsset, subject.getClosePrice());
+        assertNumEquals(lowPrice, subject.getLowPrice());
+        assertNumEquals(tradePricePerAsset, subject.getHighPrice());
+        assertNumEquals(volume.plus(tradeAmount), subject.getVolume());
     }
 
     @Test

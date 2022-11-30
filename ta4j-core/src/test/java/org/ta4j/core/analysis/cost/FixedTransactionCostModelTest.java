@@ -29,6 +29,7 @@ import static org.junit.Assert.assertTrue;
 import static org.ta4j.core.TestUtils.assertNumEquals;
 
 import java.util.Random;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 import org.ta4j.core.Position;
@@ -56,6 +57,7 @@ public class FixedTransactionCostModelTest {
         Num cost = model.calculate(position);
 
         assertNumEquals(cost, DoubleNum.valueOf(feePerTrade * positionTrades));
+        assertEquals(feePerTrade, model.getRawCostValue(), 0.00000000001);
     }
 
     @Test

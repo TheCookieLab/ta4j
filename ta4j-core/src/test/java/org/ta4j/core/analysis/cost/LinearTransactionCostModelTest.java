@@ -65,6 +65,7 @@ public class LinearTransactionCostModelTest {
         Num cost = transactionModel.calculate(price, amount);
 
         assertNumEquals(DoubleNum.valueOf(2), cost);
+        assertEquals(0.01, transactionModel.getRawCostValue(), 0.00000000001);
     }
 
     @Test

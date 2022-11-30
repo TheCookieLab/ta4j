@@ -28,6 +28,7 @@ import java.time.ZonedDateTime;
 import java.util.List;
 
 import org.ta4j.core.Trade.TradeType;
+import org.ta4j.core.analysis.cost.CostModel;
 import org.ta4j.core.num.DoubleNum;
 import static org.ta4j.core.num.NaN.NaN;
 import org.ta4j.core.num.Num;
@@ -139,6 +140,18 @@ public interface TradingRecord extends Serializable, Comparable<TradingRecord> {
      * @return the current (open) position
      */
     Position getCurrentPosition();
+
+    /***
+     * 
+     * @return the transaction cost model
+     */
+    CostModel getTransactionCostModel();
+
+    /***
+     * the holding cost model
+     * @return 
+     */
+    CostModel getHoldingCostModel();
 
     /**
      * @return the last closed position recorded

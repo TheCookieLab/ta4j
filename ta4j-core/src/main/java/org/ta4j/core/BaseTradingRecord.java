@@ -291,6 +291,16 @@ public class BaseTradingRecord implements TradingRecord {
         }
         return null;
     }
+    
+    @Override
+    public CostModel getTransactionCostModel() {
+        return transactionCostModel;
+    }
+    
+    @Override
+    public CostModel getHoldingCostModel() {
+        return holdingCostModel;
+    }
 
     /**
      * Records a trade and the corresponding position (if closed).

@@ -24,6 +24,7 @@
 package org.ta4j.core.analysis.cost;
 
 import java.time.ZonedDateTime;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.ta4j.core.TestUtils.assertNumEquals;
@@ -52,6 +53,7 @@ public class LinearBorrowingCostModelTest {
         Num cost = borrowingModel.calculate(price, amount);
 
         assertNumEquals(DoubleNum.valueOf(0), cost);
+        assertEquals(0.01, borrowingModel.getRawCostValue(), 0.00000000001);
     }
 
     @Test

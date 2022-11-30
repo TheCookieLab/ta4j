@@ -49,13 +49,24 @@ public class FixedTransactionCostModel implements CostModel {
     }
 
     /**
+     * *
+     *
+     * @return the underlying fee per trade raw value
+     */
+    @Override
+    public double getRawCostValue() {
+        return this.feePerTrade;
+    }
+
+    /**
      * Calculates the transaction cost of a position.
      *
-     * @param position     the position
+     * @param position the position
      * @param currentIndex current bar index (irrelevant for the
-     *                     FixedTransactionCostModel)
+     * FixedTransactionCostModel)
      * @return the absolute position cost
      */
+    @Override
     public Num calculate(Position position, int currentIndex) {
         Num pricePerAsset = position.getEntry().getPricePerAsset();
         Num multiplier = pricePerAsset.numOf(1);
@@ -71,17 +82,20 @@ public class FixedTransactionCostModel implements CostModel {
      * @param position the position
      * @return the absolute position cost
      */
+    @Override
     public Num calculate(Position position) {
         return this.calculate(position, 0);
     }
 
     /**
      * Calculates the transaction cost based on the price and the amount (both
-     * irrelevant for the FixedTransactionCostModel as the fee is always the same).
+     * irrelevant for the FixedTransactionCostModel as the fee is always the
+     * same).
      *
-     * @param price  the price per asset
+     * @param price the price per asset
      * @param amount number of traded assets
      */
+    @Override
     public Num calculate(Num price, Num amount) {
         return price.numOf(feePerTrade);
     }

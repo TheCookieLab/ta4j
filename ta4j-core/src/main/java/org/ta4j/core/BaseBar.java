@@ -238,7 +238,7 @@ public class BaseBar implements Bar {
         this(timePeriod, endTime, numFunction.apply(new BigDecimal(openPrice)),
                 numFunction.apply(new BigDecimal(highPrice)), numFunction.apply(new BigDecimal(lowPrice)),
                 numFunction.apply(new BigDecimal(closePrice)), numFunction.apply(new BigDecimal(volume)),
-                numFunction.apply(new BigDecimal(amount)), Integer.valueOf(trades));
+                numFunction.apply(new BigDecimal(amount)), Integer.parseInt(trades));
     }
 
     /**
@@ -298,6 +298,9 @@ public class BaseBar implements Bar {
     /**
      * Returns BaseBarBuilder
      * 
+     * @param <T>
+     * @param conversionFunction
+     * @param clazz
      * @return builder of class BaseBarBuilder
      */
     public static <T> ConvertibleBaseBarBuilder<T> builder(Function<T, Num> conversionFunction, Class<T> clazz) {
@@ -307,6 +310,7 @@ public class BaseBar implements Bar {
     /**
      * @return the open price of the period
      */
+    @Override
     public Num getOpenPrice() {
         return openPrice;
     }
@@ -314,6 +318,7 @@ public class BaseBar implements Bar {
     /**
      * @return the low price of the period
      */
+    @Override
     public Num getLowPrice() {
         return lowPrice;
     }
@@ -321,6 +326,7 @@ public class BaseBar implements Bar {
     /**
      * @return the high price of the period
      */
+    @Override
     public Num getHighPrice() {
         return highPrice;
     }
@@ -328,6 +334,7 @@ public class BaseBar implements Bar {
     /**
      * @return the close price of the period
      */
+    @Override
     public Num getClosePrice() {
         return closePrice;
     }
@@ -335,6 +342,7 @@ public class BaseBar implements Bar {
     /**
      * @return the whole traded volume in the period
      */
+    @Override
     public Num getVolume() {
         return volume;
     }
@@ -342,6 +350,7 @@ public class BaseBar implements Bar {
     /**
      * @return the number of trades in the period
      */
+    @Override
     public long getTrades() {
         return trades;
     }
@@ -349,6 +358,7 @@ public class BaseBar implements Bar {
     /**
      * @return the whole traded amount (tradePrice x tradeVolume) of the period
      */
+    @Override
     public Num getAmount() {
         return amount;
     }
@@ -356,6 +366,7 @@ public class BaseBar implements Bar {
     /**
      * @return the time period of the bar
      */
+    @Override
     public Duration getTimePeriod() {
         return timePeriod;
     }
@@ -363,6 +374,7 @@ public class BaseBar implements Bar {
     /**
      * @return the begin timestamp of the bar period
      */
+    @Override
     public ZonedDateTime getBeginTime() {
         return beginTime;
     }
@@ -370,6 +382,7 @@ public class BaseBar implements Bar {
     /**
      * @return the end timestamp of the bar period
      */
+    @Override
     public ZonedDateTime getEndTime() {
         return endTime;
     }
@@ -380,11 +393,25 @@ public class BaseBar implements Bar {
      * @param tradeVolume the traded volume
      * @param tradePrice  the price
      */
+    @Override
     public void addTrade(Num tradeVolume, Num tradePrice) {
         addPrice(tradePrice);
 
         volume = volume.plus(tradeVolume);
         amount = amount.plus(tradeVolume.multipliedBy(tradePrice));
+        trades++;
+    }
+    
+    /***
+     * 
+     * @param trade 
+     */
+    @Override
+    public void addTrade(Trade trade) {
+        addPrice(trade.getPricePerAsset());
+        
+        volume = volume.plus(trade.getAmount());
+        amount = amount.plus(trade.getValue());
         trades++;
     }
 

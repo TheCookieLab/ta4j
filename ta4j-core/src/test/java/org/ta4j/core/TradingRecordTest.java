@@ -34,7 +34,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.ta4j.core.analysis.cost.FixedTransactionCostModel;
 import org.ta4j.core.num.DoubleNum;
-import org.ta4j.core.num.Num;
 
 public class TradingRecordTest {
 
@@ -159,31 +158,36 @@ public class TradingRecordTest {
 
     @Test
     public void getNetProfitForSellEntry() {
-        TradingRecord tradingRecord = new BaseTradingRecord(Trade.TradeType.SELL, new FixedTransactionCostModel(0.025));
+        double transactionCost = 0.025;
+        TradingRecord tradingRecord = new BaseTradingRecord(Trade.TradeType.SELL, new FixedTransactionCostModel(transactionCost));
         assertTrue(tradingRecord.enter(0, ZonedDateTime.now(), DoubleNum.valueOf(2), DoubleNum.valueOf(1)));
         assertTrue(tradingRecord.exit(1, ZonedDateTime.now(), DoubleNum.valueOf(1), DoubleNum.valueOf(1)));
+        assertEquals(transactionCost, tradingRecord.getTransactionCostModel().getRawCostValue(), 0.000001);
 
         TestUtils.assertNumEquals(0.95, tradingRecord.getNetProfit());
     }
 
     @Test
     public void getNetProfitForNumberOfMostRecentTrades() {
-        TradingRecord tradingRecord = new BaseTradingRecord(Trade.TradeType.BUY, new FixedTransactionCostModel(0.025));
+        double transactionCost = 0.025;
+        TradingRecord tradingRecord = new BaseTradingRecord(Trade.TradeType.BUY, new FixedTransactionCostModel(transactionCost));
         assertTrue(tradingRecord.enter(0, ZonedDateTime.now(), DoubleNum.valueOf(1), DoubleNum.valueOf(1)));
         assertTrue(tradingRecord.exit(1, ZonedDateTime.now(), DoubleNum.valueOf(2), DoubleNum.valueOf(1)));
         assertTrue(tradingRecord.enter(2, ZonedDateTime.now(), DoubleNum.valueOf(1), DoubleNum.valueOf(1)));
         assertTrue(tradingRecord.exit(3, ZonedDateTime.now(), DoubleNum.valueOf(3), DoubleNum.valueOf(1)));
+        assertEquals(transactionCost, tradingRecord.getTransactionCostModel().getRawCostValue(), 0.000001);
 
         TestUtils.assertNumEquals(1.95, tradingRecord.getNetProfit(1));
     }
 
     @Test
-    public void getNetProfitForNumberOfMostRecentTradesIsTheSameAsNotSpecifying() {
+    public void getNetProfitForNumberOfMostRecentTradesIsTheSameAsNotSpecifying() {        
         TradingRecord tradingRecord = new BaseTradingRecord(Trade.TradeType.BUY);
         assertTrue(tradingRecord.enter(0, ZonedDateTime.now(), DoubleNum.valueOf(1), DoubleNum.valueOf(1)));
         assertTrue(tradingRecord.exit(1, ZonedDateTime.now(), DoubleNum.valueOf(2), DoubleNum.valueOf(1)));
         assertTrue(tradingRecord.enter(2, ZonedDateTime.now(), DoubleNum.valueOf(1), DoubleNum.valueOf(1)));
         assertTrue(tradingRecord.exit(3, ZonedDateTime.now(), DoubleNum.valueOf(3), DoubleNum.valueOf(1)));
+        assertEquals(0, tradingRecord.getTransactionCostModel().getRawCostValue(), 0.000001);
 
         assertEquals(tradingRecord.getNetProfit(), tradingRecord.getNetProfit(2));
     }
@@ -195,6 +199,8 @@ public class TradingRecordTest {
         assertTrue(tradingRecord.exit(1, ZonedDateTime.now(), DoubleNum.valueOf(2), DoubleNum.valueOf(1)));
         assertTrue(tradingRecord.enter(2, ZonedDateTime.now(), DoubleNum.valueOf(1), DoubleNum.valueOf(1)));
         assertTrue(tradingRecord.exit(3, ZonedDateTime.now(), DoubleNum.valueOf(3), DoubleNum.valueOf(1)));
+        assertEquals(0, tradingRecord.getTransactionCostModel().getRawCostValue(), 0.000001);
+        assertEquals(0, tradingRecord.getHoldingCostModel().getRawCostValue(), 0.000001);
 
         assertEquals(tradingRecord.getNetProfit(), tradingRecord.getNetProfit(5));
     }

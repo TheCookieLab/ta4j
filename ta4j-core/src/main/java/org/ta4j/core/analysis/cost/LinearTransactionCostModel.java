@@ -33,36 +33,48 @@ public class LinearTransactionCostModel implements CostModel {
     /**
      * Slope of the linear model - fee per position
      */
-    private double feePerPosition;
+    private final double feePerPosition;
 
     /**
      * Constructor. (feePerPosition * x)
-     * 
-     * @param feePerPosition the feePerPosition coefficient (e.g. 0.005 for 0.5% per
-     *                       {@link Trade trade})
+     *
+     * @param feePerPosition the feePerPosition coefficient (e.g. 0.005 for 0.5%
+     * per {@link Trade trade})
      */
     public LinearTransactionCostModel(double feePerPosition) {
         this.feePerPosition = feePerPosition;
     }
 
     /**
+     * *
+     *
+     * @return the underlying fee per position raw value
+     */
+    @Override
+    public double getRawCostValue() {
+        return this.feePerPosition;
+    }
+
+    /**
      * Calculates the transaction cost of a position.
-     * 
-     * @param position     the position
+     *
+     * @param position the position
      * @param currentIndex current bar index (irrelevant for the
-     *                     LinearTransactionCostModel)
+     * LinearTransactionCostModel)
      * @return the absolute trade cost
      */
+    @Override
     public Num calculate(Position position, int currentIndex) {
         return this.calculate(position);
     }
 
     /**
      * Calculates the transaction cost of a position.
-     * 
+     *
      * @param position the position
      * @return the absolute trade cost
      */
+    @Override
     public Num calculate(Position position) {
         Num totalPositionCost = null;
         Trade entryTrade = position.getEntry();
@@ -77,17 +89,18 @@ public class LinearTransactionCostModel implements CostModel {
     }
 
     /**
-     * @param price  execution price
+     * @param price execution price
      * @param amount trade amount
      * @return the absolute trade transaction cost
      */
+    @Override
     public Num calculate(Num price, Num amount) {
         return amount.numOf(feePerPosition).multipliedBy(price).multipliedBy(amount);
     }
 
     /**
      * Evaluate if two models are equal
-     * 
+     *
      * @param otherModel model to compare with
      */
     public boolean equals(CostModel otherModel) {

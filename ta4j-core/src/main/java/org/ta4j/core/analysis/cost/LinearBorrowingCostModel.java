@@ -33,17 +33,28 @@ public class LinearBorrowingCostModel implements CostModel {
     /**
      * Slope of the linear model - fee per period
      */
-    private double feePerPeriod;
+    private final double feePerPeriod;
 
     /**
      * Constructor. (feePerPeriod * nPeriod)
-     * 
+     *
      * @param feePerPeriod the coefficient (e.g. 0.0001 for 1bp per period)
      */
     public LinearBorrowingCostModel(double feePerPeriod) {
         this.feePerPeriod = feePerPeriod;
     }
 
+    /**
+     * *
+     *
+     * @return the underlying fee per period raw value
+     */
+    @Override
+    public double getRawCostValue() {
+        return this.feePerPeriod;
+    }
+
+    @Override
     public Num calculate(Num price, Num amount) {
         // borrowing costs depend on borrowed period
         return price.numOf(0);
@@ -51,10 +62,11 @@ public class LinearBorrowingCostModel implements CostModel {
 
     /**
      * Calculates the borrowing cost of a closed position.
-     * 
+     *
      * @param position the position
      * @return the absolute trade cost
      */
+    @Override
     public Num calculate(Position position) {
         if (position.isOpened()) {
             throw new IllegalArgumentException(
@@ -65,11 +77,12 @@ public class LinearBorrowingCostModel implements CostModel {
 
     /**
      * Calculates the borrowing cost of a position.
-     * 
-     * @param position     the position
+     *
+     * @param position the position
      * @param currentIndex final bar index to be considered (for open positions)
      * @return the absolute trade cost
      */
+    @Override
     public Num calculate(Position position, int currentIndex) {
         Trade entryTrade = position.getEntry();
         Trade exitTrade = position.getExit();
@@ -90,7 +103,7 @@ public class LinearBorrowingCostModel implements CostModel {
 
     /**
      * @param tradingPeriods number of periods
-     * @param tradedValue    value of the trade initial trade position
+     * @param tradedValue value of the trade initial trade position
      * @return the absolute borrowing cost
      */
     private Num getHoldingCostForPeriods(int tradingPeriods, Num tradedValue) {
@@ -100,7 +113,7 @@ public class LinearBorrowingCostModel implements CostModel {
 
     /**
      * Evaluate if two models are equal
-     * 
+     *
      * @param otherModel model to compare with
      */
     public boolean equals(CostModel otherModel) {
