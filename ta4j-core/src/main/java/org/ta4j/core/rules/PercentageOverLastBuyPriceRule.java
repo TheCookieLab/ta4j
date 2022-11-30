@@ -13,12 +13,15 @@ public class PercentageOverLastBuyPriceRule extends AbstractRule {
     /**
      * The first indicator
      */
-    private Indicator<Num> first;
+    public final Indicator<Num> first;
 
-    private Num percentage;
+    public final Num percentage;
 
     /**
-     * Constructor.
+     * Constructor. Satisfied when the difference between the indicator value at
+     * index i and the last trading record entry's price per asset is greater
+     * (as a percentage) than the given percentage threshold
+     *
      *
      * @param first the first indicator
      * @param percentage 10% is expressed as 0.1

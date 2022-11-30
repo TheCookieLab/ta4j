@@ -15,20 +15,22 @@ public class PercentageUnderRule extends AbstractRule {
     /**
      * The first indicator
      */
-    private Indicator<Num> first;
+    public final Indicator<Num> first;
     /**
      * The second indicator
      */
-    private Indicator<Num> second;
+    public final Indicator<Num> second;
 
-    private Num percentage;
+    public final Num percentage;
 
     /**
-     * Constructor.
+     * Constructor. Satisfied when the difference between the first and second
+     * indicators is greater (as a percentage) than the provided percentage
+     * threshold
      *
      * @param first the first indicator
      * @param second the second indicator
-     * @param percentage
+     * @param percentage the difference between the first and second indicators as a percentage tested if less than than this value
      */
     public PercentageUnderRule(Indicator<Num> first, Indicator<Num> second, Num percentage) {
         this.first = first;
@@ -40,6 +42,11 @@ public class PercentageUnderRule extends AbstractRule {
     public boolean isSatisfied(int index, TradingRecord tradingRecord) {
         final boolean satisfied = (first.getValue(index).minus(second.getValue(index)).dividedBy(first.getValue(index))).isLessThan(percentage);
         return satisfied;
+    }
+
+    @Override
+    public boolean isSatisfied(int index) {
+        return isSatisfied(index, null);
     }
 
 }

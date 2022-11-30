@@ -8,8 +8,8 @@ import org.ta4j.core.TradingRecord;
  */
 public class ModulusIndexRule extends AbstractRule {
 
-    private int modulus;
-    private boolean satisfied;
+    private final boolean satisfied;
+    private final int modulus;
 
     /**
      * Constructor.
@@ -20,8 +20,8 @@ public class ModulusIndexRule extends AbstractRule {
      * never satisfied
      */
     public ModulusIndexRule(int modulus, boolean satisfied) {
-        this.modulus = modulus;
         this.satisfied = satisfied;
+        this.modulus = modulus;
     }
 
     @Override
