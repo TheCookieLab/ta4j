@@ -106,7 +106,7 @@ public class TrailingStopLossRule extends AbstractRule {
         currentStopLossLimitActivation = highestCloseNum.multipliedBy(lossRatioThreshold);
         return currentPrice.isLessThanOrEqual(currentStopLossLimitActivation);
     }
-
+        
     public Num getCurrentStopLossLimitActivation() {
         return currentStopLossLimitActivation;
     }

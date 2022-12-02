@@ -36,6 +36,7 @@ public class FixedDecimalIndicator extends FixedIndicator<Num> {
     /**
      * Constructor.
      * 
+     * @param series
      * @param values the values to be returned by this indicator
      */
     public FixedDecimalIndicator(BarSeries series, double... values) {
@@ -48,6 +49,7 @@ public class FixedDecimalIndicator extends FixedIndicator<Num> {
     /**
      * Constructor.
      * 
+     * @param series
      * @param values the values to be returned by this indicator
      */
     public FixedDecimalIndicator(BarSeries series, String... values) {

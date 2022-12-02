@@ -23,6 +23,7 @@
  */
 package org.ta4j.core.num;
 
+import java.math.RoundingMode;
 import java.util.function.Function;
 
 /**
@@ -233,6 +234,16 @@ public class NaN implements Num {
 
     @Override
     public Num max(Num other) {
+        return this;
+    }
+    
+    @Override
+    public Num round(int precision) {
+        return this;
+    }
+    
+    @Override
+    public Num round(int precision, RoundingMode roundingMode) {
         return this;
     }
 

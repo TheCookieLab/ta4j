@@ -42,6 +42,7 @@ public class FixedIndicator<T> extends AbstractIndicator<T> {
     /**
      * Constructor.
      * 
+     * @param series
      * @param values the values to be returned by this indicator
      */
     @SafeVarargs

@@ -51,16 +51,17 @@ public class StopGainRuleTest extends AbstractIndicatorTest<BarSeries, Num> {
     @Before
     public void setUp() {
         closePrice = new ClosePriceIndicator(
-                new MockBarSeries(numFunction, 100, 105, 110, 120, 150, 120, 160, 180, 170, 135, 104));
+                new MockBarSeries(numFunction, 100, 105, 110, 120, 140.4, 120, 160, 180, 170, 135, 104));
     }
 
     @Test
     public void isSatisfiedWorksForBuy() {
         final TradingRecord tradingRecord = new BaseTradingRecord(Trade.TradeType.BUY);
         final Num tradedAmount = numOf(1);
+        final Num stopGainPercentage = numOf(30);
 
         // 30% stop-gain
-        StopGainRule rule = new StopGainRule(closePrice, numOf(30));
+        StopGainRule rule = new StopGainRule(closePrice, stopGainPercentage);
 
         assertFalse(rule.isSatisfied(0, null));
         assertFalse(rule.isSatisfied(1, tradingRecord));
@@ -85,7 +86,7 @@ public class StopGainRuleTest extends AbstractIndicatorTest<BarSeries, Num> {
         final TradingRecord tradingRecord = new BaseTradingRecord(Trade.TradeType.SELL);
         final Num tradedAmount = numOf(1);
 
-        // 30% stop-gain
+        // 10% stop-gain
         StopGainRule rule = new StopGainRule(closePrice, numOf(10));
 
         assertFalse(rule.isSatisfied(0, null));

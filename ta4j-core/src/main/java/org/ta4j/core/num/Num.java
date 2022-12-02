@@ -31,12 +31,12 @@ import java.util.function.Function;
 /**
  * Ta4js definition of operations that must be fulfilled by an object that
  * should be used as base for calculations
- * 
+ *
  * @see Num
  * @see Num#function()
  * @see DoubleNum
  * @see DecimalNum
- * 
+ *
  */
 public interface Num extends Comparable<Num> {
 
@@ -68,14 +68,14 @@ public interface Num extends Comparable<Num> {
 
     /**
      * Returns the name/description of this Num implementation
-     * 
+     *
      * @return the name/description
      */
     String getName();
 
     /**
      * Returns a {@code num} whose value is {@code (this + augend)},
-     * 
+     *
      * @param augend value to be added to this {@code num}.
      * @return {@code this + augend}, rounded as necessary
      */
@@ -83,7 +83,7 @@ public interface Num extends Comparable<Num> {
 
     /**
      * Returns a {@code num} whose value is {@code (this - augend)},
-     * 
+     *
      * @param subtrahend value to be subtracted from this {@code num}.
      * @return {@code this - subtrahend}, rounded as necessary
      */
@@ -91,7 +91,7 @@ public interface Num extends Comparable<Num> {
 
     /**
      * Returns a {@code num} whose value is {@code this * multiplicand},
-     * 
+     *
      * @param multiplicand value to be multiplied by this {@code num}.
      * @return {@code this * multiplicand}, rounded as necessary
      */
@@ -99,7 +99,7 @@ public interface Num extends Comparable<Num> {
 
     /**
      * Returns a {@code num} whose value is {@code (this / divisor)},
-     * 
+     *
      * @param divisor value by which this {@code num} is to be divided.
      * @return {@code this / divisor}, rounded as necessary
      */
@@ -107,7 +107,7 @@ public interface Num extends Comparable<Num> {
 
     /**
      * Returns a {@code num} whose value is {@code (this % divisor)},
-     * 
+     *
      * @param divisor value by which this {@code num} is to be divided.
      * @return {@code this % divisor}, rounded as necessary.
      */
@@ -122,15 +122,16 @@ public interface Num extends Comparable<Num> {
     Num floor();
 
     /**
-     * Returns a {@code Num} whose value is rounded up to the nearest whole number.
-     * 
+     * Returns a {@code Num} whose value is rounded up to the nearest whole
+     * number.
+     *
      * @return <code>this</code> to whole Num rounded up
      */
     Num ceil();
 
     /**
      * Returns a {@code num} whose value is <code>(this<sup>n</sup>)</code>.
-     * 
+     *
      * @param n power to raise this {@code num} to.
      * @return <code>this<sup>n</sup></code>
      */
@@ -138,7 +139,7 @@ public interface Num extends Comparable<Num> {
 
     /**
      * Returns a {@code num} whose value is <code>(this<sup>n</sup>)</code>.
-     * 
+     *
      * @param n power to raise this {@code num} to.
      * @return <code>this<sup>n</sup></code>
      */
@@ -146,29 +147,30 @@ public interface Num extends Comparable<Num> {
 
     /**
      * Returns a {@code num} whose value is <code>ln(this)</code>.
-     * 
+     *
      * @return <code>this<sup>n</sup></code>
      */
     Num log();
 
     /**
      * Returns a {@code num} whose value is <code>√(this)</code>.
-     * 
+     *
      * @return <code>this<sup>n</sup></code>
      */
     Num sqrt();
 
     /**
      * Returns a {@code num} whose value is <code>√(this)</code>.
-     * 
+     *
      * @param precision to calculate.
      * @return <code>this<sup>n</sup></code>
      */
     Num sqrt(int precision);
 
     /**
-     * Returns a {@code num} whose value is the absolute value of this {@code num}.
-     * 
+     * Returns a {@code num} whose value is the absolute value of this
+     * {@code num}.
+     *
      * @return {@code abs(this)}
      */
     Num abs();
@@ -176,49 +178,49 @@ public interface Num extends Comparable<Num> {
     /**
      * Returns a {@code num} whose value is (-this), and whose scale is
      * this.scale().
-     * 
+     *
      * @return {@code negate(this)}
      */
     Num negate();
 
     /**
      * Checks if the value is zero.
-     * 
+     *
      * @return true if the value is zero, false otherwise
      */
     boolean isZero();
 
     /**
      * Checks if the value is greater than zero.
-     * 
+     *
      * @return true if the value is greater than zero, false otherwise
      */
     boolean isPositive();
 
     /**
      * Checks if the value is zero or greater.
-     * 
+     *
      * @return true if the value is zero or greater, false otherwise
      */
     boolean isPositiveOrZero();
 
     /**
      * Checks if the value is less than zero.
-     * 
+     *
      * @return true if the value is less than zero, false otherwise
      */
     boolean isNegative();
 
     /**
      * Checks if the value is zero or less.
-     * 
+     *
      * @return true if the value is zero or less, false otherwise
      */
     boolean isNegativeOrZero();
 
     /**
      * Checks if this value is equal to another.
-     * 
+     *
      * @param other the other value, not null
      * @return true if this is greater than the specified value, false otherwise
      */
@@ -226,7 +228,7 @@ public interface Num extends Comparable<Num> {
 
     /**
      * Checks if this value is greater than another.
-     * 
+     *
      * @param other the other value, not null
      * @return true if this is greater than the specified value, false otherwise
      */
@@ -234,16 +236,16 @@ public interface Num extends Comparable<Num> {
 
     /**
      * Checks if this value is greater than or equal to another.
-     * 
+     *
      * @param other the other value, not null
-     * @return true if this is greater than or equal to the specified value, false
-     *         otherwise
+     * @return true if this is greater than or equal to the specified value,
+     * false otherwise
      */
     boolean isGreaterThanOrEqual(Num other);
 
     /**
      * Checks if this value is less than another.
-     * 
+     *
      * @param other the other value, not null
      * @return true if this is less than the specified value, false otherwise
      */
@@ -251,44 +253,64 @@ public interface Num extends Comparable<Num> {
 
     /**
      * Checks if this value is less than another.
-     * 
+     *
      * @param other the other value, not null
      * @return true if this is less than or equal the specified value, false
-     *         otherwise
+     * otherwise
      */
     boolean isLessThanOrEqual(Num other);
 
     /**
      * Returns the minimum of this {@code num} and {@code other}.
-     * 
+     *
      * @param other value with which the minimum is to be computed
      * @return the {@code num} whose value is the lesser of this {@code num} and
-     *         {@code other}. If they are equal, method, {@code this} is returned.
+     * {@code other}. If they are equal, method, {@code this} is returned.
      */
     Num min(Num other);
 
     /**
      * Returns the maximum of this {@code num} and {@code other}.
-     * 
+     *
      * @param other value with which the maximum is to be computed
-     * @return the {@code num} whose value is the greater of this {@code num} and
-     *         {@code other}. If they are equal, method, {@code this} is returned.
+     * @return the {@code num} whose value is the greater of this {@code num}
+     * and {@code other}. If they are equal, method, {@code this} is returned.
      */
     Num max(Num other);
 
     /**
+     * *
+     * Returns this value rounded (half-even) to the specified decimal places
+     *
+     * @param scale
+     * @return
+     */
+    Num round(int scale);
+
+    /**
+     * *
+     * Returns this value rounded by the rounding mode of choice to the
+     * specified decimal places
+     *
+     * @param scale
+     * @param roundingMode
+     * @return
+     */
+    Num round(int scale, RoundingMode roundingMode);
+
+    /**
      * Returns the {@link Function} to convert a number instance into the
      * corresponding Num instance
-     * 
-     * @return function which converts a number instance into the corresponding Num
-     *         instance
+     *
+     * @return function which converts a number instance into the corresponding
+     * Num instance
      */
     Function<Number, Num> function();
 
     /**
-     * Transforms a {@link Number} into a new Num instance of this <code>Num</code>
-     * implementation
-     * 
+     * Transforms a {@link Number} into a new Num instance of this
+     * <code>Num</code> implementation
+     *
      * @param value the Number to transform
      * @return the corresponding Num implementation of the <code>value</code>
      */
@@ -297,10 +319,10 @@ public interface Num extends Comparable<Num> {
     }
 
     /**
-     * Transforms a {@link String} into a new Num instance of this with a precision
-     * <code>Num</code> implementation
-     * 
-     * @param value     the String to transform
+     * Transforms a {@link String} into a new Num instance of this with a
+     * precision <code>Num</code> implementation
+     *
+     * @param value the String to transform
      * @param precision the precision
      * @return the corresponding Num implementation of the <code>value</code>
      */
@@ -311,7 +333,7 @@ public interface Num extends Comparable<Num> {
 
     /**
      * Only for NaN this should be true
-     * 
+     *
      * @return false if this implementation is not NaN
      */
     default boolean isNaN() {
@@ -320,7 +342,7 @@ public interface Num extends Comparable<Num> {
 
     /**
      * Converts this {@code num} to a {@code double}.
-     * 
+     *
      * @return this {@code num} converted to a {@code double}
      */
     default double doubleValue() {

@@ -733,6 +733,16 @@ public final class DecimalNum implements Num {
     public Num max(Num other) {
         return other.isNaN() ? NaN : (compareTo(other) >= 0 ? this : other);
     }
+    
+    @Override
+    public Num round(int scale) {
+        return this.round(scale, RoundingMode.HALF_EVEN);
+    }
+    
+    @Override
+    public Num round(int scale, RoundingMode roundingMode) {
+        return DecimalNum.valueOf(delegate.setScale(scale, roundingMode));
+    }
 
     @Override
     public int hashCode() {

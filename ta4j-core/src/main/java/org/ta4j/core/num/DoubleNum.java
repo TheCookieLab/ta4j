@@ -23,6 +23,8 @@
  */
 package org.ta4j.core.num;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import static org.ta4j.core.num.NaN.NaN;
 
 import java.util.function.Function;
@@ -253,6 +255,25 @@ public class DoubleNum implements Num {
     @Override
     public Num max(Num other) {
         return other.isNaN() ? NaN : new DoubleNum(Math.max(delegate, ((DoubleNum) other).delegate));
+    }
+    
+    @Override
+    public Num round(int scale) {
+        return round(scale, RoundingMode.HALF_EVEN);
+    }
+    
+    @Override
+    public Num round(int scale, RoundingMode roundingMode) {
+        StringBuilder sb = new StringBuilder("#.");
+        
+        for (int i = 0; i < scale; i++) {
+            sb.append("#");
+        }
+        
+        DecimalFormat decimalFormat = new DecimalFormat(sb.toString());
+        decimalFormat.setRoundingMode(roundingMode);
+        
+        return DoubleNum.valueOf(decimalFormat.format(delegate));
     }
 
     @Override

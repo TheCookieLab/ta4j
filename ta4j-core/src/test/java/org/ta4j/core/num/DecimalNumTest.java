@@ -30,6 +30,7 @@ import static org.ta4j.core.TestUtils.assertIndicatorNotEquals;
 import static org.ta4j.core.TestUtils.assertNumEquals;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -308,6 +309,20 @@ public class DecimalNumTest {
         final DecimalNum decimalNum = DecimalNum.valueOf(3.0);
 
         assertFalse(decimalNum.equals(doubleNum));
+    }
+    
+    @Test
+    public void testRoundingWithDefaultRoundingMode() {
+        DecimalNum subject = DecimalNum.valueOf(3.123456);
+        
+        assertEquals(DecimalNum.valueOf(3.12346), subject.round(5));
+    }
+    
+    @Test
+    public void testRoundingWithCustomRoundingMode() {
+        DecimalNum subject = DecimalNum.valueOf(3.123456);
+        
+        assertEquals(DecimalNum.valueOf(3.12), subject.round(2, RoundingMode.FLOOR));
     }
 
 }

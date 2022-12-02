@@ -37,6 +37,7 @@ public interface ReportGenerator<T> {
     /**
      * Generate report
      *
+     * @param strategy
      * @param tradingRecord the trading record which is a source to generate report,
      *                      not null
      * @param series        the bar series, not null
