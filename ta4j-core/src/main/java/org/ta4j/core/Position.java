@@ -230,6 +230,14 @@ public class Position implements Serializable {
     public boolean isNew() {
         return (entry == null) && (exit == null);
     }
+    
+    /***
+     * 
+     * @return 
+     */
+    public boolean isPaperPosition() {
+        return startingType == TradeType.PAPER_BUY || startingType == TradeType.PAPER_SELL;
+    }
 
     /**
      * @return true if position is closed and {@link #getProfit()} > 0

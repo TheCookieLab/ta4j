@@ -403,7 +403,7 @@ public class BaseBar implements Bar {
     }
     
     /***
-     * 
+     * Adds a trade at the end of bar period.
      * @param trade 
      */
     @Override

@@ -332,6 +332,12 @@ public interface BarSeries extends Serializable {
      * @param tradePrice  the price
      */
     void addTrade(Num tradeVolume, Num tradePrice);
+    
+    /***
+     * Adds a trade at the end of bar period.
+     * @param trade 
+     */
+    void addTrade(Trade trade);
 
     /**
      * Adds a price to the last bar

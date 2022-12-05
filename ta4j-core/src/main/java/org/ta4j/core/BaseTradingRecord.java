@@ -152,10 +152,10 @@ public class BaseTradingRecord implements TradingRecord {
 
     /***
      * Constructor
-     * @param transactionCost 
+     * @param linearTransactionCost 
      */
-    public BaseTradingRecord(Double transactionCost) {
-        this(new LinearTransactionCostModel(transactionCost));
+    public BaseTradingRecord(Double linearTransactionCost) {
+        this(new LinearTransactionCostModel(linearTransactionCost));
     }
 
     /**

@@ -543,6 +543,11 @@ public class BaseBarSeries implements BarSeries {
     public void addTrade(Num tradeVolume, Num tradePrice) {
         getLastBar().addTrade(tradeVolume, tradePrice);
     }
+    
+    @Override
+    public void addTrade(Trade trade) {
+        getLastBar().addTrade(trade);
+    }
 
     @Override
     public void addPrice(Num price) {

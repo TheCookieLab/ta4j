@@ -141,15 +141,18 @@ public interface TradingRecord extends Serializable, Comparable<TradingRecord> {
      */
     Position getCurrentPosition();
 
-    /***
-     * 
+    /**
+     * *
+     *
      * @return the transaction cost model
      */
     CostModel getTransactionCostModel();
 
-    /***
+    /**
+     * *
      * the holding cost model
-     * @return 
+     *
+     * @return
      */
     CostModel getHoldingCostModel();
 
@@ -199,11 +202,11 @@ public interface TradingRecord extends Serializable, Comparable<TradingRecord> {
      * *
      * Cumulative profit across the most recent n trades
      *
-     * @param ofLastNPositions
+     * @param ofMostRecentNPositions
      * @return
      */
-    default Num getNetProfit(int ofLastNPositions) {
-        int startingIndex = this.getPositionCount() > ofLastNPositions ? this.getPositionCount() - ofLastNPositions : 0;
+    default Num getNetProfit(int ofMostRecentNPositions) {
+        int startingIndex = this.getPositionCount() > ofMostRecentNPositions ? this.getPositionCount() - ofMostRecentNPositions : 0;
         List<Position> mostRecentPositions = this.getPositions().subList(startingIndex, this.getPositionCount());
         return this.getNetProfit(mostRecentPositions);
     }
@@ -227,29 +230,49 @@ public interface TradingRecord extends Serializable, Comparable<TradingRecord> {
 
     /**
      * *
-     * The percentage of trades that have net profit > 0
      *
+     * @param ofMostRecentNPositions
      * @return
      */
-    default Num getPercentageProfitableTrades() {
-        if (this.getPositions().isEmpty()) {
+    default Num getPercentageProfitableTrades(int ofMostRecentNPositions) {
+        int startingIndex = this.getPositionCount() > ofMostRecentNPositions ? this.getPositionCount() - ofMostRecentNPositions : 0;
+        List<Position> mostRecentPositions = this.getPositions().subList(startingIndex, this.getPositionCount());
+        return this.getPercentageProfitableTrades(mostRecentPositions);
+    }
+
+    /***
+     * 
+     * @param positions
+     * @return 
+     */
+    default Num getPercentageProfitableTrades(List<Position> positions) {
+        if (positions.isEmpty()) {
             return DoubleNum.valueOf(0);
         }
 
         int profitableTradeCount = 0;
 
-        for (Position trade : this.getPositions()) {
+        for (Position trade : positions) {
             if (trade.getProfit().isPositive()) {
                 profitableTradeCount++;
             }
         }
 
-        return DoubleNum.valueOf(profitableTradeCount).dividedBy(DoubleNum.valueOf(this.getPositionCount()));
+        return DoubleNum.valueOf(profitableTradeCount).dividedBy(DoubleNum.valueOf(positions.size()));
+    }
+
+    /**
+     * *
+     * The percentage of trades that have net profit > 0
+     *
+     * @return
+     */
+    default Num getPercentageProfitableTrades() {
+        return this.getPercentageProfitableTrades(this.getPositions());
     }
 
     default Num getPerformance() {
-        return ((this.getPercentageProfitableTrades().pow(2)).multipliedBy(DoubleNum.valueOf(this.getPositionCount())))
-                .multipliedBy(this.getNetProfit());
+        return this.getPercentageProfitableTrades(5).multipliedBy(this.getNetProfit(10));
     }
 
     @Override

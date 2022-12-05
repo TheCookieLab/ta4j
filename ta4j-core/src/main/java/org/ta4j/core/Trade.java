@@ -66,6 +66,18 @@ public class Trade implements Serializable {
             public TradeType complementType() {
                 return BUY;
             }
+        },
+        PAPER_SELL {
+            @Override
+            public TradeType complementType() {
+                return PAPER_BUY;
+            }
+        },
+        PAPER_BUY {
+            @Override
+            public TradeType complementType() {
+                return PAPER_SELL;
+            }
         };
 
         /**
