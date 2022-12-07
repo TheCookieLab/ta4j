@@ -281,7 +281,7 @@ public class TradingRecordTest {
         tradingRecord3.exit(3, ZonedDateTime.now(), DoubleNum.valueOf(1), DoubleNum.valueOf(1));
 
         TestUtils.assertNumEquals(1, tradingRecord3.getPercentageProfitableTrades());
-        TestUtils.assertNumEquals(6, tradingRecord3.getPerformance());
+        TestUtils.assertNumEquals(3, tradingRecord3.getPerformance());
         TestUtils.assertNumEquals(3.0, tradingRecord3.getNetProfit());
         assertEquals(2, tradingRecord3.getPositionCount());
 

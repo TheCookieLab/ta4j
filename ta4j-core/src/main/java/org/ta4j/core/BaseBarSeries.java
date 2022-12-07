@@ -216,6 +216,19 @@ public class BaseBarSeries implements BarSeries {
                 ).collect(Collectors.toList()));
     }
 
+    /***
+     * 
+     * @param name
+     * @param baseCurrency
+     * @param counterCurrency
+     * @param closePrices 
+     */
+    public BaseBarSeries(String name, String baseCurrency, String counterCurrency, Integer... closePrices) {
+        this(name, baseCurrency, counterCurrency, Arrays.asList(closePrices).stream()
+                .map(closePrice -> new BaseBar(Duration.ZERO, ZonedDateTime.now(), NaN, NaN, NaN, DoubleNum.valueOf(closePrice), NaN, NaN)
+                ).collect(Collectors.toList()));
+    }
+
     /**
      * Constructor.
      *
@@ -543,7 +556,7 @@ public class BaseBarSeries implements BarSeries {
     public void addTrade(Num tradeVolume, Num tradePrice) {
         getLastBar().addTrade(tradeVolume, tradePrice);
     }
-    
+
     @Override
     public void addTrade(Trade trade) {
         getLastBar().addTrade(trade);
