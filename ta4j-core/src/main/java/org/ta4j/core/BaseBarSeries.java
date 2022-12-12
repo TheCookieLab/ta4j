@@ -128,6 +128,14 @@ public class BaseBarSeries implements BarSeries {
     public BaseBarSeries(List<Bar> bars) {
         this(UNNAMED_SERIES_NAME, UNKNOWN_CURRENCY, UNKNOWN_CURRENCY, bars);
     }
+    
+    /***
+     * Constructor of an unnamed series.
+     * @param bars 
+     */
+    public BaseBarSeries(Bar... bars) {
+        this(Arrays.asList(bars));
+    }
 
     /**
      * Constructor.
