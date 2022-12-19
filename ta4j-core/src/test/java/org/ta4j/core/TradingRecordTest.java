@@ -255,7 +255,7 @@ public class TradingRecordTest {
         tradingRecord1.exit(7, ZonedDateTime.now(), DoubleNum.valueOf(0.5), DoubleNum.valueOf(1));
 
         TestUtils.assertNumEquals(0.25, tradingRecord1.getPercentageProfitableTrades());
-        TestUtils.assertNumEquals(0.375, tradingRecord1.getPerformance());
+        TestUtils.assertNumEquals(1.5, tradingRecord1.getPerformance());
         TestUtils.assertNumEquals(1.5, tradingRecord1.getNetProfit());
         assertEquals(4, tradingRecord1.getPositionCount());
 
@@ -268,7 +268,7 @@ public class TradingRecordTest {
         tradingRecord2.exit(3, ZonedDateTime.now(), DoubleNum.valueOf(0.5), DoubleNum.valueOf(1));
 
         TestUtils.assertNumEquals(0.5, tradingRecord2.getPercentageProfitableTrades());
-        TestUtils.assertNumEquals(0.75, tradingRecord2.getPerformance());
+        TestUtils.assertNumEquals(1.5, tradingRecord2.getPerformance());
         TestUtils.assertNumEquals(1.5, tradingRecord2.getNetProfit());
         assertEquals(2, tradingRecord2.getPositionCount());
 
@@ -281,11 +281,11 @@ public class TradingRecordTest {
         tradingRecord3.exit(3, ZonedDateTime.now(), DoubleNum.valueOf(1), DoubleNum.valueOf(1));
 
         TestUtils.assertNumEquals(1, tradingRecord3.getPercentageProfitableTrades());
-        TestUtils.assertNumEquals(3, tradingRecord3.getPerformance());
+        TestUtils.assertNumEquals(6, tradingRecord3.getPerformance());
         TestUtils.assertNumEquals(3.0, tradingRecord3.getNetProfit());
         assertEquals(2, tradingRecord3.getPositionCount());
 
-        assertEquals(-1, tradingRecord1.compareTo(tradingRecord2));
+        assertEquals(0, tradingRecord1.compareTo(tradingRecord2));
         assertEquals(-1, tradingRecord1.compareTo(tradingRecord3));
         assertEquals(1, tradingRecord3.compareTo(tradingRecord2));
     }

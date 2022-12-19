@@ -272,7 +272,7 @@ public interface TradingRecord extends Serializable, Comparable<TradingRecord> {
     }
 
     default Num getPerformance() {
-        return this.getPercentageProfitableTrades(5).multipliedBy(this.getNetProfit(10));
+        return this.getPercentageProfitableTrades().multipliedBy(this.getNetProfit().multipliedBy(DoubleNum.valueOf(this.getPositionCount())));
     }
 
     @Override
