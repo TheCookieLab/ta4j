@@ -23,9 +23,9 @@
  */
 package org.ta4j.core.rules;
 
+import org.ta4j.core.Indicator;
 import org.ta4j.core.Position;
 import org.ta4j.core.TradingRecord;
-import org.ta4j.core.indicators.helpers.ClosePriceIndicator;
 import org.ta4j.core.num.Num;
 
 /**
@@ -43,7 +43,7 @@ public class StopLossRule extends AbstractRule {
     /**
      * The close price indicator
      */
-    private final ClosePriceIndicator closePrice;
+    private final Indicator<Num> signalPrice;
 
     /**
      * The loss percentage
@@ -53,23 +53,23 @@ public class StopLossRule extends AbstractRule {
     /**
      * Constructor.
      *
-     * @param closePrice     the close price indicator
+     * @param signalPrice     the close price indicator
      * @param lossPercentage the loss percentage
      */
-    public StopLossRule(ClosePriceIndicator closePrice, Number lossPercentage) {
-        this(closePrice, closePrice.numOf(lossPercentage));
+    public StopLossRule(Indicator signalPrice, Number lossPercentage) {
+        this(signalPrice, signalPrice.numOf(lossPercentage));
     }
 
     /**
      * Constructor.
      *
-     * @param closePrice     the close price indicator
+     * @param signalPrice     the close price indicator
      * @param lossPercentage the loss percentage
      */
-    public StopLossRule(ClosePriceIndicator closePrice, Num lossPercentage) {
-        this.closePrice = closePrice;
+    public StopLossRule(Indicator signalPrice, Num lossPercentage) {
+        this.signalPrice = signalPrice;
         this.lossPercentage = lossPercentage;
-        this.HUNDRED = closePrice.numOf(100);
+        this.HUNDRED = signalPrice.numOf(100);
     }
 
     /** This rule uses the {@code tradingRecord}. */
@@ -82,7 +82,7 @@ public class StopLossRule extends AbstractRule {
             if (currentPosition.isOpened()) {
 
                 Num entryPrice = currentPosition.getEntry().getNetPrice();
-                Num currentPrice = closePrice.getValue(index);
+                Num currentPrice = signalPrice.getValue(index);
 
                 if (currentPosition.getEntry().isBuy()) {
                     satisfied = isBuyStopSatisfied(entryPrice, currentPrice);

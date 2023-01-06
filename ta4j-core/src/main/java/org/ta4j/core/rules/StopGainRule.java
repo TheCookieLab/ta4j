@@ -23,9 +23,9 @@
  */
 package org.ta4j.core.rules;
 
+import org.ta4j.core.Indicator;
 import org.ta4j.core.Position;
 import org.ta4j.core.TradingRecord;
-import org.ta4j.core.indicators.helpers.ClosePriceIndicator;
 import org.ta4j.core.num.Num;
 
 /**
@@ -41,9 +41,9 @@ public class StopGainRule extends AbstractRule {
     private final Num HUNDRED;
 
     /**
-     * The close price indicator
+     * The signal price indicator (typically ClosePriceIndicator)
      */
-    private final ClosePriceIndicator closePrice;
+    private final Indicator<Num> signalPrice;
 
     /**
      * The gain percentage
@@ -53,26 +53,28 @@ public class StopGainRule extends AbstractRule {
     /**
      * Constructor.
      *
-     * @param closePrice     the close price indicator
+     * @param signalPrice the close price indicator
      * @param gainPercentage the gain percentage
      */
-    public StopGainRule(ClosePriceIndicator closePrice, Number gainPercentage) {
-        this(closePrice, closePrice.numOf(gainPercentage));
+    public StopGainRule(Indicator<Num> signalPrice, Number gainPercentage) {
+        this(signalPrice, signalPrice.numOf(gainPercentage));
     }
 
     /**
      * Constructor.
      *
-     * @param closePrice     the close price indicator
+     * @param signalPrice the close price indicator
      * @param gainPercentage the gain percentage
      */
-    public StopGainRule(ClosePriceIndicator closePrice, Num gainPercentage) {
-        this.closePrice = closePrice;
+    public StopGainRule(Indicator<Num> signalPrice, Num gainPercentage) {
+        this.signalPrice = signalPrice;
         this.gainPercentage = gainPercentage;
-        HUNDRED = closePrice.numOf(100);
+        HUNDRED = signalPrice.numOf(100);
     }
 
-    /** This rule uses the {@code tradingRecord}. */
+    /**
+     * This rule uses the {@code tradingRecord}.
+     */
     @Override
     public boolean isSatisfied(int index, TradingRecord tradingRecord) {
         boolean satisfied = false;
@@ -82,7 +84,7 @@ public class StopGainRule extends AbstractRule {
             if (currentPosition.isOpened()) {
 
                 Num entryPrice = currentPosition.getEntry().getNetPrice();
-                Num currentPrice = closePrice.getValue(index);
+                Num currentPrice = signalPrice.getValue(index);
 
                 if (currentPosition.getEntry().isBuy()) {
                     satisfied = isBuyGainSatisfied(entryPrice, currentPrice);
