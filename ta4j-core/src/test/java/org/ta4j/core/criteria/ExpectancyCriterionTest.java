@@ -23,7 +23,6 @@
  */
 package org.ta4j.core.criteria;
 
-import java.time.ZonedDateTime;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.ta4j.core.TestUtils.assertNumEquals;
@@ -36,8 +35,6 @@ import org.ta4j.core.BaseTradingRecord;
 import org.ta4j.core.Trade;
 import org.ta4j.core.TradingRecord;
 import org.ta4j.core.mocks.MockBarSeries;
-import org.ta4j.core.num.DecimalNum;
-import org.ta4j.core.num.DoubleNum;
 import org.ta4j.core.num.Num;
 
 public class ExpectancyCriterionTest extends AbstractCriterionTest {
@@ -67,7 +64,7 @@ public class ExpectancyCriterionTest extends AbstractCriterionTest {
     }
 
     @Test
-    public void calculateWith30PercentWinRateFor5REach() {
+    public void calculateWith30PercentWinRateFor5REachAnd70PercentLoseRateFor1REach() {
         MockBarSeries series = new MockBarSeries(numFunction, 1, 6, 1, 6, 1, 6, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1);
         TradingRecord tradingRecord = new BaseTradingRecord(Trade.buyAt(0, series), Trade.sellAt(1, series),
                 Trade.buyAt(2, series), Trade.sellAt(3, series),
