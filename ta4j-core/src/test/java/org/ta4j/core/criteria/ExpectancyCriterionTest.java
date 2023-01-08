@@ -23,6 +23,7 @@
  */
 package org.ta4j.core.criteria;
 
+import java.time.ZonedDateTime;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.ta4j.core.TestUtils.assertNumEquals;
@@ -35,6 +36,8 @@ import org.ta4j.core.BaseTradingRecord;
 import org.ta4j.core.Trade;
 import org.ta4j.core.TradingRecord;
 import org.ta4j.core.mocks.MockBarSeries;
+import org.ta4j.core.num.DecimalNum;
+import org.ta4j.core.num.DoubleNum;
 import org.ta4j.core.num.Num;
 
 public class ExpectancyCriterionTest extends AbstractCriterionTest {
@@ -49,8 +52,8 @@ public class ExpectancyCriterionTest extends AbstractCriterionTest {
         TradingRecord tradingRecord = new BaseTradingRecord(Trade.buyAt(0, series), Trade.sellAt(2, series),
                 Trade.buyAt(3, series), Trade.sellAt(5, series));
 
-        AnalysisCriterion avgLoss = getCriterion();
-        assertNumEquals(1.0, avgLoss.calculate(series, tradingRecord));
+        AnalysisCriterion expectancy = getCriterion();
+        assertNumEquals(1.0, expectancy.calculate(series, tradingRecord));
     }
 
     @Test
@@ -59,18 +62,36 @@ public class ExpectancyCriterionTest extends AbstractCriterionTest {
         TradingRecord tradingRecord = new BaseTradingRecord(Trade.buyAt(0, series), Trade.sellAt(2, series),
                 Trade.buyAt(3, series), Trade.sellAt(5, series));
 
-        AnalysisCriterion avgLoss = getCriterion();
-        assertNumEquals(0.25, avgLoss.calculate(series, tradingRecord));
+        AnalysisCriterion expectancy = getCriterion();
+        assertNumEquals(0.25, expectancy.calculate(series, tradingRecord));
     }
-    
+
+    @Test
+    public void calculateWith30PercentWinRateFor5REach() {
+        MockBarSeries series = new MockBarSeries(numFunction, 1, 6, 1, 6, 1, 6, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1);
+        TradingRecord tradingRecord = new BaseTradingRecord(Trade.buyAt(0, series), Trade.sellAt(1, series),
+                Trade.buyAt(2, series), Trade.sellAt(3, series),
+                Trade.buyAt(4, series), Trade.sellAt(5, series),
+                Trade.buyAt(6, series), Trade.sellAt(7, series),
+                Trade.buyAt(8, series), Trade.sellAt(9, series),
+                Trade.buyAt(10, series), Trade.sellAt(11, series),
+                Trade.buyAt(12, series), Trade.sellAt(13, series),
+                Trade.buyAt(14, series), Trade.sellAt(15, series),
+                Trade.buyAt(16, series), Trade.sellAt(17, series),
+                Trade.buyAt(18, series), Trade.sellAt(19, series));
+
+        AnalysisCriterion expectancy = getCriterion();
+        assertNumEquals(0.8, expectancy.calculate(series, tradingRecord));
+    }
+
     @Test
     public void calculateOnlyWithLossPositions() {
         MockBarSeries series = new MockBarSeries(numFunction, 100, 95, 80, 70, 60, 50);
         TradingRecord tradingRecord = new BaseTradingRecord(Trade.buyAt(0, series), Trade.sellAt(1, series),
                 Trade.buyAt(2, series), Trade.sellAt(5, series));
 
-        AnalysisCriterion avgLoss = getCriterion();
-        assertNumEquals(0, avgLoss.calculate(series, tradingRecord));
+        AnalysisCriterion expectancy = getCriterion();
+        assertNumEquals(0, expectancy.calculate(series, tradingRecord));
     }
 
     @Test
@@ -79,8 +100,8 @@ public class ExpectancyCriterionTest extends AbstractCriterionTest {
         TradingRecord tradingRecord = new BaseTradingRecord(Trade.sellAt(0, series), Trade.buyAt(1, series),
                 Trade.sellAt(2, series), Trade.buyAt(5, series));
 
-        AnalysisCriterion avgLoss = getCriterion();
-        assertNumEquals(1.0, avgLoss.calculate(series, tradingRecord));
+        AnalysisCriterion expectancy = getCriterion();
+        assertNumEquals(1.0, expectancy.calculate(series, tradingRecord));
     }
 
     @Test
@@ -89,8 +110,8 @@ public class ExpectancyCriterionTest extends AbstractCriterionTest {
         TradingRecord tradingRecord = new BaseTradingRecord(Trade.sellAt(0, series), Trade.buyAt(1, series),
                 Trade.sellAt(2, series), Trade.buyAt(5, series));
 
-        AnalysisCriterion avgLoss = getCriterion();
-        assertNumEquals(0.25, avgLoss.calculate(series, tradingRecord));
+        AnalysisCriterion expectancy = getCriterion();
+        assertNumEquals(0.25, expectancy.calculate(series, tradingRecord));
     }
 
     @Test
