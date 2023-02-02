@@ -31,14 +31,9 @@ import org.ta4j.core.num.Num;
 /**
  * A stop-loss rule.
  *
- * Satisfied when the close price reaches the loss threshold.
+ * Satisfied when the position loss reaches the specified amount.
  */
-public class StopLossRule extends AbstractRule {
-
-    /**
-     * Constant value for 100
-     */
-    private final Num HUNDRED;
+public class DollarStopLossRule extends AbstractRule {
 
     /**
      * The close price indicator
@@ -46,33 +41,34 @@ public class StopLossRule extends AbstractRule {
     private final Indicator<Num> signalPrice;
 
     /**
-     * The loss percentage
+     * The loss value in absolute terms
      */
-    private Num lossPercentage;
+    private final Num lossValue;
 
     /**
      * Constructor.
      *
-     * @param signalPrice     the close price indicator
-     * @param lossPercentage the loss percentage
+     * @param signalPrice the close price indicator
+     * @param lossValue the loss percentage
      */
-    public StopLossRule(Indicator<Num> signalPrice, Number lossPercentage) {
-        this(signalPrice, signalPrice.numOf(lossPercentage));
+    public DollarStopLossRule(Indicator<Num> signalPrice, Number lossValue) {
+        this(signalPrice, signalPrice.numOf(lossValue));
     }
 
     /**
      * Constructor.
      *
-     * @param signalPrice     the close price indicator
-     * @param lossPercentage the loss percentage
+     * @param signalPrice the close price indicator
+     * @param lossValue the loss percentage
      */
-    public StopLossRule(Indicator<Num> signalPrice, Num lossPercentage) {
+    public DollarStopLossRule(Indicator<Num> signalPrice, Num lossValue) {
         this.signalPrice = signalPrice;
-        this.lossPercentage = lossPercentage;
-        this.HUNDRED = signalPrice.numOf(100);
+        this.lossValue = lossValue;
     }
 
-    /** This rule uses the {@code tradingRecord}. */
+    /**
+     * This rule uses the {@code tradingRecord}.
+     */
     @Override
     public boolean isSatisfied(int index, TradingRecord tradingRecord) {
         boolean satisfied = false;
@@ -96,22 +92,14 @@ public class StopLossRule extends AbstractRule {
     }
 
     private boolean isBuyStopSatisfied(Num entryPrice, Num currentPrice) {
-        Num lossRatioThreshold = HUNDRED.minus(lossPercentage).dividedBy(HUNDRED);
-        Num threshold = entryPrice.multipliedBy(lossRatioThreshold);
-        
-        if (log.isDebugEnabled()) {
-            log.debug("Long stop loss threshold at {}", threshold);
-        }
-        return currentPrice.isLessThanOrEqual(threshold);
+        Num currentLoss = entryPrice.minus(currentPrice);
+
+        return currentLoss.isPositive() && currentLoss.isGreaterThanOrEqual(lossValue);
     }
 
     private boolean isSellStopSatisfied(Num entryPrice, Num currentPrice) {
-        Num lossRatioThreshold = HUNDRED.plus(lossPercentage).dividedBy(HUNDRED);
-        Num threshold = entryPrice.multipliedBy(lossRatioThreshold);
-        
-        if (log.isDebugEnabled()) {
-            log.debug("Short stop loss threshold at {}", threshold);
-        }
-        return currentPrice.isGreaterThanOrEqual(threshold);
+        Num currentLoss = currentPrice.minus(entryPrice);
+
+        return currentLoss.isPositive() && currentLoss.isGreaterThanOrEqual(lossValue);
     }
 }

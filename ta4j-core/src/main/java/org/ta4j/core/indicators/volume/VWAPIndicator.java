@@ -57,7 +57,7 @@ public class VWAPIndicator extends CachedIndicator<Num> {
      */
     public VWAPIndicator(BarSeries series, int barCount) {
         super(series);
-        this.barCount = barCount;
+        this.barCount = Math.max(barCount, 1);
         this.typicalPrice = new TypicalPriceIndicator(series);
         this.volume = new VolumeIndicator(series);
         this.zero = numOf(0);

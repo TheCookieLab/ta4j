@@ -42,10 +42,14 @@ public class TrailingStopLossRule extends AbstractRule {
      */
     private final Indicator<Num> priceIndicator;
 
-    /** The barCount */
+    /**
+     * The barCount
+     */
     private final int barCount;
 
-    /** the loss-distance as percentage */
+    /**
+     * the loss-distance as percentage
+     */
     private final Num lossPercentage;
 
     /**
@@ -55,10 +59,10 @@ public class TrailingStopLossRule extends AbstractRule {
 
     /**
      * Constructor.
-     * 
-     * @param indicator      the (close price) indicator
+     *
+     * @param indicator the (close price) indicator
      * @param lossPercentage the loss percentage
-     * @param barCount       number of bars to look back for the calculation
+     * @param barCount number of bars to look back for the calculation
      */
     public TrailingStopLossRule(Indicator<Num> indicator, Num lossPercentage, int barCount) {
         this.priceIndicator = indicator;
@@ -68,15 +72,17 @@ public class TrailingStopLossRule extends AbstractRule {
 
     /**
      * Constructor.
-     * 
-     * @param indicator      the (close price) indicator
+     *
+     * @param indicator the (close price) indicator
      * @param lossPercentage the loss percentage
      */
     public TrailingStopLossRule(Indicator<Num> indicator, Num lossPercentage) {
         this(indicator, lossPercentage, Integer.MAX_VALUE);
     }
 
-    /** This rule uses the {@code tradingRecord}. */
+    /**
+     * This rule uses the {@code tradingRecord}.
+     */
     @Override
     public boolean isSatisfied(int index, TradingRecord tradingRecord) {
         boolean satisfied = false;
@@ -94,6 +100,10 @@ public class TrailingStopLossRule extends AbstractRule {
                 }
             }
         }
+        
+        if (log.isDebugEnabled()) {
+            log.debug("Current stop loss limit activation: {}", currentStopLossLimitActivation);
+        }
         traceIsSatisfied(index, satisfied);
         return satisfied;
     }
@@ -106,7 +116,7 @@ public class TrailingStopLossRule extends AbstractRule {
         currentStopLossLimitActivation = highestCloseNum.multipliedBy(lossRatioThreshold);
         return currentPrice.isLessThanOrEqual(currentStopLossLimitActivation);
     }
-        
+
     public Num getCurrentStopLossLimitActivation() {
         return currentStopLossLimitActivation;
     }
