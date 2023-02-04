@@ -75,8 +75,12 @@ public interface BarSeries extends Serializable {
      * @return 
      */
     default String getCurrencyPair() {
-        return getBaseCurrency() + "_" + getCounterCurrency();
+        return this.getCurrencyPair("_");
     }
+    
+    default String getCurrencyPair(String separator) {
+        return getBaseCurrency() + separator + getCounterCurrency();
+    }  
 
     /**
      * @param i an index
