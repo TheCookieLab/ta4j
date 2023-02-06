@@ -23,7 +23,6 @@
  */
 package org.ta4j.core.criteria;
 
-import java.util.Objects;
 import org.ta4j.core.BarSeries;
 import org.ta4j.core.Position;
 import org.ta4j.core.TradingRecord;
@@ -45,9 +44,7 @@ public class NumberOfWinningPositionsCriterion extends AbstractAnalysisCriterion
     }
 
     @Override
-    public Num calculate(BarSeries series, TradingRecord tradingRecord, int mostRecentPositions) {
-        Objects.checkIndex(mostRecentPositions, tradingRecord.getPositionCount() + 1);
-        
+    public Num calculate(BarSeries series, TradingRecord tradingRecord, int mostRecentPositions) {        
         long numberOfWinningPositions = tradingRecord.getPositions().stream()
                 .skip(Math.max(0, tradingRecord.getPositionCount() - mostRecentPositions))
                 .filter(Position::hasProfit).count();
