@@ -48,7 +48,7 @@ public class ProfitLossRatioCriterion extends AbstractAnalysisCriterion {
         Num averageLoss = averageLossCriterion.calculate(series, position);
         if (averageLoss.isZero()) {
             // only winning positions means a ratio of 1 (infinite)
-            return averageProfit;
+            return series.numOf(1);
         }
         return averageProfit.dividedBy(averageLoss).abs();
     }

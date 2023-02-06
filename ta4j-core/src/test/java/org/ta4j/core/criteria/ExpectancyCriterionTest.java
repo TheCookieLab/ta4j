@@ -81,17 +81,17 @@ public class ExpectancyCriterionTest extends AbstractCriterionTest {
         assertNumEquals(0.8, expectancy.calculate(series, tradingRecord));
     }
 
-//    @Test
-//    public void calculateWithMultipleBreakEvenPositions() {
-//        MockBarSeries series = new MockBarSeries(numFunction, 1, 1, 1, 1, 1, 1, 1, 5);
-//        TradingRecord tradingRecord = new BaseTradingRecord(Trade.buyAt(0, series), Trade.sellAt(1, series),
-//                Trade.buyAt(2, series), Trade.sellAt(3, series),
-//                Trade.buyAt(4, series), Trade.sellAt(5, series),
-//                Trade.buyAt(6, series), Trade.sellAt(7, series));
-//
-//        AnalysisCriterion expectancy = getCriterion();
-//        assertNumEquals(0.8, expectancy.calculate(series, tradingRecord));
-//    }
+    @Test
+    public void calculateWithMultipleBreakEvenPositions() {
+        MockBarSeries series = new MockBarSeries(numFunction, 1, 1, 1, 1, 1, 1, 1, 5);
+        TradingRecord tradingRecord = new BaseTradingRecord(Trade.buyAt(0, series), Trade.sellAt(1, series),
+                Trade.buyAt(2, series), Trade.sellAt(3, series),
+                Trade.buyAt(4, series), Trade.sellAt(5, series),
+                Trade.buyAt(6, series), Trade.sellAt(7, series));
+
+        AnalysisCriterion expectancy = getCriterion();
+        assertNumEquals(1, expectancy.calculate(series, tradingRecord));
+    }
 
     @Test
     public void calculateOnlyWithLossPositions() {

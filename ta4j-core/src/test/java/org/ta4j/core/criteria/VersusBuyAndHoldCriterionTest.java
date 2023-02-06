@@ -39,6 +39,7 @@ import org.ta4j.core.Trade;
 import org.ta4j.core.TradingRecord;
 import org.ta4j.core.criteria.pnl.GrossReturnCriterion;
 import org.ta4j.core.mocks.MockBarSeries;
+import org.ta4j.core.num.DoubleNum;
 import org.ta4j.core.num.Num;
 
 public class VersusBuyAndHoldCriterionTest extends AbstractCriterionTest {
@@ -74,6 +75,19 @@ public class VersusBuyAndHoldCriterionTest extends AbstractCriterionTest {
 
         AnalysisCriterion buyAndHold = getCriterion(new GrossReturnCriterion());
         assertNumEquals((100d / 70) / (100d / 95), buyAndHold.calculate(series, position));
+    }
+
+    @Test
+    public void calculateWithMostRecentOnePosition() {
+        MockBarSeries series = new MockBarSeries(numFunction, 100, 50, 90, 110);
+        TradingRecord tradingRecord = new BaseTradingRecord();
+        tradingRecord.enter(0, ZonedDateTime.now(), numOf(100), numOf(1));
+        tradingRecord.exit(1, ZonedDateTime.now(), numOf(50), numOf(1));
+        tradingRecord.enter(2, ZonedDateTime.now(), numOf(50), numOf(1));
+        tradingRecord.exit(3, ZonedDateTime.now(), numOf(110), numOf(1));
+
+        AnalysisCriterion buyAndHold = getCriterion(new GrossReturnCriterion());
+        assertNumEquals((110d / 50) / (110d / 90), buyAndHold.calculate(series, tradingRecord, 1));
     }
 
     @Test
