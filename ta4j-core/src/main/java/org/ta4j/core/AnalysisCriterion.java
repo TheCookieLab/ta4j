@@ -60,6 +60,15 @@ public interface AnalysisCriterion {
      * @return the criterion value for the positions
      */
     Num calculate(BarSeries series, TradingRecord tradingRecord);
+    
+    /***
+     * Should verify actual implementation as by default it's passthrough to the original function and mostRecentPositions is unused
+     * @param series  a bar series, not null
+     * @param tradingRecord a trading record, not null
+     * @param mostRecentPositions only run analysis calculation on most recent N positions
+     * @return 
+     */
+    Num calculate(BarSeries series, TradingRecord tradingRecord, int mostRecentPositions);
 
     /**
      * @param manager    the bar series manager with entry type of BUY

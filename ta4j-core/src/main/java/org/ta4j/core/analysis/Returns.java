@@ -84,7 +84,7 @@ public class Returns implements Indicator<Num> {
      * Constructor.
      *
      * @param barSeries the bar series
-     * @param position  a single position
+     * @param position a single position
      */
     public Returns(BarSeries barSeries, Position position, ReturnType type) {
         one = barSeries.numOf(1);
@@ -100,16 +100,29 @@ public class Returns implements Indicator<Num> {
     /**
      * Constructor.
      *
-     * @param barSeries     the bar series
+     * @param barSeries the bar series
      * @param tradingRecord the trading record
+     * @param type
      */
     public Returns(BarSeries barSeries, TradingRecord tradingRecord, ReturnType type) {
+        this(barSeries, tradingRecord, type, Integer.MAX_VALUE);
+    }
+
+    /**
+     * *
+     *
+     * @param barSeries
+     * @param tradingRecord
+     * @param type
+     * @param mostRecentPositions
+     */
+    public Returns(BarSeries barSeries, TradingRecord tradingRecord, ReturnType type, int mostRecentPositions) {
         one = barSeries.numOf(1);
         this.barSeries = barSeries;
         this.type = type;
         // at index 0, there is no return
         values = new ArrayList<>(Collections.singletonList(NaN.NaN));
-        calculate(tradingRecord);
+        calculate(tradingRecord, mostRecentPositions);
 
         fillToTheEnd();
     }
@@ -149,11 +162,12 @@ public class Returns implements Indicator<Num> {
     }
 
     /**
-     * Calculates the cash flow for a single position (including accrued cashflow
-     * for open positions).
+     * Calculates the cash flow for a single position (including accrued
+     * cashflow for open positions).
      *
-     * @param position   a single position
-     * @param finalIndex index up until cash flow of open positions is considered
+     * @param position a single position
+     * @param finalIndex index up until cash flow of open positions is
+     * considered
      */
     public void calculate(Position position, int finalIndex) {
         boolean isLongTrade = position.getEntry().isBuy();
@@ -211,9 +225,9 @@ public class Returns implements Indicator<Num> {
      *
      * @param tradingRecord the trading record
      */
-    private void calculate(TradingRecord tradingRecord) {
+    private void calculate(TradingRecord tradingRecord, int mostRecentPositions) {
         // For each position...
-        tradingRecord.getPositions().forEach(this::calculate);
+        tradingRecord.getPositions().subList(Math.max(0, tradingRecord.getPositionCount() - mostRecentPositions), tradingRecord.getPositionCount()).forEach(this::calculate);
     }
 
     /**

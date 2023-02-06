@@ -129,6 +129,15 @@ public interface TradingRecord extends Serializable, Comparable<TradingRecord> {
      */
     List<Position> getPositions();
 
+    /***
+     * 
+     * @param mostRecentPositions
+     * @return the most recent recorded closed positions 
+     */
+    default List<Position> getPositions(int mostRecentPositions) {
+        return this.getPositions().subList(Math.max(0, this.getPositionCount() - mostRecentPositions), this.getPositionCount());
+    }
+
     /**
      * @return the number of recorded closed positions
      */
@@ -240,10 +249,11 @@ public interface TradingRecord extends Serializable, Comparable<TradingRecord> {
         return this.getPercentageProfitableTrades(mostRecentPositions);
     }
 
-    /***
-     * 
+    /**
+     * *
+     *
      * @param positions
-     * @return 
+     * @return
      */
     default Num getPercentageProfitableTrades(List<Position> positions) {
         if (positions.isEmpty()) {
@@ -271,14 +281,8 @@ public interface TradingRecord extends Serializable, Comparable<TradingRecord> {
         return this.getPercentageProfitableTrades(this.getPositions());
     }
 
-    default Num getPerformance() {
-        return this.getPercentageProfitableTrades()
-                .multipliedBy(this.getNetProfit())
-                .multipliedBy(DoubleNum.valueOf(this.getPositionCount()));
-    }
-
     @Override
     default int compareTo(TradingRecord o) {
-        return this.getPerformance().compareTo(o.getPerformance());
+        return this.getNetProfit().compareTo(o.getNetProfit());
     }
 }

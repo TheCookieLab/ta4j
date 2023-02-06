@@ -40,9 +40,15 @@ public class NumberOfBreakEvenPositionsCriterion extends AbstractAnalysisCriteri
 
     @Override
     public Num calculate(BarSeries series, TradingRecord tradingRecord) {
+        return this.calculate(series, tradingRecord, tradingRecord.getPositionCount());
+    }
+
+    @Override
+    public Num calculate(BarSeries series, TradingRecord tradingRecord, int mostRecentPositions) {
         long numberOfBreakEvenTrades = tradingRecord.getPositions()
                 .stream()
                 .filter(Position::isClosed)
+                .skip(Math.max(0, tradingRecord.getPositions().stream().filter(Position::isClosed).count() - mostRecentPositions))
                 .filter(this::isBreakEvenPosition)
                 .count();
         return series.numOf(numberOfBreakEvenTrades);
@@ -55,7 +61,9 @@ public class NumberOfBreakEvenPositionsCriterion extends AbstractAnalysisCriteri
         return false;
     }
 
-    /** The lower the criterion value, the better. */
+    /**
+     * The lower the criterion value, the better.
+     */
     @Override
     public boolean betterThan(Num criterionValue1, Num criterionValue2) {
         return criterionValue1.isLessThan(criterionValue2);

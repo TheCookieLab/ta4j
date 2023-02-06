@@ -67,7 +67,12 @@ public class ExpectedShortfallCriterion extends AbstractAnalysisCriterion {
 
     @Override
     public Num calculate(BarSeries series, TradingRecord tradingRecord) {
-        Returns returns = new Returns(series, tradingRecord, Returns.ReturnType.LOG);
+        return this.calculate(series, tradingRecord, tradingRecord.getPositionCount());
+    }
+    
+    @Override
+    public Num calculate(BarSeries series, TradingRecord tradingRecord, int mostRecentPositions) {
+        Returns returns = new Returns(series, tradingRecord, Returns.ReturnType.LOG, mostRecentPositions);
         return calculateES(returns, confidence);
     }
 

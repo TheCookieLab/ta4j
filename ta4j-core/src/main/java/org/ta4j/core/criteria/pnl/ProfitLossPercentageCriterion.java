@@ -32,7 +32,7 @@ import org.ta4j.core.num.Num;
 /**
  * Net profit and loss in percentage criterion (relative PnL, excludes trading
  * costs).
- * 
+ *
  * <p>
  * Defined as the position profit over the purchase price. The profit or loss in
  * percentage over the provided {@link Position position(s)}.
@@ -52,14 +52,22 @@ public class ProfitLossPercentageCriterion extends AbstractAnalysisCriterion {
 
     @Override
     public Num calculate(BarSeries series, TradingRecord tradingRecord) {
+        return this.calculate(series, tradingRecord, tradingRecord.getPositionCount());
+    }
+
+    @Override
+    public Num calculate(BarSeries series, TradingRecord tradingRecord, int mostRecentPositions) {
         return tradingRecord.getPositions()
                 .stream()
                 .filter(Position::isClosed)
+                .skip(Math.max(0, tradingRecord.getPositions().stream().filter(Position::isClosed).count() - mostRecentPositions))
                 .map(position -> calculate(series, position))
                 .reduce(series.numOf(0), Num::plus);
     }
 
-    /** The higher the criterion value, the better. */
+    /**
+     * The higher the criterion value, the better.
+     */
     @Override
     public boolean betterThan(Num criterionValue1, Num criterionValue2) {
         return criterionValue1.isGreaterThan(criterionValue2);

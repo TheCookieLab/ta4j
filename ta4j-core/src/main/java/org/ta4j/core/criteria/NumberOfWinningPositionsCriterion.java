@@ -23,6 +23,7 @@
  */
 package org.ta4j.core.criteria;
 
+import java.util.Objects;
 import org.ta4j.core.BarSeries;
 import org.ta4j.core.Position;
 import org.ta4j.core.TradingRecord;
@@ -40,11 +41,22 @@ public class NumberOfWinningPositionsCriterion extends AbstractAnalysisCriterion
 
     @Override
     public Num calculate(BarSeries series, TradingRecord tradingRecord) {
-        long numberOfWinningPositions = tradingRecord.getPositions().stream().filter(Position::hasProfit).count();
+        return this.calculate(series, tradingRecord, tradingRecord.getPositionCount());
+    }
+
+    @Override
+    public Num calculate(BarSeries series, TradingRecord tradingRecord, int mostRecentPositions) {
+        Objects.checkIndex(mostRecentPositions, tradingRecord.getPositionCount() + 1);
+        
+        long numberOfWinningPositions = tradingRecord.getPositions().stream()
+                .skip(Math.max(0, tradingRecord.getPositionCount() - mostRecentPositions))
+                .filter(Position::hasProfit).count();
         return series.numOf(numberOfWinningPositions);
     }
 
-    /** The higher the criterion value, the better. */
+    /**
+     * The higher the criterion value, the better.
+     */
     @Override
     public boolean betterThan(Num criterionValue1, Num criterionValue2) {
         return criterionValue1.isGreaterThan(criterionValue2);

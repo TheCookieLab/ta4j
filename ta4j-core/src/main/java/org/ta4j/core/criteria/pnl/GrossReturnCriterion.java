@@ -45,13 +45,21 @@ public class GrossReturnCriterion extends AbstractAnalysisCriterion {
 
     @Override
     public Num calculate(BarSeries series, TradingRecord tradingRecord) {
+        return this.calculate(series, tradingRecord, tradingRecord.getPositionCount());
+    }
+
+    @Override
+    public Num calculate(BarSeries series, TradingRecord tradingRecord, int mostRecentPositions) {
         return tradingRecord.getPositions()
                 .stream()
+                .skip(Math.max(0, tradingRecord.getPositionCount() - mostRecentPositions))
                 .map(position -> calculateProfit(series, position))
                 .reduce(series.numOf(1), Num::multipliedBy);
     }
 
-    /** The higher the criterion value, the better. */
+    /**
+     * The higher the criterion value, the better.
+     */
     @Override
     public boolean betterThan(Num criterionValue1, Num criterionValue2) {
         return criterionValue1.isGreaterThan(criterionValue2);
@@ -60,7 +68,7 @@ public class GrossReturnCriterion extends AbstractAnalysisCriterion {
     /**
      * Calculates the gross return of a position (Buy and sell).
      *
-     * @param series   a bar series
+     * @param series a bar series
      * @param position a position
      * @return the gross return of the position
      */

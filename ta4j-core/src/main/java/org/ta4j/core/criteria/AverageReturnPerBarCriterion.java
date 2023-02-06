@@ -53,12 +53,17 @@ public class AverageReturnPerBarCriterion extends AbstractAnalysisCriterion {
 
     @Override
     public Num calculate(BarSeries series, TradingRecord tradingRecord) {
-        Num bars = numberOfBars.calculate(series, tradingRecord);
+        return this.calculate(series, tradingRecord, tradingRecord.getPositionCount());
+    }
+    
+    @Override
+    public Num calculate(BarSeries series, TradingRecord tradingRecord, int mostRecentPositions) {
+        Num bars = numberOfBars.calculate(series, tradingRecord, mostRecentPositions);
         if (bars.isEqual(series.numOf(0))) {
             return series.numOf(1);
         }
 
-        return grossReturn.calculate(series, tradingRecord).pow(series.numOf(1).dividedBy(bars));
+        return grossReturn.calculate(series, tradingRecord, mostRecentPositions).pow(series.numOf(1).dividedBy(bars));
     }
 
     /** The higher the criterion value, the better. */

@@ -38,7 +38,7 @@ import org.ta4j.core.num.Num;
  *
  * @see <a href=
  *      "https://www.straightforex.com/advanced-forex-course/money-management/two-important-things-to-be-considered/">https://www.straightforex.com/advanced-forex-course/money-management/two-important-things-to-be-considered/</a>
- * 
+ *
  */
 public class ExpectancyCriterion extends AbstractAnalysisCriterion {
 
@@ -56,13 +56,20 @@ public class ExpectancyCriterion extends AbstractAnalysisCriterion {
 
     @Override
     public Num calculate(BarSeries series, TradingRecord tradingRecord) {
-        Num profitLossRatio = profitLossRatioCriterion.calculate(series, tradingRecord);
-        Num numberOfPositions = numberOfPositionsCriterion.calculate(series, tradingRecord);
-        Num numberOfWinningPositions = numberOfWinningPositionsCriterion.calculate(series, tradingRecord);
+        return this.calculate(series, tradingRecord, tradingRecord.getPositionCount());
+    }
+
+    @Override
+    public Num calculate(BarSeries series, TradingRecord tradingRecord, int mostRecentPositions) {
+        Num profitLossRatio = profitLossRatioCriterion.calculate(series, tradingRecord, mostRecentPositions);
+        Num numberOfPositions = numberOfPositionsCriterion.calculate(series, tradingRecord, mostRecentPositions);
+        Num numberOfWinningPositions = numberOfWinningPositionsCriterion.calculate(series, tradingRecord, mostRecentPositions);
         return calculate(series, profitLossRatio, numberOfWinningPositions, numberOfPositions);
     }
 
-    /** The higher the criterion value, the better. */
+    /**
+     * The higher the criterion value, the better.
+     */
     @Override
     public boolean betterThan(Num criterionValue1, Num criterionValue2) {
         return criterionValue1.isGreaterThan(criterionValue2);

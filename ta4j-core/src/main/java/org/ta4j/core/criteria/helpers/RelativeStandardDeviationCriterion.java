@@ -64,11 +64,16 @@ public class RelativeStandardDeviationCriterion extends AbstractAnalysisCriterio
 
     @Override
     public Num calculate(BarSeries series, TradingRecord tradingRecord) {
+        return this.calculate(series, tradingRecord, tradingRecord.getPositionCount());
+    }
+    
+    @Override
+    public Num calculate(BarSeries series, TradingRecord tradingRecord, int mostRecentPositions) {
         if (tradingRecord.getPositions().isEmpty()) {
             return series.numOf(0);
         }
-        Num average = averageCriterion.calculate(series, tradingRecord);
-        return standardDeviationCriterion.calculate(series, tradingRecord).dividedBy(average);
+        Num average = averageCriterion.calculate(series, tradingRecord, mostRecentPositions);
+        return standardDeviationCriterion.calculate(series, tradingRecord, mostRecentPositions).dividedBy(average);
     }
 
     /** The higher the criterion value, the better. */
