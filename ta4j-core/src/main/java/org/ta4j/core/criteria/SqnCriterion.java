@@ -33,7 +33,7 @@ import org.ta4j.core.num.Num;
 
 /**
  * The SQN ("System Quality Number") Criterion.
- * 
+ *
  * @see <a href=
  *      "https://indextrader.com.au/van-tharps-sqn/">https://indextrader.com.au/van-tharps-sqn/</a>
  */
@@ -45,15 +45,15 @@ public class SqnCriterion extends AbstractAnalysisCriterion {
 
     /**
      * The number to be used for the part of <code>√(numberOfPositions)</code>
-     * within the SQN-Formula when there are more than 100 trades. If this value is
-     * <code>null</code>, then the number of positions calculated by
+     * within the SQN-Formula when there are more than 100 trades. If this value
+     * is <code>null</code>, then the number of positions calculated by
      * {@link #numberOfPositionsCriterion} is used instead.
      */
     private final Integer nPositions;
 
     /**
      * Constructor.
-     * 
+     *
      * <p>
      * Uses ProfitLossCriterion for {@link #criterion}.
      */
@@ -63,9 +63,9 @@ public class SqnCriterion extends AbstractAnalysisCriterion {
 
     /**
      * Constructor.
-     * 
+     *
      * @param criterion the Criterion (e.g. ProfitLossCriterion or
-     *                  ExpectancyCriterion)
+     * ExpectancyCriterion)
      */
     public SqnCriterion(AnalysisCriterion criterion) {
         this(criterion, null);
@@ -73,9 +73,9 @@ public class SqnCriterion extends AbstractAnalysisCriterion {
 
     /**
      * Constructor.
-     * 
-     * @param criterion  the Criterion (e.g. ProfitLossCriterion or
-     *                   ExpectancyCriterion)
+     *
+     * @param criterion the Criterion (e.g. ProfitLossCriterion or
+     * ExpectancyCriterion)
      * @param nPositions the {@link #nPositions} (optional)
      */
     public SqnCriterion(AnalysisCriterion criterion, Integer nPositions) {
@@ -99,12 +99,18 @@ public class SqnCriterion extends AbstractAnalysisCriterion {
 
     @Override
     public Num calculate(BarSeries series, TradingRecord tradingRecord) {
-        if (tradingRecord.getPositions().isEmpty())
+        return this.calculate(series, tradingRecord, tradingRecord.getPositionCount());
+    }
+
+    @Override
+    public Num calculate(BarSeries series, TradingRecord tradingRecord, int mostRecentPositions) {
+        if (tradingRecord.getPositions().isEmpty()) {
             return series.numOf(0);
-        Num numberOfPositions = numberOfPositionsCriterion.calculate(series, tradingRecord);
+        }
+        Num numberOfPositions = numberOfPositionsCriterion.calculate(series, tradingRecord, mostRecentPositions);
         Num pnl = criterion.calculate(series, tradingRecord);
         Num avgPnl = pnl.dividedBy(numberOfPositions);
-        Num stdDevPnl = standardDeviationCriterion.calculate(series, tradingRecord);
+        Num stdDevPnl = standardDeviationCriterion.calculate(series, tradingRecord, mostRecentPositions);
         if (stdDevPnl.isZero()) {
             return series.numOf(0);
         }
@@ -115,7 +121,9 @@ public class SqnCriterion extends AbstractAnalysisCriterion {
         return avgPnl.dividedBy(stdDevPnl).multipliedBy(numberOfPositions.sqrt());
     }
 
-    /** The higher the criterion value, the better. */
+    /**
+     * The higher the criterion value, the better.
+     */
     @Override
     public boolean betterThan(Num criterionValue1, Num criterionValue2) {
         return criterionValue1.isGreaterThan(criterionValue2);

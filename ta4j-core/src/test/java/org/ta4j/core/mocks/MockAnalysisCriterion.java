@@ -66,6 +66,19 @@ public class MockAnalysisCriterion implements AnalysisCriterion {
     public Num calculate(BarSeries series, TradingRecord tradingRecord) {
         return values.get(values.size() - 1);
     }
+    
+    /***
+     * 
+     * @param series
+     * @param tradingRecord
+     * @param mostRecentPositions
+     * @return 
+     */
+    @Override
+    public Num calculate(BarSeries series, TradingRecord tradingRecord, int mostRecentPositions) {
+        return this.calculate(series, tradingRecord);
+    }
+        
 
     /**
      * Compares two criterion values and returns true if first value is greater than

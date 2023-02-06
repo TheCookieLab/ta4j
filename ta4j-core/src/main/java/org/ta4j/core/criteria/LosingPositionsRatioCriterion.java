@@ -23,6 +23,7 @@
  */
 package org.ta4j.core.criteria;
 
+import java.util.Objects;
 import org.ta4j.core.BarSeries;
 import org.ta4j.core.Position;
 import org.ta4j.core.TradingRecord;
@@ -44,9 +45,15 @@ public class LosingPositionsRatioCriterion extends AbstractAnalysisCriterion {
 
     @Override
     public Num calculate(BarSeries series, TradingRecord tradingRecord) {
-        Num numberOfLosingPositions = numberOfLosingPositionsCriterion.calculate(series, tradingRecord);
-        numberOfLosingPositionsCriterion.calculate(series, tradingRecord);
-        return numberOfLosingPositions.dividedBy(series.numOf(tradingRecord.getPositionCount()));
+        return this.calculate(series, tradingRecord, tradingRecord.getPositionCount());
+    }
+    
+    @Override
+    public Num calculate(BarSeries series, TradingRecord tradingRecord, int mostRecentPositions) {
+        Objects.checkIndex(mostRecentPositions, tradingRecord.getPositionCount() + 1);
+        
+        Num numberOfLosingPositions = numberOfLosingPositionsCriterion.calculate(series, tradingRecord, mostRecentPositions);
+        return numberOfLosingPositions.dividedBy(series.numOf(Math.min(tradingRecord.getPositionCount(), mostRecentPositions)));
     }
 
     /** The lower the criterion value, the better. */

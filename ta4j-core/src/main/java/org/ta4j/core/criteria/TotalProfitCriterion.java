@@ -39,7 +39,13 @@ public class TotalProfitCriterion extends AbstractAnalysisCriterion {
 
     @Override
     public Num calculate(BarSeries series, TradingRecord tradingRecord) {
+        return this.calculate(series, tradingRecord, tradingRecord.getPositionCount());
+    }
+    
+    @Override
+    public Num calculate(BarSeries series, TradingRecord tradingRecord, int mostRecentPositions) {
         return tradingRecord.getPositions().stream()
+                .skip(Math.max(0, tradingRecord.getPositionCount() - mostRecentPositions))
                 .map(position -> calculateProfit(series, position))
                 .reduce(series.numOf(1), (profit1, profit2) -> profit1.multipliedBy(profit2));
     }

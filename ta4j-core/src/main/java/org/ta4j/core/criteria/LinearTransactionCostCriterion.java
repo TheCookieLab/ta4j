@@ -76,13 +76,15 @@ public class LinearTransactionCostCriterion extends AbstractAnalysisCriterion {
     public Num calculate(BarSeries series, Position position) {
         return getTradeCost(series, position, series.numOf(initialAmount));
     }
-
+    
     @Override
-    public Num calculate(BarSeries series, TradingRecord tradingRecord) {
+    public Num calculate(BarSeries series, TradingRecord tradingRecord, int mostRecentPositions) {
         Num totalCosts = series.numOf(0);
         Num tradedAmount = series.numOf(initialAmount);
 
-        for (Position position : tradingRecord.getPositions()) {
+        int positionStartIndex = Math.max(0, tradingRecord.getPositionCount() - mostRecentPositions);
+        
+        for (Position position : tradingRecord.getPositions().subList(positionStartIndex, tradingRecord.getPositionCount())) {
             Num tradeCost = getTradeCost(series, position, tradedAmount);
             totalCosts = totalCosts.plus(tradeCost);
             // To calculate the new traded amount:
@@ -101,6 +103,11 @@ public class LinearTransactionCostCriterion extends AbstractAnalysisCriterion {
         }
 
         return totalCosts;
+    }
+
+    @Override
+    public Num calculate(BarSeries series, TradingRecord tradingRecord) {
+        return this.calculate(series, tradingRecord, tradingRecord.getPositionCount());
     }
 
     /** The lower the criterion value, the better. */

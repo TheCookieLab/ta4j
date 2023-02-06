@@ -77,6 +77,11 @@ public class EnterAndHoldReturnCriterion extends AbstractAnalysisCriterion {
     public Num calculate(BarSeries series, TradingRecord tradingRecord) {
         return createEnterAndHoldTrade(series).getGrossReturn(series);
     }
+    
+    @Override
+    public Num calculate(BarSeries series, TradingRecord tradingRecord, int mostRecentPositions) {
+        return this.calculate(series, tradingRecord);
+    }
 
     /** The higher the criterion value the better. */
     @Override

@@ -23,6 +23,7 @@
  */
 package org.ta4j.core.criteria;
 
+import java.util.Objects;
 import org.ta4j.core.BarSeries;
 import org.ta4j.core.Position;
 import org.ta4j.core.TradingRecord;
@@ -44,8 +45,15 @@ public class WinningPositionsRatioCriterion extends AbstractAnalysisCriterion {
 
     @Override
     public Num calculate(BarSeries series, TradingRecord tradingRecord) {
-        Num numberOfWinningPositions = numberOfWinningPositionsCriterion.calculate(series, tradingRecord);
-        return numberOfWinningPositions.dividedBy(series.numOf(tradingRecord.getPositionCount()));
+        return this.calculate(series, tradingRecord, tradingRecord.getPositionCount());
+    }
+    
+    @Override
+    public Num calculate(BarSeries series, TradingRecord tradingRecord, int mostRecentPositions) {
+        Objects.checkIndex(mostRecentPositions, tradingRecord.getPositionCount() + 1);
+        
+        Num numberOfWinningPositions = numberOfWinningPositionsCriterion.calculate(series, tradingRecord, mostRecentPositions);
+        return numberOfWinningPositions.dividedBy(series.numOf(mostRecentPositions));
     }
 
     /** The higher the criterion value, the better. */

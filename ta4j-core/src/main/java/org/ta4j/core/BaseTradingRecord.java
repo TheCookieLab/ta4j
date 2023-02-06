@@ -340,7 +340,7 @@ public class BaseTradingRecord implements TradingRecord {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("BaseTradingRecord: " + (name == null ? "" : name));
+        sb.append("BaseTradingRecord: ").append(name == null ? "" : name);
         sb.append(System.lineSeparator());
         for (Trade trade : trades) {
             sb.append(trade.toString()).append(System.lineSeparator());

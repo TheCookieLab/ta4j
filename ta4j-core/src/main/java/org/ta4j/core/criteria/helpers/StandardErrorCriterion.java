@@ -60,11 +60,16 @@ public class StandardErrorCriterion extends AbstractAnalysisCriterion {
 
     @Override
     public Num calculate(BarSeries series, TradingRecord tradingRecord) {
+        return this.calculate(series, tradingRecord, tradingRecord.getPositionCount());
+    }
+    
+    @Override
+    public Num calculate(BarSeries series, TradingRecord tradingRecord, int mostRecentPositions) {
         if (tradingRecord.getPositions().isEmpty()) {
             return series.numOf(0);
         }
-        Num numberOfPositions = numberOfPositionsCriterion.calculate(series, tradingRecord);
-        return standardDeviationCriterion.calculate(series, tradingRecord).dividedBy(numberOfPositions.sqrt());
+        Num numberOfPositions = numberOfPositionsCriterion.calculate(series, tradingRecord, mostRecentPositions);
+        return standardDeviationCriterion.calculate(series, tradingRecord, mostRecentPositions).dividedBy(numberOfPositions.sqrt());
     }
 
     /** The lower the criterion value, the better. */

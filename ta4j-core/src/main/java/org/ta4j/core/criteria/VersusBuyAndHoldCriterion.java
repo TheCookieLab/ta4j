@@ -57,14 +57,24 @@ public class VersusBuyAndHoldCriterion extends AbstractAnalysisCriterion {
 
     @Override
     public Num calculate(BarSeries series, TradingRecord tradingRecord) {
+        return this.calculate(series, tradingRecord, tradingRecord.getPositionCount());
+    }
+    
+    @Override
+    public Num calculate(BarSeries series, TradingRecord tradingRecord, int mostRecentPositions) {
         TradingRecord fakeRecord;
         
         if (tradingRecord.getPositionCount() > 0) {
-            fakeRecord = createBuyAndHoldTradingRecord(series, tradingRecord.getPositions().get(0).getEntry().getIndex(), tradingRecord.getLastExit().getIndex());
+            int startPositionIndex = Math.max(0, tradingRecord.getPositionCount() - mostRecentPositions);
+            fakeRecord = createBuyAndHoldTradingRecord(series, tradingRecord.getPositions().get(startPositionIndex).getEntry().getIndex(), tradingRecord.getLastExit().getIndex());
         } else {
             fakeRecord = createBuyAndHoldTradingRecord(series);
         }
-        return criterion.calculate(series, tradingRecord).dividedBy(criterion.calculate(series, fakeRecord));
+        
+        Num tradingRecordReturn = criterion.calculate(series, tradingRecord, mostRecentPositions);
+        Num fakeRecordReturn = criterion.calculate(series, fakeRecord);
+        
+        return tradingRecordReturn.dividedBy(fakeRecordReturn);
     }
 
     /** The higher the criterion value, the better. */

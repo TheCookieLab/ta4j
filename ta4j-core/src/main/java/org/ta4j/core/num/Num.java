@@ -27,6 +27,7 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
 import java.util.function.Function;
+import static org.ta4j.core.num.NaN.NaN;
 
 /**
  * Ta4js definition of operations that must be fulfilled by an object that
@@ -360,6 +361,9 @@ public interface Num extends Comparable<Num> {
     default float floatValue() {
         return getDelegate().floatValue();
     }
+
+    @Override
+    public int compareTo(Num o);
 
     @Override
     int hashCode();
