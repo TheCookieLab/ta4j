@@ -35,10 +35,10 @@ import org.ta4j.core.indicators.helpers.ClosePriceIndicator;
 import org.ta4j.core.mocks.MockBarSeries;
 import org.ta4j.core.num.Num;
 
-public class DistanceFromMAIndicatorTest extends AbstractIndicatorTest<Indicator<Num>, Num> {
+public class DistanceFromMAPercentageIndicatorTest extends AbstractIndicatorTest<Indicator<Num>, Num> {
     private BarSeries data;
 
-    public DistanceFromMAIndicatorTest(Function<Number, Num> numFunction) {
+    public DistanceFromMAPercentageIndicatorTest(Function<Number, Num> numFunction) {
         super(numFunction);
     }
 
@@ -50,7 +50,7 @@ public class DistanceFromMAIndicatorTest extends AbstractIndicatorTest<Indicator
     @Test
     public void DistanceFromMovingAverageTest() {
         SMAIndicator sma = new SMAIndicator(new ClosePriceIndicator(data), 3);
-        DistanceFromMAIndicator distanceFromMAIndicator = new DistanceFromMAIndicator(data, sma);
+        DistanceFromMAPercentageIndicator distanceFromMAIndicator = new DistanceFromMAPercentageIndicator(data, sma);
         assertNumEquals(0.3333, distanceFromMAIndicator.getValue(2));
         assertNumEquals(0.01886792452830182, distanceFromMAIndicator.getValue(5));
         assertNumEquals(-0.1, distanceFromMAIndicator.getValue(6));
@@ -59,6 +59,6 @@ public class DistanceFromMAIndicatorTest extends AbstractIndicatorTest<Indicator
     @Test(expected = IllegalArgumentException.class)
     public void DistanceFromIllegalMovingAverage() {
         ClosePriceIndicator closePriceIndicator = new ClosePriceIndicator(data);
-        new DistanceFromMAIndicator(data, closePriceIndicator);
+        new DistanceFromMAPercentageIndicator(data, closePriceIndicator);
     }
 }

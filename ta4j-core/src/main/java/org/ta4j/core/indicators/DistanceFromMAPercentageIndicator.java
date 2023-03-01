@@ -23,46 +23,50 @@
  */
 package org.ta4j.core.indicators;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
+import org.ta4j.core.Bar;
 import org.ta4j.core.BarSeries;
 import org.ta4j.core.Indicator;
-import org.ta4j.core.indicators.helpers.ClosePriceIndicator;
 import org.ta4j.core.num.Num;
 
 /**
- * Distance From Moving Average (signal - MA)
+ * Distance From Moving Average (close - MA)/MA
  *
  * @see <a href=
  *      "https://school.stockcharts.com/doku.php?id=technical_indicators:distance_from_ma">
- * https://school.stockcharts.com/doku.php?id=technical_indicators:distance_from_ma
- * </a>
+ *      https://school.stockcharts.com/doku.php?id=technical_indicators:distance_from_ma
+ *      </a>
  */
-public class DistanceFromMAIndicator extends CachedIndicator<Num> {
-
+public class DistanceFromMAPercentageIndicator extends CachedIndicator<Num> {
+    private static final Set<Class<?>> supportedMovingAverages = new HashSet<>(
+            Arrays.asList(EMAIndicator.class, DoubleEMAIndicator.class, TripleEMAIndicator.class, SMAIndicator.class,
+                    WMAIndicator.class, ZLEMAIndicator.class, HMAIndicator.class, KAMAIndicator.class,
+                    LWMAIndicator.class, AbstractEMAIndicator.class, MMAIndicator.class));
     private final Indicator<Num> movingAverage;
-    private final Indicator<Num> signal;
 
     /**
      * Constructor.
-     *
-     * @param series the bar series {@link BarSeries}.
-     * @param signal
+     * 
+     * @param series        the bar series {@link BarSeries}.
      * @param movingAverage the moving average.
      */
-    public DistanceFromMAIndicator(BarSeries series, Indicator<Num> signal, Indicator<Num> movingAverage) {
+    public DistanceFromMAPercentageIndicator(BarSeries series, Indicator<Num> movingAverage) {
         super(series);
-
+        if (!(supportedMovingAverages.contains(movingAverage.getClass()))) {
+            throw new IllegalArgumentException(
+                    "Passed indicator must be a moving average based indicator. " + movingAverage.toString());
+        }
         this.movingAverage = movingAverage;
-        this.signal = signal;
-    }
-    
-    public DistanceFromMAIndicator(BarSeries series, Indicator<Num> movingAverage) {
-        this(series, new ClosePriceIndicator(series), movingAverage);
     }
 
     @Override
     protected Num calculate(int index) {
-        Num signalPrice = this.signal.getValue(index);
+        Bar currentBar = getBarSeries().getBar(index);
+        Num closePrice = currentBar.getClosePrice();
         Num maValue = (Num) movingAverage.getValue(index);
-        return signalPrice.minus(maValue).abs();
+        return (closePrice.minus(maValue)).dividedBy(maValue);
     }
 }
