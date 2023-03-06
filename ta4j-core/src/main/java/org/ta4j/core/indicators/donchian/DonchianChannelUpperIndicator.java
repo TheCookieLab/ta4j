@@ -29,6 +29,10 @@ import org.ta4j.core.indicators.helpers.HighPriceIndicator;
 import org.ta4j.core.indicators.helpers.HighestValueIndicator;
 import org.ta4j.core.num.Num;
 
+/**
+ * *
+ * https://www.investopedia.com/terms/d/donchianchannels.asp
+ */
 public class DonchianChannelUpperIndicator extends CachedIndicator<Num> {
 
     private final HighestValueIndicator highestPrice;

@@ -29,9 +29,7 @@ import org.ta4j.core.indicators.helpers.LowPriceIndicator;
 import org.ta4j.core.indicators.helpers.LowestValueIndicator;
 import org.ta4j.core.num.Num;
 
-/**
- * *
- *
+/***
  * https://www.investopedia.com/terms/d/donchianchannels.asp
  */
 public class DonchianChannelLowerIndicator extends CachedIndicator<Num> {
