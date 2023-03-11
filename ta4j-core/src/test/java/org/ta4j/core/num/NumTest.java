@@ -190,7 +190,13 @@ public class NumTest extends AbstractIndicatorTest<Object, Num> {
     public void testNaN() {
         Num a = NaN;
         Num eleven = DecimalNum.valueOf(11);
-
+        
+        assertEquals(0, a.compareTo(eleven));
+        assertEquals(0, eleven.compareTo(a));
+        assertEquals(0, NaN.compareTo(a));
+        assertNumNotEquals(a, eleven);
+        assertNumEquals(a, NaN);
+                
         Num mustBeNaN = a.plus(eleven);
         assertNumEquals(mustBeNaN, NaN);
 
