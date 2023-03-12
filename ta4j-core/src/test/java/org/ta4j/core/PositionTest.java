@@ -57,21 +57,23 @@ public class PositionTest {
         this.newPosition = new Position();
         this.uncoveredPosition = new Position(TradeType.SELL);
 
+        ZonedDateTime positionDateTime = ZonedDateTime.now();
+
         posEquals1 = new Position();
-        posEquals1.operate(1);
-        posEquals1.operate(2);
+        posEquals1.operate(1, positionDateTime, NaN, NaN);
+        posEquals1.operate(2, positionDateTime, NaN, NaN);
 
         posEquals2 = new Position();
-        posEquals2.operate(1);
-        posEquals2.operate(2);
+        posEquals2.operate(1, positionDateTime, NaN, NaN);
+        posEquals2.operate(2, positionDateTime, NaN, NaN);
 
         posNotEquals1 = new Position(TradeType.SELL);
-        posNotEquals1.operate(1);
-        posNotEquals1.operate(2);
+        posNotEquals1.operate(1, positionDateTime, NaN, NaN);
+        posNotEquals1.operate(2, positionDateTime, NaN, NaN);
 
         posNotEquals2 = new Position(TradeType.SELL);
-        posNotEquals2.operate(1);
-        posNotEquals2.operate(2);
+        posNotEquals2.operate(1, positionDateTime, NaN, NaN);
+        posNotEquals2.operate(2, positionDateTime, NaN, NaN);
 
         transactionModel = new LinearTransactionCostModel(0.01);
         holdingModel = new LinearBorrowingCostModel(0.001);

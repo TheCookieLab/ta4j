@@ -46,8 +46,9 @@ public class TradeTest {
 
     @Before
     public void setUp() {
-        opEquals1 = Trade.buyAt(1, ZonedDateTime.now(), NaN, NaN);
-        opEquals2 = Trade.buyAt(1, ZonedDateTime.now(), NaN, NaN);
+        ZonedDateTime buyDateTime = ZonedDateTime.now();
+        opEquals1 = Trade.buyAt(1, buyDateTime, NaN, NaN);
+        opEquals2 = Trade.buyAt(1, buyDateTime, NaN, NaN);
 
         opNotEquals1 = Trade.sellAt(1, ZonedDateTime.now(), NaN, NaN);
         opNotEquals2 = Trade.buyAt(2, ZonedDateTime.now(), NaN, NaN);
