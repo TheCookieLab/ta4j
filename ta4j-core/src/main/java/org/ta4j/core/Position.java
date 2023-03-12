@@ -445,6 +445,6 @@ public class Position implements Serializable {
 
     @Override
     public String toString() {
-        return "Entry: " + entry + " exit: " + exit;
+        return "Entry: " + entry + " exit: " + exit + " net profit: " + this.getProfit();
     }
 }
