@@ -344,7 +344,7 @@ public class Trade implements Serializable {
 
     @Override
     public String toString() {
-        return "Trade{" + "type=" + type + ", index=" + index + ", dateTime=" + dateTime + " price=" + pricePerAsset + ", amount=" + amount + '}';
+        return "Trade{" + "type=" + type + ", index=" + index + ", price=" + pricePerAsset + ", amount=" + amount + '}';
     }
 
     /**
