@@ -105,9 +105,6 @@ public abstract class CachedIndicator<T> extends AbstractIndicator<T> {
             highestResultIndex = removedBarsCount;
             result = results.get(0);
             if (result == null) {
-                // It should be "result = calculate(removedBarsCount);".
-                // We use "result = calculate(0);" as a workaround
-                // to fix issue #120 (https://github.com/mdeverdelhan/ta4j/issues/120).
                 result = calculate(0);
                 results.set(0, result);
             }
