@@ -104,7 +104,9 @@ public class FixedTransactionCostModel implements CostModel {
      * Evaluate if two models are equal
      *
      * @param otherModel model to compare with
+     * @return 
      */
+    @Override
     public boolean equals(CostModel otherModel) {
         boolean equality = false;
         if (this.getClass().equals(otherModel.getClass())) {

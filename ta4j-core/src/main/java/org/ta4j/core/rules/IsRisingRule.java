@@ -39,8 +39,8 @@ public class IsRisingRule extends AbstractRule {
     private final Indicator<Num> ref;
     /** The barCount */
     private final int barCount;
-    /** The minimum required strenght of the rising */
-    private double minStrenght;
+    /** The minimum required strength of the rising */
+    private double minStrength;
 
     /**
      * Constructor for strict rising.
@@ -57,20 +57,20 @@ public class IsRisingRule extends AbstractRule {
      * 
      * @param ref         the indicator
      * @param barCount    the time frame
-     * @param minStrenght the minimum required rising strenght (between '0' and '1',
+     * @param minStrength the minimum required rising strength (between '0' and '1',
      *                    e.g. '1' for strict rising)
      */
-    public IsRisingRule(Indicator<Num> ref, int barCount, double minStrenght) {
+    public IsRisingRule(Indicator<Num> ref, int barCount, double minStrength) {
         this.ref = ref;
         this.barCount = barCount;
-        this.minStrenght = minStrenght;
+        this.minStrength = minStrength;
     }
 
     /** This rule does not use the {@code tradingRecord}. */
     @Override
     public boolean isSatisfied(int index, TradingRecord tradingRecord) {
-        if (minStrenght >= 1) {
-            minStrenght = 0.99;
+        if (minStrength >= 1) {
+            minStrength = 0.99;
         }
 
         int count = 0;
@@ -82,7 +82,7 @@ public class IsRisingRule extends AbstractRule {
 
         double ratio = count / (double) barCount;
 
-        final boolean satisfied = ratio >= minStrenght;
+        final boolean satisfied = ratio >= minStrength;
         traceIsSatisfied(index, satisfied);
         return satisfied;
     }
