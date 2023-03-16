@@ -45,7 +45,7 @@ public class NumberOfPositionsCriterion extends AbstractAnalysisCriterion {
     
     @Override
     public Num calculate(BarSeries series, TradingRecord tradingRecord, int mostRecentPositions) {
-        return this.calculate(series, tradingRecord);
+        return this.calculate(series, tradingRecord).min(series.numOf(mostRecentPositions));
     }
 
     /** The lower the criterion value, the better. */
