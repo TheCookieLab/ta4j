@@ -25,40 +25,47 @@ package org.ta4j.core.indicators.vortex;
 
 import org.ta4j.core.BarSeries;
 import org.ta4j.core.indicators.CachedIndicator;
-import org.ta4j.core.indicators.helpers.HighPriceIndicator;
-import org.ta4j.core.indicators.helpers.LowPriceIndicator;
-import org.ta4j.core.indicators.helpers.PreviousValueIndicator;
-import static org.ta4j.core.num.NaN.NaN;
+import org.ta4j.core.indicators.helpers.CumulativeSumIndicator;
+import org.ta4j.core.indicators.helpers.TRIndicator;
 import org.ta4j.core.num.Num;
 
 /**
- * *
- * Vortex Indicator VI+ trendline
+ * Vortex VI- (Plus) Trend Line Indicator.
+ * <p>
+ * The Vortex Indicator (VI) is composed of two lines - VI+ (Plus) and VI-
+ * (Minus). The VI+ trend line is calculated using the positive directional
+ * movement over a specified period.
+ * <p>
+ * For more information:
  * https://www.investopedia.com/terms/v/vortex-indicator-vi.asp
  */
-public class PlusVIIndicator extends CachedIndicator<Num> {
+public class PlusVITrendLineIndicator extends CachedIndicator<Num> {
 
-    private final PreviousValueIndicator previousLowPrice;
-    private final HighPriceIndicator highPrice;
+    private final CumulativeSumIndicator sumPlusVM;
+    private final CumulativeSumIndicator sumTR;
+    private final int barCount;
 
-    public PlusVIIndicator(BarSeries series) {
+    /**
+     * Constructor.
+     *
+     * @param series the BarSeries
+     * @param barCount the number of bars to consider for the calculation
+     */
+    public PlusVITrendLineIndicator(BarSeries series, int barCount) {
         super(series);
 
-        this.previousLowPrice = new PreviousValueIndicator(new LowPriceIndicator(series));
-        this.highPrice = new HighPriceIndicator(series);
+        this.sumPlusVM = new CumulativeSumIndicator(new PlusVMIndicator(series), barCount);
+        this.sumTR = new CumulativeSumIndicator(new TRIndicator(series), barCount);
+        this.barCount = barCount;
     }
 
     @Override
     protected Num calculate(int index) {
-        if (index < 1) {
-            return NaN;
-        }
-
-        return highPrice.getValue(index).minus(previousLowPrice.getValue(index)).abs();
+        return this.sumPlusVM.getValue(index).dividedBy(this.sumTR.getValue(index));
     }
 
     @Override
     public String toString() {
-        return getClass().getSimpleName();
+        return getClass().getSimpleName() + " barCount: " + this.barCount;
     }
 }

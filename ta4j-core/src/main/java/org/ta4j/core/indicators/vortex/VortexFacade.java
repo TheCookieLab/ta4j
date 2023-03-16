@@ -24,8 +24,6 @@
 package org.ta4j.core.indicators.vortex;
 
 import org.ta4j.core.BarSeries;
-import org.ta4j.core.indicators.CachedIndicator;
-import org.ta4j.core.indicators.helpers.TRIndicator;
 import org.ta4j.core.num.Num;
 
 /**
@@ -34,25 +32,25 @@ import org.ta4j.core.num.Num;
  * @see <a
  *      href="https://www.investopedia.com/terms/a/adx.asp">https://www.investopedia.com/terms/a/adx.asp</a>
  */
-public class VortexIndicator extends CachedIndicator<Num> {
+public class VortexFacade {
 
-    private final MinusVIIndicator minusVI;
-    private final PlusVIIndicator plusVI;
-    private final TRIndicator tr;
+    public final MinusVITrendLineIndicator minusVI;
+    public final PlusVITrendLineIndicator plusVI;
+
     private final int barCount;
 
-    public VortexIndicator(BarSeries series, int barCount) {
-        super(series);
-        
-        this.minusVI = new MinusVIIndicator(series);
-        this.plusVI = new PlusVIIndicator(series);
-        this.tr = new TRIndicator(series);
-        this.barCount = barCount;  
+    public VortexFacade(BarSeries series, int barCount) {
+        this.minusVI = new MinusVITrendLineIndicator(series, barCount);
+        this.plusVI = new PlusVITrendLineIndicator(series, barCount);
+        this.barCount = barCount;
     }
 
-    @Override
-    protected Num calculate(int index) {
-        
+    public Num getMinusVIValue(int index) {
+        return this.minusVI.getValue(index);
+    }
+
+    public Num getPlusVIValue(int index) {
+        return this.plusVI.getValue(index);
     }
 
     @Override
