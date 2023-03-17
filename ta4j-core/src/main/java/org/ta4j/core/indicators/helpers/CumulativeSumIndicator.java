@@ -23,7 +23,6 @@
  */
 package org.ta4j.core.indicators.helpers;
 
-import java.util.Objects;
 import org.ta4j.core.Indicator;
 import org.ta4j.core.indicators.CachedIndicator;
 import org.ta4j.core.num.Num;
