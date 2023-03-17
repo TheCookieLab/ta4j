@@ -23,52 +23,51 @@
  */
 package org.ta4j.core.indicators.helpers;
 
-import java.util.Objects;
 import org.ta4j.core.Indicator;
 import org.ta4j.core.indicators.CachedIndicator;
 import org.ta4j.core.num.Num;
 
 /**
- * CumulativeSumIndicator calculates the cumulative sum of the values of another
- * indicator within a specified sum window.
+ * An indicator that returns the length of the current consecutive streak of
+ * true or false values from another boolean indicator.
  */
-public class CumulativeSumIndicator extends CachedIndicator<Num> {
+public class ConsecutiveBooleanStreakIndicator extends CachedIndicator<Num> {
 
-    private final Indicator<Num> indicator;
-    private final int sumWindow;
+    private final Indicator<Boolean> indicator;
+    private final boolean checkValue;
 
     /**
      * Constructor.
      *
-     * @param indicator the indicator whose values are to be summed
-     * @param sumWindow the number of bars to sum the indicator values
-     * @throws IndexOutOfBoundsException if the sumWindow is negative
+     * @param indicator the boolean indicator to check for streaks
+     * @param checkValue the value (true or false) for which to count
+     * consecutive streaks
      */
-    public CumulativeSumIndicator(Indicator<Num> indicator, int sumWindow) {
+    public ConsecutiveBooleanStreakIndicator(Indicator<Boolean> indicator, boolean checkValue) {
         super(indicator.getBarSeries());
         this.indicator = indicator;
-        if (sumWindow < 0) {
-            throw new IndexOutOfBoundsException("sumWindow cannot be negative");
-        }
-        this.sumWindow = sumWindow;
+        this.checkValue = checkValue;
     }
 
     /**
-     * Calculates the cumulative sum of the indicator values within the
-     * specified bar count.
+     * Calculates the length of the current consecutive streak of the
+     * checkValue.
      *
-     * @param index the index of the bar to calculate the cumulative sum up to
-     * @return the cumulative sum of the indicator values within the specified
-     * bar count
+     * @param index the bar index
+     * @return the length of the streak as a Num
      */
     @Override
     protected Num calculate(int index) {
-        Num sum = numOf(0);
-        int startIndex = Math.max(0, index - sumWindow + 1);
+        int streak = 0;
 
-        for (int i = startIndex; i <= index; i++) {
-            sum = sum.plus(this.indicator.getValue(i));
+        for (int i = index; i >= 0; i--) {
+            if (this.indicator.getValue(i) != checkValue) {
+                break;
+            }
+
+            streak++;
         }
-        return sum;
+
+        return this.indicator.numOf(streak);
     }
 }
