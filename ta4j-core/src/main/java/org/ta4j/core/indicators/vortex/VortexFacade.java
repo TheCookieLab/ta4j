@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  *
- * Copyright (c) 2017-2022 Ta4j Organization & respective
+ * Copyright (c) 2017-2023 Ta4j Organization & respective
  * authors (see AUTHORS)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -21,36 +21,40 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package org.ta4j.core.criteria;
+package org.ta4j.core.indicators.vortex;
 
 import org.ta4j.core.BarSeries;
-import org.ta4j.core.Position;
-import org.ta4j.core.TradingRecord;
 import org.ta4j.core.num.Num;
 
 /**
- * Number of position criterion.
+ * Vortex indicator
+ *
+ * @see <a
+ *      href="https://www.investopedia.com/terms/a/adx.asp">https://www.investopedia.com/terms/a/adx.asp</a>
  */
-public class NumberOfPositionsCriterion extends AbstractAnalysisCriterion {
+public class VortexFacade {
 
-    @Override
-    public Num calculate(BarSeries series, Position position) {
-        return series.numOf(1);
+    public final MinusVITrendLineIndicator minusVI;
+    public final PlusVITrendLineIndicator plusVI;
+
+    private final int barCount;
+
+    public VortexFacade(BarSeries series, int barCount) {
+        this.minusVI = new MinusVITrendLineIndicator(series, barCount);
+        this.plusVI = new PlusVITrendLineIndicator(series, barCount);
+        this.barCount = barCount;
+    }
+
+    public Num getMinusVIValue(int index) {
+        return this.minusVI.getValue(index);
+    }
+
+    public Num getPlusVIValue(int index) {
+        return this.plusVI.getValue(index);
     }
 
     @Override
-    public Num calculate(BarSeries series, TradingRecord tradingRecord) {
-        return series.numOf(tradingRecord.getPositionCount());
-    }
-    
-    @Override
-    public Num calculate(BarSeries series, TradingRecord tradingRecord, int mostRecentPositions) {
-        return this.calculate(series, tradingRecord).min(series.numOf(mostRecentPositions));
-    }
-
-    /** The lower the criterion value, the better. */
-    @Override
-    public boolean betterThan(Num criterionValue1, Num criterionValue2) {
-        return criterionValue1.isLessThan(criterionValue2);
+    public String toString() {
+        return getClass().getSimpleName() + " barCount: " + this.barCount;
     }
 }

@@ -31,10 +31,11 @@ import org.ta4j.core.BarSeries;
 import org.ta4j.core.Indicator;
 
 /**
- * Cached {@link Indicator indicator}.
+ * Cached {@link Indicator indicator}.Caches the constructor of the indicator.
  *
- * Caches the constructor of the indicator. Avoid to calculate the same index of
- * the indicator twice.
+ * Avoid to calculate the same index of the indicator twice.
+ *
+ * @param <T>
  */
 public abstract class CachedIndicator<T> extends AbstractIndicator<T> {
 
@@ -78,18 +79,15 @@ public abstract class CachedIndicator<T> extends AbstractIndicator<T> {
     @Override
     public synchronized T getValue(int index) {
         BarSeries series = getBarSeries();
-        if (series == null) {
-            // Series is null; the indicator doesn't need cache.
-            // (e.g. simple computation of the value)
-            // --> Calculating the value
+        
+        // If the series is null, don't use cache and calculate the value directly
+        if (series == null) {            
             T result = calculate(index);
             if (log.isTraceEnabled()) {
                 log.trace("{}({}): {}", this, index, result);
             }
             return result;
         }
-
-        // Series is not null
 
         final int removedBarsCount = series.getRemovedBarsCount();
         final int maximumResultCount = series.getMaximumBarCount();
@@ -122,15 +120,6 @@ public abstract class CachedIndicator<T> extends AbstractIndicator<T> {
                 } else {
                     // Result covered by current cache
                     int resultInnerIndex = results.size() - 1 - (highestResultIndex - index);
-                    
-                    if (resultInnerIndex < 0) {
-                        log.debug("resultInnerIndex calculated from highestResultIndex {} is {} and is out of range of results cache limit {}. Setting resultInnerIndex to 0", highestResultIndex, resultInnerIndex, results.size());
-                        resultInnerIndex = 0;
-                    } else if (resultInnerIndex > results.size() - 1) {
-                        log.debug("resultInnerIndex calculated from highestResultIndex {} is {} and is out of range of results cache limit {}. Setting resultInnerIndex to {}", highestResultIndex, resultInnerIndex, results.size(), results.size() - 1);
-                        resultInnerIndex = results.size() - 1;
-                    }
-                    
                     result = results.get(resultInnerIndex);
                     if (result == null) {
                         result = calculate(index);
@@ -149,7 +138,7 @@ public abstract class CachedIndicator<T> extends AbstractIndicator<T> {
     /**
      * Increases the size of cached results buffer.
      *
-     * @param index     the index to increase length to
+     * @param index the index to increase length to
      * @param maxLength the maximum length of the results buffer
      */
     private void increaseLengthTo(int index, int maxLength) {
@@ -170,8 +159,8 @@ public abstract class CachedIndicator<T> extends AbstractIndicator<T> {
     }
 
     /**
-     * Removes the N first results which exceed the maximum bar count. (i.e. keeps
-     * only the last maximumResultCount results)
+     * Removes the N first results which exceed the maximum bar count. (i.e.
+     * keeps only the last maximumResultCount results)
      *
      * @param maximumResultCount the number of results to keep
      */

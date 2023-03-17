@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  *
- * Copyright (c) 2017-2022 Ta4j Organization & respective
+ * Copyright (c) 2017-2023 Ta4j Organization & respective
  * authors (see AUTHORS)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -21,55 +21,53 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package org.ta4j.core.indicators.helpers;
+package org.ta4j.core.indicators.vortex;
 
-import org.ta4j.core.Indicator;
+import org.ta4j.core.BarSeries;
 import org.ta4j.core.indicators.CachedIndicator;
+import org.ta4j.core.indicators.helpers.HighPriceIndicator;
+import org.ta4j.core.indicators.helpers.LowPriceIndicator;
+import org.ta4j.core.indicators.helpers.PreviousValueIndicator;
+import static org.ta4j.core.num.NaN.NaN;
 import org.ta4j.core.num.Num;
 
 /**
- * Returns the previous (n-th) value of an indicator
+ * Vortex VM+ (Plus) Indicator.
+ * <p>
+ * The Vortex Indicator (VI) is composed of two lines - VI+ (Plus) and VI- (Minus). The VM+ is calculated
+ * using the previous low price and the current high price.
+ * <p>
+ * For more information:
+ * https://www.investopedia.com/terms/v/vortex-indicator-vi.asp
  */
-public class PreviousValueIndicator extends CachedIndicator<Num> {
+public class PlusVMIndicator extends CachedIndicator<Num> {
 
-    private final int n;
-    private Indicator<Num> indicator;
-
-    /**
-     * Constructor.
-     *
-     * @param indicator the indicator of which the previous value should be
-     *                  calculated
-     */
-    public PreviousValueIndicator(Indicator<Num> indicator) {
-        this(indicator, 1);
-    }
+    private final PreviousValueIndicator previousLowPrice;
+    private final HighPriceIndicator highPrice;
 
     /**
      * Constructor.
      *
-     * @param indicator the indicator of which the previous value should be
-     *                  calculated
-     * @param n         parameter defines the previous n-th value
+     * @param series the BarSeries
      */
-    public PreviousValueIndicator(Indicator<Num> indicator, int n) {
-        super(indicator);
-        if (n < 1) {
-            throw new IllegalArgumentException("n must be positive number, but was: " + n);
-        }
-        this.n = n;
-        this.indicator = indicator;
+    public PlusVMIndicator(BarSeries series) {
+        super(series);
+
+        this.previousLowPrice = new PreviousValueIndicator(new LowPriceIndicator(series));
+        this.highPrice = new HighPriceIndicator(series);
     }
 
     @Override
     protected Num calculate(int index) {
-        int previousValue = Math.max(0, (index - n));
-        return this.indicator.getValue(previousValue);
+        if (index < 1) {
+            return NaN;
+        }
+
+        return highPrice.getValue(index).minus(previousLowPrice.getValue(index)).abs();
     }
 
     @Override
     public String toString() {
-        final String nInfo = n == 1 ? "" : "(" + n + ")";
-        return getClass().getSimpleName() + nInfo + "[" + this.indicator + "]";
+        return getClass().getSimpleName();
     }
 }
