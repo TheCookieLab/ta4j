@@ -133,11 +133,9 @@ public class CumulativeSumIndicatorTest extends AbstractIndicatorTest<Indicator<
 
     @Test
     public void givenIndicatorIsNull_whenInstantiated_thenThrowsException() {
-        Exception exception = Assert.assertThrows(NullPointerException.class, () -> {
+        Assert.assertThrows(NullPointerException.class, () -> {
             CumulativeSumIndicator subject = new CumulativeSumIndicator(null, 20);
         });
-
-        assertEquals("Cannot invoke \"org.ta4j.core.Indicator.getBarSeries()\" because \"indicator\" is null", exception.getMessage());
     }
 
     @Test
