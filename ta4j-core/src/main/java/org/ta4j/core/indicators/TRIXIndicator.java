@@ -27,21 +27,14 @@ import org.ta4j.core.Indicator;
 import org.ta4j.core.num.Num;
 
 /**
- * Triple exponential moving average indicator.
+ * *
+ * https://www.investopedia.com/terms/t/trix.asp
+ * https://www.investopedia.com/articles/technical/02/092402.asp
  *
- * a.k.a TRIX
- *
- * TEMA needs "3 * period - 2" of data to start producing values in contrast to
- * the period samples needed by a regular EMA.
- *
- * @see <a href=
- *      "https://en.wikipedia.org/wiki/Triple_exponential_moving_average">https://en.wikipedia.org/wiki/Triple_exponential_moving_average</a>
- * @see <a href=
- *      "https://www.investopedia.com/terms/t/triple-exponential-moving-average.asp">https://www.investopedia.com/terms/t/triple-exponential-moving-average.asp</a>
  */
-public class TripleEMAIndicator extends CachedIndicator<Num> {
+public class TRIXIndicator extends CachedIndicator<Num> {
 
-    private final Num three;
+    private final Num hundred;
     private final int barCount;
     private final EMAIndicator ema;
     private final EMAIndicator emaEma;
@@ -51,25 +44,27 @@ public class TripleEMAIndicator extends CachedIndicator<Num> {
      * Constructor.
      *
      * @param indicator the indicator
-     * @param barCount  the time frame
+     * @param barCount the time frame
      */
-    public TripleEMAIndicator(Indicator<Num> indicator, int barCount) {
+    public TRIXIndicator(Indicator<Num> indicator, int barCount) {
         super(indicator);
-        this.three = indicator.numOf(3);
         this.barCount = barCount;
         this.ema = new EMAIndicator(indicator, barCount);
         this.emaEma = new EMAIndicator(ema, barCount);
         this.emaEmaEma = new EMAIndicator(emaEma, barCount);
+        this.hundred = indicator.numOf(100);
     }
 
     @Override
     protected Num calculate(int index) {
-        // tema = (3 * ema) - (3 * emaEma) + emaEmaEma
-        Num first = three.multipliedBy(ema.getValue(index));
-        Num second = three.multipliedBy(emaEma.getValue(index));
-        Num third = emaEmaEma.getValue(index);
-        
-        return (first).minus(second).plus(third);
+        if (index == 0) {
+            return numOf(0);
+        }
+        Num emaEmaEmaCurrent = emaEmaEma.getValue(index);
+        Num emaEmaEmaPrevious = emaEmaEma.getValue(index - 1);
+
+        // Calculate the percentage rate of change of the triple EMA
+        return emaEmaEmaCurrent.minus(emaEmaEmaPrevious).dividedBy(emaEmaEmaPrevious).multipliedBy(hundred);
     }
 
     @Override
