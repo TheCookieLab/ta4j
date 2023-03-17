@@ -147,6 +147,6 @@ public class CumulativeSumIndicatorTest extends AbstractIndicatorTest<Indicator<
             CumulativeSumIndicator subject = new CumulativeSumIndicator(closePrice, -5);
         });
 
-        assertEquals("Range [0, 0 + -5) out of bounds for length " + Integer.MAX_VALUE, exception.getMessage());
+        assertEquals("sumWindow cannot be negative", exception.getMessage());
     }
 }

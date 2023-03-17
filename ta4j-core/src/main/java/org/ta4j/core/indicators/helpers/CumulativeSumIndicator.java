@@ -47,7 +47,9 @@ public class CumulativeSumIndicator extends CachedIndicator<Num> {
     public CumulativeSumIndicator(Indicator<Num> indicator, int sumWindow) {
         super(indicator.getBarSeries());
         this.indicator = indicator;
-        Objects.checkFromIndexSize(0, sumWindow, Integer.MAX_VALUE);
+        if (sumWindow < 0) {
+            throw new IndexOutOfBoundsException("sumWindow cannot be negative");
+        }
         this.sumWindow = sumWindow;
     }
 
