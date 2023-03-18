@@ -52,7 +52,7 @@ public class TRIXIndicatorTest extends AbstractIndicatorTest<Indicator<Num>, Num
     }
 
     @Test
-    public void tripleEMAUsingBarCount5UsingClosePrice() {
+    public void givenBarCountOf5_whenGetValue_thenReturnsCorrectValue() {
         TRIXIndicator trix = new TRIXIndicator(closePrice, 5);
 
         assertNumEquals(0, trix.getValue(0));
@@ -69,7 +69,7 @@ public class TRIXIndicatorTest extends AbstractIndicatorTest<Indicator<Num>, Num
     }
 
     @Test
-    public void tripleEMAUsingBarCount10UsingClosePrice() {
+    public void givenBarCountOf10_whenGetValue_thenReturnsCorrectValue() {
         TRIXIndicator trix = new TRIXIndicator(closePrice, 10);
 
         assertNumEquals(0, trix.getValue(0));
@@ -86,7 +86,7 @@ public class TRIXIndicatorTest extends AbstractIndicatorTest<Indicator<Num>, Num
     }
 
     @Test
-    public void tripleEMAWithConstantClosePrice() {
+    public void givenConstantClosePrices_whenGetValue_thenReturnsZero() {
         BarSeries constantData = new MockBarSeries(numFunction, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
         ClosePriceIndicator constantClosePrice = new ClosePriceIndicator(constantData);
 
