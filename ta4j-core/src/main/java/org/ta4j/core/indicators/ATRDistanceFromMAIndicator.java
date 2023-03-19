@@ -29,17 +29,18 @@ import org.ta4j.core.indicators.helpers.ClosePriceIndicator;
 import org.ta4j.core.num.Num;
 
 /**
- * Distance From Moving Average (signal - MA)
+ * Distance From Moving Average (signal - MA) in terms of ATR
  *
  * @see <a href=
  *      "https://school.stockcharts.com/doku.php?id=technical_indicators:distance_from_ma">
  * https://school.stockcharts.com/doku.php?id=technical_indicators:distance_from_ma
  * </a>
  */
-public class DistanceFromMAIndicator extends CachedIndicator<Num> {
+public class ATRDistanceFromMAIndicator extends CachedIndicator<Num> {
 
     private final Indicator<Num> movingAverage;
     private final Indicator<Num> signal;
+    private final ATRIndicator atr;
 
     /**
      * Constructor.
@@ -47,22 +48,26 @@ public class DistanceFromMAIndicator extends CachedIndicator<Num> {
      * @param series the bar series {@link BarSeries}.
      * @param signal
      * @param movingAverage the moving average.
+     * @param atrBarCount
      */
-    public DistanceFromMAIndicator(BarSeries series, Indicator<Num> signal, Indicator<Num> movingAverage) {
+    public ATRDistanceFromMAIndicator(BarSeries series, Indicator<Num> signal, Indicator<Num> movingAverage, int atrBarCount) {
         super(series);
 
+        this.atr = new ATRIndicator(series, atrBarCount);
         this.movingAverage = movingAverage;
-        this.signal = signal;
+        this.signal = signal;        
     }
-    
-    public DistanceFromMAIndicator(BarSeries series, Indicator<Num> movingAverage) {
-        this(series, new ClosePriceIndicator(series), movingAverage);
+
+    public ATRDistanceFromMAIndicator(BarSeries series, Indicator<Num> movingAverage, int atrBarCount) {
+        this(series, new ClosePriceIndicator(series), movingAverage, atrBarCount);
     }
 
     @Override
     protected Num calculate(int index) {
         Num signalPrice = this.signal.getValue(index);
-        Num maValue = (Num) movingAverage.getValue(index);
-        return signalPrice.minus(maValue);
+        Num maValue = (Num) this.movingAverage.getValue(index);
+        Num atrValue = this.atr.getValue(index);
+        
+        return (signalPrice.minus(maValue)).dividedBy(atrValue);
     }
 }

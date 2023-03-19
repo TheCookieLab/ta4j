@@ -21,48 +21,27 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package org.ta4j.core.indicators;
+package org.ta4j.core.indicators.helpers;
 
+import org.ta4j.core.Bar;
 import org.ta4j.core.BarSeries;
-import org.ta4j.core.Indicator;
-import org.ta4j.core.indicators.helpers.ClosePriceIndicator;
+import org.ta4j.core.indicators.CachedIndicator;
 import org.ta4j.core.num.Num;
 
 /**
- * Distance From Moving Average (signal - MA)
- *
- * @see <a href=
- *      "https://school.stockcharts.com/doku.php?id=technical_indicators:distance_from_ma">
- * https://school.stockcharts.com/doku.php?id=technical_indicators:distance_from_ma
- * </a>
+ * H-L/2
  */
-public class DistanceFromMAIndicator extends CachedIndicator<Num> {
+public class BarPriceRangeIndicator extends CachedIndicator<Num> {
 
-    private final Indicator<Num> movingAverage;
-    private final Indicator<Num> signal;
-
-    /**
-     * Constructor.
-     *
-     * @param series the bar series {@link BarSeries}.
-     * @param signal
-     * @param movingAverage the moving average.
-     */
-    public DistanceFromMAIndicator(BarSeries series, Indicator<Num> signal, Indicator<Num> movingAverage) {
+    public BarPriceRangeIndicator(BarSeries series) {
         super(series);
-
-        this.movingAverage = movingAverage;
-        this.signal = signal;
-    }
-    
-    public DistanceFromMAIndicator(BarSeries series, Indicator<Num> movingAverage) {
-        this(series, new ClosePriceIndicator(series), movingAverage);
     }
 
     @Override
     protected Num calculate(int index) {
-        Num signalPrice = this.signal.getValue(index);
-        Num maValue = (Num) movingAverage.getValue(index);
-        return signalPrice.minus(maValue);
+        final Bar bar = getBarSeries().getBar(index);
+        final Num highPrice = bar.getHighPrice();
+        final Num lowPrice = bar.getLowPrice();
+        return highPrice.plus(lowPrice).dividedBy(numOf(2));
     }
 }

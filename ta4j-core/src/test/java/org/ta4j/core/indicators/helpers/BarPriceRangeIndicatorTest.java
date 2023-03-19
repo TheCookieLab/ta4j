@@ -21,48 +21,45 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package org.ta4j.core.indicators;
+package org.ta4j.core.indicators.helpers;
 
+import static junit.framework.TestCase.assertEquals;
+
+import java.util.function.Function;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.ta4j.core.Bar;
 import org.ta4j.core.BarSeries;
 import org.ta4j.core.Indicator;
-import org.ta4j.core.indicators.helpers.ClosePriceIndicator;
+import org.ta4j.core.indicators.AbstractIndicatorTest;
+import org.ta4j.core.mocks.MockBarSeries;
 import org.ta4j.core.num.Num;
 
-/**
- * Distance From Moving Average (signal - MA)
- *
- * @see <a href=
- *      "https://school.stockcharts.com/doku.php?id=technical_indicators:distance_from_ma">
- * https://school.stockcharts.com/doku.php?id=technical_indicators:distance_from_ma
- * </a>
- */
-public class DistanceFromMAIndicator extends CachedIndicator<Num> {
+public class BarPriceRangeIndicatorTest extends AbstractIndicatorTest<Indicator<Num>, Num> {
 
-    private final Indicator<Num> movingAverage;
-    private final Indicator<Num> signal;
+    private BarPriceRangeIndicator barPriceRange;
 
-    /**
-     * Constructor.
-     *
-     * @param series the bar series {@link BarSeries}.
-     * @param signal
-     * @param movingAverage the moving average.
-     */
-    public DistanceFromMAIndicator(BarSeries series, Indicator<Num> signal, Indicator<Num> movingAverage) {
-        super(series);
+    private BarSeries barSeries;
 
-        this.movingAverage = movingAverage;
-        this.signal = signal;
-    }
-    
-    public DistanceFromMAIndicator(BarSeries series, Indicator<Num> movingAverage) {
-        this(series, new ClosePriceIndicator(series), movingAverage);
+    public BarPriceRangeIndicatorTest(Function<Number, Num> numFunction) {
+        super(numFunction);
     }
 
-    @Override
-    protected Num calculate(int index) {
-        Num signalPrice = this.signal.getValue(index);
-        Num maValue = (Num) movingAverage.getValue(index);
-        return signalPrice.minus(maValue);
+    @Before
+    public void setUp() {
+        barSeries = new MockBarSeries(numFunction);
+        barPriceRange = new BarPriceRangeIndicator(barSeries);
+    }
+
+    @Test
+    public void indicatorShouldRetrieveBarHighPrice() {
+        for (int i = 0; i < 10; i++) {
+            Bar bar = barSeries.getBar(i);
+            Num typicalPrice = bar.getHighPrice()
+                    .plus(bar.getLowPrice())
+                    .dividedBy(barSeries.numOf(2));
+            assertEquals(typicalPrice, barPriceRange.getValue(i));
+        }
     }
 }
