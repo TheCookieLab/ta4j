@@ -36,7 +36,7 @@ import org.ta4j.core.num.Num;
  *
  * @see <a href=
  *      "http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:pivot_points">
- *      http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:pivot_points</a>
+ * http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:pivot_points</a>
  */
 public class FibonacciReversalIndicator extends RecursiveCachedIndicator<Num> {
 
@@ -52,7 +52,7 @@ public class FibonacciReversalIndicator extends RecursiveCachedIndicator<Num> {
      * Standard Fibonacci factors
      */
     public enum FibonacciFactor {
-        FACTOR_1(0.382), FACTOR_2(0.618), FACTOR_3(1);
+        FACTOR_236(0.236), FACTOR_382(0.382), FACTOR_500(0.5), FACTOR_618(0.618), FACTOR_786(0.786), FACTOR_1000(1);
 
         private final double factor;
 
@@ -71,10 +71,11 @@ public class FibonacciReversalIndicator extends RecursiveCachedIndicator<Num> {
      *
      * Calculates a (fibonacci) reversal
      *
-     * @param pivotPointIndicator the {@link PivotPointIndicator} for this reversal
-     * @param fibonacciFactor     the fibonacci factor for this reversal
-     * @param fibReversalTyp      the FibonacciReversalIndicator.FibReversalTyp of
-     *                            the reversal (SUPPORT, RESISTANCE)
+     * @param pivotPointIndicator the {@link PivotPointIndicator} for this
+     * reversal
+     * @param fibonacciFactor the fibonacci factor for this reversal
+     * @param fibReversalTyp the FibonacciReversalIndicator.FibReversalTyp of
+     * the reversal (SUPPORT, RESISTANCE)
      */
     public FibonacciReversalIndicator(PivotPointIndicator pivotPointIndicator, double fibonacciFactor,
             FibReversalTyp fibReversalTyp) {
@@ -89,11 +90,12 @@ public class FibonacciReversalIndicator extends RecursiveCachedIndicator<Num> {
      *
      * Calculates a (fibonacci) reversal
      *
-     * @param pivotPointIndicator the {@link PivotPointIndicator} for this reversal
-     * @param fibonacciFactor     the {@link FibonacciFactor} factor for this
-     *                            reversal
-     * @param fibReversalTyp      the FibonacciReversalIndicator.FibReversalTyp of
-     *                            the reversal (SUPPORT, RESISTANCE)
+     * @param pivotPointIndicator the {@link PivotPointIndicator} for this
+     * reversal
+     * @param fibonacciFactor the {@link FibonacciFactor} factor for this
+     * reversal
+     * @param fibReversalTyp the FibonacciReversalIndicator.FibReversalTyp of
+     * the reversal (SUPPORT, RESISTANCE)
      */
     public FibonacciReversalIndicator(PivotPointIndicator pivotPointIndicator, FibonacciFactor fibonacciFactor,
             FibReversalTyp fibReversalTyp) {
@@ -103,8 +105,9 @@ public class FibonacciReversalIndicator extends RecursiveCachedIndicator<Num> {
     @Override
     protected Num calculate(int index) {
         List<Integer> barsOfPreviousPeriod = pivotPointIndicator.getBarsOfPreviousPeriod(index);
-        if (barsOfPreviousPeriod.isEmpty())
+        if (barsOfPreviousPeriod.isEmpty()) {
             return NaN;
+        }
         Bar bar = getBarSeries().getBar(barsOfPreviousPeriod.get(0));
         Num high = bar.getHighPrice();
         Num low = bar.getLowPrice();

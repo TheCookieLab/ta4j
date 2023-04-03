@@ -36,8 +36,8 @@ import org.ta4j.core.num.Num;
  * Transforms the Num of any indicator by using common math operations.
  *
  * @apiNote Minimal deviations in last decimal places possible. During some
- *          calculations this indicator converts {@link Num DecimalNum} to
- *          {@link Double double}
+ * calculations this indicator converts {@link Num DecimalNum} to
+ * {@link Double double}
  */
 public class TransformIndicator extends CachedIndicator<Num> {
 
@@ -46,8 +46,8 @@ public class TransformIndicator extends CachedIndicator<Num> {
 
     /**
      * Constructor.
-     * 
-     * @param indicator      the indicator
+     *
+     * @param indicator the indicator
      * @param transformation a {@link Function} describing the transformation
      */
     public TransformIndicator(Indicator<Num> indicator, UnaryOperator<Num> transformation) {
@@ -117,6 +117,14 @@ public class TransformIndicator extends CachedIndicator<Num> {
     }
 
     /**
+     * Transforms the input indicator by indicator.pow(coefficient).
+     */
+    public static TransformIndicator pow(Indicator<Num> indicator, Number coefficient) {
+        Num numCoefficient = indicator.numOf(coefficient);
+        return new TransformIndicator(indicator, val -> val.pow(numCoefficient));
+    }
+
+    /**
      * Transforms the input indicator by indicator.sqrt().
      */
     public static TransformIndicator sqrt(Indicator<Num> indicator) {
@@ -125,9 +133,9 @@ public class TransformIndicator extends CachedIndicator<Num> {
 
     /**
      * Transforms the input indicator by indicator.log().
-     * 
+     *
      * @apiNote precision may be lost, because this implementation is using the
-     *          underlying doubleValue method
+     * underlying doubleValue method
      */
     public static TransformIndicator log(Indicator<Num> indicator) {
         return new TransformIndicator(indicator, val -> val.numOf(Math.log(val.doubleValue())));
