@@ -123,7 +123,7 @@ public abstract class CachedIndicator<T> extends AbstractIndicator<T> {
                     result = results.get(resultInnerIndex);
                     if (result == null) {
                         result = calculate(index);
-                        results.set(Math.min(resultInnerIndex, results.size() - 1), result);
+                        results.set(resultInnerIndex, result);
                     }
                 }
             }

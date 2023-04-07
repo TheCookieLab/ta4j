@@ -135,6 +135,7 @@ public interface Bar extends Serializable {
      * 
      * @param tradeVolume the traded volume
      * @param tradePrice  the price
+     * @param numFunction
      * @deprecated use corresponding function of {@link BarSeries}
      */
     @Deprecated
@@ -147,6 +148,7 @@ public interface Bar extends Serializable {
      * 
      * @param tradeVolume the traded volume
      * @param tradePrice  the price
+     * @param numFunction
      * @deprecated use corresponding function of {@link BarSeries}
      */
     @Deprecated
