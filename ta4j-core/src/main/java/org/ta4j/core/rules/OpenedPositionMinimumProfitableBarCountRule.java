@@ -69,7 +69,7 @@ public class OpenedPositionMinimumProfitableBarCountRule extends AbstractRule {
 
         int profitableBars = 0;
 
-        for (int i = index; i >= entryIndex; i--) {
+        for (int i = index; i > entryIndex; i--) {
             Num currentPrice = this.series.getBar(i).getClosePrice();
             Num estimatedExitFee = tradingRecord.getTransactionCostModel().calculate(currentPrice, tradingRecord.getCurrentPosition().getEntry().getAmount());
 
