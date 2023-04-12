@@ -28,10 +28,11 @@ import org.ta4j.core.num.NaN;
 import org.ta4j.core.num.Num;
 
 /**
- * Zig Zag Indicator.
+ * The Zig Zag Indicator.
  * <p>
- * See <a href="https://www.investopedia.com/terms/z/zig_zag_indicator.asp">Zig
- * Zag Indicator</a>
+ * For more information, see
+ * <a href="https://www.investopedia.com/terms/z/zig_zag_indicator.asp">Zig Zag
+ * Indicator</a>.
  */
 public class ZigZagIndicator extends CachedIndicator<Num> {
 
@@ -43,7 +44,7 @@ public class ZigZagIndicator extends CachedIndicator<Num> {
     /**
      * The indicator to provide values.
      * <p>
-     * It can be {@link org.ta4j.core.indicators.helpers.ClosePriceIndicator} or
+     * Can be {@link org.ta4j.core.indicators.helpers.ClosePriceIndicator} or
      * something similar.
      */
     private final Indicator<Num> indicator;
@@ -51,7 +52,7 @@ public class ZigZagIndicator extends CachedIndicator<Num> {
     private Num lastExtreme;
 
     /**
-     * Constructor.
+     * Constructs a ZigZagIndicator.
      *
      * @param indicator the indicator to provide values
      * @param thresholdRatio the threshold ratio, must be positive
@@ -63,6 +64,12 @@ public class ZigZagIndicator extends CachedIndicator<Num> {
         this.thresholdRatio = thresholdRatio;
     }
 
+    /**
+     * Validates the provided threshold.
+     *
+     * @param threshold the threshold to validate
+     * @throws IllegalArgumentException if threshold is null or non-positive
+     */
     private void validateThreshold(Num threshold) {
         if (threshold == null) {
             throw new IllegalArgumentException("Threshold ratio is mandatory");
@@ -73,11 +80,11 @@ public class ZigZagIndicator extends CachedIndicator<Num> {
     }
 
     /**
-     * Calculate the Zig Zag indicator's value for the current index.
+     * Calculates the Zig Zag indicator's value for the current index.
      *
      * @param index the bar index
-     * @return the indicator's value if it's ratio from last extreme is equals
-     * or bigger than the threshold, otherwise {@link NaN}
+     * @return the indicator's value if its ratio from the last extreme is equal
+     * to or greater than the threshold, otherwise {@link NaN}
      */
     @Override
     protected Num calculate(int index) {

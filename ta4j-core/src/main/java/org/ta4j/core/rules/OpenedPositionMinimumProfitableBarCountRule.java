@@ -89,7 +89,6 @@ public class OpenedPositionMinimumProfitableBarCountRule extends AbstractRule {
                     break;
                 }
             }
-
         }
 
         return profitableBars >= barCount;

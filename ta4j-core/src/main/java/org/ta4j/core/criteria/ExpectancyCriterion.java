@@ -28,7 +28,6 @@ import org.ta4j.core.Position;
 import org.ta4j.core.TradingRecord;
 import org.ta4j.core.criteria.pnl.AverageLossCriterion;
 import org.ta4j.core.criteria.pnl.AverageProfitCriterion;
-import org.ta4j.core.criteria.pnl.ProfitLossRatioCriterion;
 import org.ta4j.core.num.Num;
 
 /**

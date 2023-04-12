@@ -24,6 +24,7 @@
  */
 package org.ta4j.core.indicators;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.ta4j.core.BarSeries;
 import org.ta4j.core.Indicator;
@@ -39,13 +40,19 @@ import static org.ta4j.core.TestUtils.assertNumEquals;
 
 public class ZigZagIndicatorTest extends AbstractIndicatorTest<Indicator<Num>, Num> {
 
+    private BarSeries data;
+
     public ZigZagIndicatorTest(Function<Number, Num> numFunction) {
         super(numFunction);
     }
 
+    @Before
+    public void setUp() {
+        data = new MockBarSeries(numFunction, 0.4, 0.5, 0.6, 0.7, 0.55, 0.65, 0.45);
+    }
+
     @Test
-    public void testCalculate_BellowThreshold_ReturnNan() {
-        BarSeries data = new MockBarSeries(numFunction, 0.4, 0.5);
+    public void testCalculate_BelowThreshold_ReturnNaN() {
         ClosePriceIndicator closePrice = new ClosePriceIndicator(data);
         ZigZagIndicator zigZagIndicator = new ZigZagIndicator(closePrice, numFunction.apply(0.5));
         assertNumEquals(0.4, zigZagIndicator.getValue(0));
@@ -54,10 +61,39 @@ public class ZigZagIndicatorTest extends AbstractIndicatorTest<Indicator<Num>, N
 
     @Test
     public void testCalculate_AboveThreshold_ReturnValue() {
-        BarSeries data = new MockBarSeries(numFunction, 0.4, 0.5);
         ClosePriceIndicator closePrice = new ClosePriceIndicator(data);
         ZigZagIndicator zigZagIndicator = new ZigZagIndicator(closePrice, numFunction.apply(0.2));
         assertNumEquals(0.4, zigZagIndicator.getValue(0));
         assertNumEquals(0.5, zigZagIndicator.getValue(1));
+    }
+
+//    @Test
+//    public void testCalculate_MultipleValues() {
+//        ClosePriceIndicator closePrice = new ClosePriceIndicator(data);
+//        ZigZagIndicator zigZagIndicator = new ZigZagIndicator(closePrice, numFunction.apply(0.25));
+//        assertNumEquals(0.4, zigZagIndicator.getValue(0));
+//        assertNumEquals(0.5, zigZagIndicator.getValue(1));
+//        assertNumEquals(NaN.NaN, zigZagIndicator.getValue(2));
+//        assertNumEquals(NaN.NaN, zigZagIndicator.getValue(3));
+//        assertEquals(NaN.NaN, zigZagIndicator.getValue(4));
+//        assertEquals(NaN.NaN, zigZagIndicator.getValue(5));
+//        assertEquals(NaN.NaN, zigZagIndicator.getValue(6));
+//    }
+    @Test(expected = IllegalArgumentException.class)
+    public void testConstructor_NullThreshold() {
+        ClosePriceIndicator closePrice = new ClosePriceIndicator(data);
+        ZigZagIndicator zigZag = new ZigZagIndicator(closePrice, null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testConstructor_NegativeThreshold() {
+        ClosePriceIndicator closePrice = new ClosePriceIndicator(data);
+        ZigZagIndicator zigZag = new ZigZagIndicator(closePrice, numFunction.apply(-0.2));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testConstructor_ZeroThreshold() {
+        ClosePriceIndicator closePrice = new ClosePriceIndicator(data);
+        ZigZagIndicator zigZag = new ZigZagIndicator(closePrice, numFunction.apply(0));
     }
 }
