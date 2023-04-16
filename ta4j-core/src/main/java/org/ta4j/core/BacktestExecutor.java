@@ -23,6 +23,7 @@
  */
 package org.ta4j.core;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -80,10 +81,10 @@ public class BacktestExecutor {
      * @return
      */
     public List<TradingStatement> execute(List<Strategy> strategies, Num amount, Trade.TradeType tradeType) {
-        List<TradingStatement> tradingStatements = strategies.parallelStream().map(strategy -> {
+        List<TradingStatement> tradingStatements = Collections.synchronizedList(strategies).parallelStream().map(strategy -> {
             TradingRecord tradingRecord = seriesManager.run(strategy, tradeType, amount);
             return tradingStatementGenerator.generate(strategy, tradingRecord, seriesManager.getBarSeries());
-        }).collect(Collectors.toUnmodifiableList());
+        }).collect(Collectors.toList());
 
         return tradingStatements;
     }

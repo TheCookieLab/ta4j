@@ -171,6 +171,7 @@ public class Trade implements Serializable {
      *
      * @param index         the index the trade is executed
      * @param dateTime
+     * 
      * @param type          the trade type
      * @param pricePerAsset the trade price per asset
      */
