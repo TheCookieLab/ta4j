@@ -39,7 +39,7 @@ import org.ta4j.core.Rule;
 import org.ta4j.core.Strategy;
 import org.ta4j.core.TradingRecord;
 import org.ta4j.core.indicators.SMAIndicator;
-import org.ta4j.core.indicators.UnstableIndicator;
+import org.ta4j.core.indicators.helpers.UnstableIndicator;
 import org.ta4j.core.indicators.helpers.ClosePriceIndicator;
 import org.ta4j.core.num.Num;
 import org.ta4j.core.rules.CrossedDownIndicatorRule;
