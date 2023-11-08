@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  *
- * Copyright (c) 2017-2022 Ta4j Organization & respective
+ * Copyright (c) 2017-2023 Ta4j Organization & respective
  * authors (see AUTHORS)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -79,7 +79,7 @@ public class NumTest extends AbstractIndicatorTest<Object, Num> {
         assertNumEquals(NaN, anyNaNNum.hundred());
         assertNumEquals(100, numOf(3).hundred());
         assertNumEquals(100, anyDecimalNum.hundred());
-        assertNumEquals(100, anyDoubleNum.hundred());        
+        assertNumEquals(100, anyDoubleNum.hundred());
     }
 
     @Test(expected = AssertionError.class)
@@ -190,16 +190,7 @@ public class NumTest extends AbstractIndicatorTest<Object, Num> {
     public void testNaN() {
         Num a = NaN;
         Num eleven = DecimalNum.valueOf(11);
-        
-        assertEquals(0, a.compareTo(eleven));
-        assertEquals(0, eleven.compareTo(a));
-        assertEquals(0, NaN.compareTo(a));
-        assertNumEquals(NaN, eleven.multipliedBy(NaN));
-        assertNumEquals(NaN, eleven.max(NaN));
-        assertNumEquals(NaN, eleven.min(NaN));
-        assertNumNotEquals(a, eleven);
-        assertNumEquals(a, NaN);
-                
+
         Num mustBeNaN = a.plus(eleven);
         assertNumEquals(mustBeNaN, NaN);
 

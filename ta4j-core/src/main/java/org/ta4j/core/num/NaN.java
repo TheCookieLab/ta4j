@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  *
- * Copyright (c) 2017-2022 Ta4j Organization & respective
+ * Copyright (c) 2017-2023 Ta4j Organization & respective
  * authors (see AUTHORS)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -28,8 +28,10 @@ import java.util.function.Function;
 
 /**
  * Representation of an undefined or unrepresentable value: NaN (not a number)
- * <br>
+ * 
+ * <p>
  * Special behavior in methods such as:
+ * 
  * <ul>
  * <li>{@link NaN#plus(Num)} => NaN</li>
  * <li>{@link NaN#isEqual(Num)} => true</li>
@@ -44,15 +46,17 @@ import java.util.function.Function;
  */
 public class NaN implements Num {
 
-    /** static Not-a-Number instance */
+    /** A static Not-a-Number instance. */
     public static final Num NaN = new NaN();
 
     private NaN() {
     }
 
     /**
-     * Returns a {@code Num} version of the given {@code Number}. Warning: This
-     * method turns the number into NaN.
+     * Returns a {@code Num} version of the given {@code Number}.
+     *
+     * <p>
+     * <b>Warning:</b> This method returns {@link NaN} regardless of {@link val}.
      *
      * @param val the number
      * @return {@link #NaN}
@@ -197,10 +201,11 @@ public class NaN implements Num {
     }
 
     /**
-     * NaN.isEqual(NaN) -> true
-     * 
+     * <b>Warning:</b> This method returns {@code true} if {@code this} and
+     * {@code obj} are both {@link #NaN}.
+     *
      * @param other the other value, not null
-     * @return flase if both values are not NaN
+     * @return false if both values are not {@link #NaN}; true otherwise.
      */
     @Override
     public boolean isEqual(Num other) {
@@ -236,16 +241,6 @@ public class NaN implements Num {
     public Num max(Num other) {
         return this;
     }
-    
-    @Override
-    public Num round(int precision) {
-        return this;
-    }
-    
-    @Override
-    public Num round(int precision, RoundingMode roundingMode) {
-        return this;
-    }
 
     @Override
     public Function<Number, Num> function() {
@@ -255,5 +250,15 @@ public class NaN implements Num {
     @Override
     public boolean isNaN() {
         return true;
+    }
+
+    @Override
+    public Num round(int scale) {
+        return this;
+    }
+
+    @Override
+    public Num round(int scale, RoundingMode roundingMode) {
+        return this;
     }
 }

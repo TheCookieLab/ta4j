@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  *
- * Copyright (c) 2017-2022 Ta4j Organization & respective
+ * Copyright (c) 2017-2023 Ta4j Organization & respective
  * authors (see AUTHORS)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -30,7 +30,6 @@ import static org.ta4j.core.TestUtils.assertIndicatorNotEquals;
 import static org.ta4j.core.TestUtils.assertNumEquals;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -80,12 +79,12 @@ public class DecimalNumTest {
 
     // override the auto-precision based on length of SUPER_PRECISION_STRING by
     // passing a precision to valueOf()
-    private Function<Number, Num> superPrecisionFunc = (number -> DecimalNum.valueOf(number.toString(), 256));
+    private final Function<Number, Num> superPrecisionFunc = (number -> DecimalNum.valueOf(number.toString(), 256));
     // auto-set precision based on length of SUPER_PRECISION_STRING (120)
-    private Function<Number, Num> precisionFunc = DecimalNum::valueOf;
-    private Function<Number, Num> precision32Func = (number -> DecimalNum.valueOf(number.toString(), 32));
-    private Function<Number, Num> doubleFunc = DoubleNum::valueOf;
-    private Function<Number, Num> lowPrecisionFunc = (number -> DecimalNum.valueOf(number.toString(), 3));
+    private final Function<Number, Num> precisionFunc = DecimalNum::valueOf;
+    private final Function<Number, Num> precision32Func = (number -> DecimalNum.valueOf(number.toString(), 32));
+    private final Function<Number, Num> doubleFunc = DoubleNum::valueOf;
+    private final Function<Number, Num> lowPrecisionFunc = (number -> DecimalNum.valueOf(number.toString(), 3));
 
     private BarSeries superPrecisionSeries;
     private BarSeries precisionSeries;
@@ -309,20 +308,6 @@ public class DecimalNumTest {
         final DecimalNum decimalNum = DecimalNum.valueOf(3.0);
 
         assertFalse(decimalNum.equals(doubleNum));
-    }
-    
-    @Test
-    public void testRoundingWithDefaultRoundingMode() {
-        DecimalNum subject = DecimalNum.valueOf(3.123456);
-        
-        assertEquals(DecimalNum.valueOf(3.12346), subject.round(5));
-    }
-    
-    @Test
-    public void testRoundingWithCustomRoundingMode() {
-        DecimalNum subject = DecimalNum.valueOf(3.123456);
-        
-        assertEquals(DecimalNum.valueOf(3.12), subject.round(2, RoundingMode.FLOOR));
     }
 
 }

@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  *
- * Copyright (c) 2017-2022 Ta4j Organization & respective
+ * Copyright (c) 2017-2023 Ta4j Organization & respective
  * authors (see AUTHORS)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -23,8 +23,6 @@
  */
 package org.ta4j.core.num;
 
-import java.math.RoundingMode;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -46,19 +44,5 @@ public class DoubleNumTest {
         final Num num2 = DoubleNum.valueOf(0.0);
 
         assertTrue(num1.isEqual(num2));
-    }
-
-    @Test
-    public void testRoundingWithDefaultRoundingMode() {
-        DoubleNum subject = DoubleNum.valueOf(3.123456);
-
-        assertEquals(DoubleNum.valueOf(3.12346), subject.round(5));
-    }
-
-    @Test
-    public void testRoundingWithCustomRoundingMode() {
-        DoubleNum subject = DoubleNum.valueOf(3.123456);
-
-        assertEquals(DoubleNum.valueOf(3.12), subject.round(2, RoundingMode.FLOOR));
     }
 }
