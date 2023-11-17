@@ -44,7 +44,7 @@ public class DistinctConsecutiveValuesOfIndicator extends CachedIndicator<Num> {
     }
 
     @Override
-    protected Num calculate(int index) {        
+    protected Num calculate(int index) {
         Stream.Builder<Num> builder = Stream.builder();
         this.indicator.stream().reduce(null, (prev, curr) -> {
             if (prev == null || !curr.equals(prev)) {
@@ -52,11 +52,10 @@ public class DistinctConsecutiveValuesOfIndicator extends CachedIndicator<Num> {
             }
             return curr;
         });
-        
-        
+
         List<Num> values = builder.build().collect(Collectors.toList());
         int safeIndex = Math.min(values.size() - 1, index);
-        
+
         return values.get(safeIndex);
     }
 }

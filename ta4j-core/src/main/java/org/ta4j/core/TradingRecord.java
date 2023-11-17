@@ -47,7 +47,7 @@ public interface TradingRecord extends Serializable, Comparable<TradingRecord> {
 
     /**
      * @return the entry type (BUY or SELL) of the first trade in the trading
-     * session
+     *         session
      */
     TradeType getStartingType();
 
@@ -68,10 +68,10 @@ public interface TradingRecord extends Serializable, Comparable<TradingRecord> {
     /**
      * Places a trade in the trading record.
      *
-     * @param index the index to place the trade
+     * @param index    the index to place the trade
      * @param dateTime
-     * @param price the trade price
-     * @param amount the trade amount
+     * @param price    the trade price
+     * @param amount   the trade amount
      */
     void operate(int index, ZonedDateTime dateTime, Num price, Num amount);
 
@@ -88,10 +88,10 @@ public interface TradingRecord extends Serializable, Comparable<TradingRecord> {
     /**
      * Places an entry trade in the trading record.
      *
-     * @param index the index to place the entry
+     * @param index    the index to place the entry
      * @param dateTime
-     * @param price the trade price
-     * @param amount the trade amount
+     * @param price    the trade price
+     * @param amount   the trade amount
      * @return true if the entry has been placed, false otherwise
      */
     boolean enter(int index, ZonedDateTime dateTime, Num price, Num amount);
@@ -109,10 +109,10 @@ public interface TradingRecord extends Serializable, Comparable<TradingRecord> {
     /**
      * Places an exit trade in the trading record.
      *
-     * @param index the index to place the exit
+     * @param index    the index to place the exit
      * @param dateTime
-     * @param price the trade price
-     * @param amount the trade amount
+     * @param price    the trade price
+     * @param amount   the trade amount
      * @return true if the exit has been placed, false otherwise
      */
     boolean exit(int index, ZonedDateTime dateTime, Num price, Num amount);
@@ -132,10 +132,11 @@ public interface TradingRecord extends Serializable, Comparable<TradingRecord> {
     /***
      * 
      * @param mostRecentPositions
-     * @return the most recent recorded closed positions 
+     * @return the most recent recorded closed positions
      */
     default List<Position> getPositions(int mostRecentPositions) {
-        return this.getPositions().subList(Math.max(0, this.getPositionCount() - mostRecentPositions), this.getPositionCount());
+        return this.getPositions()
+                .subList(Math.max(0, this.getPositionCount() - mostRecentPositions), this.getPositionCount());
     }
 
     /**
@@ -158,8 +159,7 @@ public interface TradingRecord extends Serializable, Comparable<TradingRecord> {
     CostModel getTransactionCostModel();
 
     /**
-     * *
-     * the holding cost model
+     * * the holding cost model
      *
      * @return
      */
@@ -198,8 +198,7 @@ public interface TradingRecord extends Serializable, Comparable<TradingRecord> {
     Trade getLastExit();
 
     /**
-     * *
-     * Cumulative profit across all trades
+     * * Cumulative profit across all trades
      *
      * @return
      */
@@ -208,21 +207,21 @@ public interface TradingRecord extends Serializable, Comparable<TradingRecord> {
     }
 
     /**
-     * *
-     * Cumulative profit across the most recent n trades
+     * * Cumulative profit across the most recent n trades
      *
      * @param ofMostRecentNPositions
      * @return
      */
     default Num getNetProfit(int ofMostRecentNPositions) {
-        int startingIndex = this.getPositionCount() > ofMostRecentNPositions ? this.getPositionCount() - ofMostRecentNPositions : 0;
+        int startingIndex = this.getPositionCount() > ofMostRecentNPositions
+                ? this.getPositionCount() - ofMostRecentNPositions
+                : 0;
         List<Position> mostRecentPositions = this.getPositions().subList(startingIndex, this.getPositionCount());
         return this.getNetProfit(mostRecentPositions);
     }
 
     /**
-     * *
-     * Cumulative profit across the given trades
+     * * Cumulative profit across the given trades
      *
      * @param positions
      * @return
@@ -244,7 +243,9 @@ public interface TradingRecord extends Serializable, Comparable<TradingRecord> {
      * @return
      */
     default Num getPercentageProfitableTrades(int ofMostRecentNPositions) {
-        int startingIndex = this.getPositionCount() > ofMostRecentNPositions ? this.getPositionCount() - ofMostRecentNPositions : 0;
+        int startingIndex = this.getPositionCount() > ofMostRecentNPositions
+                ? this.getPositionCount() - ofMostRecentNPositions
+                : 0;
         List<Position> mostRecentPositions = this.getPositions().subList(startingIndex, this.getPositionCount());
         return this.getPercentageProfitableTrades(mostRecentPositions);
     }
@@ -272,8 +273,7 @@ public interface TradingRecord extends Serializable, Comparable<TradingRecord> {
     }
 
     /**
-     * *
-     * The percentage of trades that have net profit > 0
+     * * The percentage of trades that have net profit > 0
      *
      * @return
      */

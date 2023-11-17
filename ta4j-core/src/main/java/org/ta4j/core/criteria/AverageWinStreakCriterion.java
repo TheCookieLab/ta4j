@@ -74,7 +74,8 @@ public class AverageWinStreakCriterion extends AbstractAnalysisCriterion {
                 continue;
             }
 
-            if (i < tradingRecord.getPositionCount() - 1 && tradingRecord.getPositions().get(i + 1).getProfit().multipliedBy(profit).isNegativeOrZero()) {
+            if (i < tradingRecord.getPositionCount() - 1
+                    && tradingRecord.getPositions().get(i + 1).getProfit().multipliedBy(profit).isNegativeOrZero()) {
                 if (profit.isPositive()) {
                     winStreaks.add(winStreak);
                     winStreakCount++;

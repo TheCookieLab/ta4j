@@ -38,8 +38,8 @@ public class LinearTransactionCostModel implements CostModel {
     /**
      * Constructor. (feePerPosition * x)
      *
-     * @param feePerPosition the feePerPosition coefficient (e.g. 0.005 for 0.5%
-     * per {@link Trade trade})
+     * @param feePerPosition the feePerPosition coefficient (e.g. 0.005 for 0.5% per
+     *                       {@link Trade trade})
      */
     public LinearTransactionCostModel(double feePerPosition) {
         this.feePerPosition = feePerPosition;
@@ -58,9 +58,9 @@ public class LinearTransactionCostModel implements CostModel {
     /**
      * Calculates the transaction cost of a position.
      *
-     * @param position the position
+     * @param position     the position
      * @param currentIndex current bar index (irrelevant for the
-     * LinearTransactionCostModel)
+     *                     LinearTransactionCostModel)
      * @return the absolute trade cost
      */
     @Override
@@ -89,7 +89,7 @@ public class LinearTransactionCostModel implements CostModel {
     }
 
     /**
-     * @param price execution price
+     * @param price  execution price
      * @param amount trade amount
      * @return the absolute trade transaction cost
      */
@@ -102,7 +102,7 @@ public class LinearTransactionCostModel implements CostModel {
      * Evaluate if two models are equal
      *
      * @param otherModel model to compare with
-     * @return 
+     * @return
      */
     @Override
     public boolean equals(CostModel otherModel) {

@@ -48,7 +48,7 @@ public class DollarStopGainRule extends AbstractRule {
      * Constructor.
      *
      * @param signalPrice the close price indicator
-     * @param gainAmount the gain amount in dollar terms
+     * @param gainAmount  the gain amount in dollar terms
      */
     public DollarStopGainRule(Indicator<Num> signalPrice, Number gainAmount) {
         this(signalPrice, signalPrice.numOf(gainAmount));
@@ -58,7 +58,7 @@ public class DollarStopGainRule extends AbstractRule {
      * Constructor.
      *
      * @param signalPrice the close price indicator
-     * @param gainAmount the gain amount in dollar terms
+     * @param gainAmount  the gain amount in dollar terms
      */
     public DollarStopGainRule(Indicator<Num> signalPrice, Num gainAmount) {
         this.signalPrice = signalPrice;
@@ -80,9 +80,11 @@ public class DollarStopGainRule extends AbstractRule {
         Num currentPrice = signalPrice.getValue(index);
 
         if (tradingRecord.getCurrentPosition().getEntry().isBuy()) {
-            satisfied = isBuyGainSatisfied(entryPrice, tradingRecord.getCurrentPosition().getEntry().getCost(), currentPrice);
+            satisfied = isBuyGainSatisfied(entryPrice, tradingRecord.getCurrentPosition().getEntry().getCost(),
+                    currentPrice);
         } else {
-            satisfied = isSellGainSatisfied(entryPrice, tradingRecord.getCurrentPosition().getEntry().getCost(), currentPrice);
+            satisfied = isSellGainSatisfied(entryPrice, tradingRecord.getCurrentPosition().getEntry().getCost(),
+                    currentPrice);
         }
 
         traceIsSatisfied(index, satisfied);

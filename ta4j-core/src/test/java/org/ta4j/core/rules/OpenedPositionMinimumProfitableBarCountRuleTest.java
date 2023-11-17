@@ -52,7 +52,8 @@ public class OpenedPositionMinimumProfitableBarCountRuleTest {
     @Test
     public void testAtLeastOneBarRuleForOpenedTrade() {
         final BarSeries series = new MockBarSeries(DecimalNum::valueOf, 1, 2, 3, 4);
-        final OpenedPositionMinimumProfitableBarCountRule rule = new OpenedPositionMinimumProfitableBarCountRule(series, 1);
+        final OpenedPositionMinimumProfitableBarCountRule rule = new OpenedPositionMinimumProfitableBarCountRule(series,
+                1);
 
         final TradingRecord tradingRecord = new BaseTradingRecord(Trade.buyAt(0, series));
 
@@ -65,7 +66,8 @@ public class OpenedPositionMinimumProfitableBarCountRuleTest {
     @Test
     public void testAtLeastMoreThanOneBarRuleForOpenedTrade() {
         final BarSeries series = new MockBarSeries(DecimalNum::valueOf, 1, 2, 3, 4);
-        final OpenedPositionMinimumProfitableBarCountRule rule = new OpenedPositionMinimumProfitableBarCountRule(series, 2);
+        final OpenedPositionMinimumProfitableBarCountRule rule = new OpenedPositionMinimumProfitableBarCountRule(series,
+                2);
 
         final TradingRecord tradingRecord = new BaseTradingRecord(Trade.buyAt(0, series));
 
@@ -78,7 +80,8 @@ public class OpenedPositionMinimumProfitableBarCountRuleTest {
     @Test
     public void testThreeBarRuleForOpenedTrade() {
         final BarSeries series = new MockBarSeries(DecimalNum::valueOf, 1, 2, 3, 4);
-        final OpenedPositionMinimumProfitableBarCountRule rule = new OpenedPositionMinimumProfitableBarCountRule(series, 3);
+        final OpenedPositionMinimumProfitableBarCountRule rule = new OpenedPositionMinimumProfitableBarCountRule(series,
+                3);
 
         final TradingRecord tradingRecord = new BaseTradingRecord(Trade.buyAt(0, series));
 
@@ -91,7 +94,8 @@ public class OpenedPositionMinimumProfitableBarCountRuleTest {
     @Test
     public void testIsSatisfiedOnDecliningPrices() {
         final BarSeries series = new MockBarSeries(DecimalNum::valueOf, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1);
-        final OpenedPositionMinimumProfitableBarCountRule rule = new OpenedPositionMinimumProfitableBarCountRule(series, 1);
+        final OpenedPositionMinimumProfitableBarCountRule rule = new OpenedPositionMinimumProfitableBarCountRule(series,
+                1);
 
         final TradingRecord tradingRecord = new BaseTradingRecord(Trade.buyAt(0, series));
 
@@ -110,7 +114,8 @@ public class OpenedPositionMinimumProfitableBarCountRuleTest {
     @Test
     public void testIsSatisfiedOnMixedPrices() {
         final BarSeries series = new MockBarSeries(DecimalNum::valueOf, 10, 11, 12, 9, 10, 11, 12, 13, 9, 10);
-        final OpenedPositionMinimumProfitableBarCountRule rule = new OpenedPositionMinimumProfitableBarCountRule(series, 3);
+        final OpenedPositionMinimumProfitableBarCountRule rule = new OpenedPositionMinimumProfitableBarCountRule(series,
+                3);
 
         final TradingRecord tradingRecord = new BaseTradingRecord(Trade.buyAt(0, series));
 
@@ -129,7 +134,8 @@ public class OpenedPositionMinimumProfitableBarCountRuleTest {
     @Test
     public void testIsSatisfiedOnMixedPrices2() {
         final BarSeries series = new MockBarSeries(DecimalNum::valueOf, 10, 11, 10, 9, 10, 10, 10, 9, 11, 11);
-        final OpenedPositionMinimumProfitableBarCountRule rule = new OpenedPositionMinimumProfitableBarCountRule(series, 2);
+        final OpenedPositionMinimumProfitableBarCountRule rule = new OpenedPositionMinimumProfitableBarCountRule(series,
+                2);
 
         final TradingRecord tradingRecord = new BaseTradingRecord(Trade.buyAt(0, series));
 
@@ -148,9 +154,11 @@ public class OpenedPositionMinimumProfitableBarCountRuleTest {
     @Test
     public void testIsSatisfiedOnSellEntry() {
         final BarSeries series = new MockBarSeries(DecimalNum::valueOf, 10, 11, 10, 9, 10, 10, 10, 9, 9, 8);
-        final OpenedPositionMinimumProfitableBarCountRule rule = new OpenedPositionMinimumProfitableBarCountRule(series, 2);
+        final OpenedPositionMinimumProfitableBarCountRule rule = new OpenedPositionMinimumProfitableBarCountRule(series,
+                2);
 
-        final TradingRecord tradingRecord = new BaseTradingRecord(Trade.TradeType.SELL, new LinearTransactionCostModel(0.01));
+        final TradingRecord tradingRecord = new BaseTradingRecord(Trade.TradeType.SELL,
+                new LinearTransactionCostModel(0.01));
         tradingRecord.enter(0, ZonedDateTime.now(), series.getBar(0).getClosePrice(), series.numOf(1));
 
         assertFalse(rule.isSatisfied(0, tradingRecord));
@@ -168,7 +176,8 @@ public class OpenedPositionMinimumProfitableBarCountRuleTest {
     @Test
     public void testAtLeastBarCountRuleForClosedTradeShouldAlwaysReturnsFalse() {
         final BarSeries series = new MockBarSeries(DecimalNum::valueOf, 1, 2, 3, 4);
-        final OpenedPositionMinimumProfitableBarCountRule rule = new OpenedPositionMinimumProfitableBarCountRule(series, 1);
+        final OpenedPositionMinimumProfitableBarCountRule rule = new OpenedPositionMinimumProfitableBarCountRule(series,
+                1);
 
         final TradingRecord tradingRecord = new BaseTradingRecord(Trade.buyAt(0, series), Trade.sellAt(1, series));
 
@@ -181,7 +190,8 @@ public class OpenedPositionMinimumProfitableBarCountRuleTest {
     @Test
     public void testAtLeastBarCountRuleForEmptyTradingRecordShouldAlwaysReturnsFalse() {
         final BarSeries series = new MockBarSeries(DecimalNum::valueOf, 1, 2, 3, 4);
-        final OpenedPositionMinimumProfitableBarCountRule rule = new OpenedPositionMinimumProfitableBarCountRule(series, 1);
+        final OpenedPositionMinimumProfitableBarCountRule rule = new OpenedPositionMinimumProfitableBarCountRule(series,
+                1);
 
         final TradingRecord tradingRecord = new BaseTradingRecord();
 

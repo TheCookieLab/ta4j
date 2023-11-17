@@ -51,7 +51,7 @@ public interface CostModel extends Serializable {
     Num calculate(Num price, Num amount);
 
     boolean equals(CostModel model);
-    
+
     /***
      * 
      * @return the underlying cost value in raw form

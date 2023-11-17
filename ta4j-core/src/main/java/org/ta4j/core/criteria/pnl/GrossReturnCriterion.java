@@ -68,7 +68,7 @@ public class GrossReturnCriterion extends AbstractAnalysisCriterion {
     /**
      * Calculates the gross return of a position (Buy and sell).
      *
-     * @param series a bar series
+     * @param series   a bar series
      * @param position a position
      * @return the gross return of the position
      */

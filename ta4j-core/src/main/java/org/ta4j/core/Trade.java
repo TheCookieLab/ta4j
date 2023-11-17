@@ -120,7 +120,7 @@ public class Trade implements Serializable {
      * The cost model for trade execution
      */
     private CostModel costModel;
-    
+
     /***
      * The trade date time
      */
@@ -202,22 +202,23 @@ public class Trade implements Serializable {
      * @param amount               the trade amount
      * @param transactionCostModel the cost model for trade execution
      */
-    protected Trade(int index, ZonedDateTime dateTime, TradeType type, Num pricePerAsset, Num amount, CostModel transactionCostModel) {
+    protected Trade(int index, ZonedDateTime dateTime, TradeType type, Num pricePerAsset, Num amount,
+            CostModel transactionCostModel) {
         this.dateTime = dateTime;
-        this.type = type;        
+        this.type = type;
         this.index = index;
         this.amount = amount;
 
         setPricesAndCost(pricePerAsset, amount, transactionCostModel);
     }
-    
+
     /***
      * 
      * @param index
      * @param type
      * @param pricePerAsset
      * @param amount
-     * @param transactionCostModel 
+     * @param transactionCostModel
      */
     protected Trade(int index, TradeType type, Num pricePerAsset, Num amount, CostModel transactionCostModel) {
         this(index, ZonedDateTime.now(), type, pricePerAsset, amount, transactionCostModel);
@@ -250,10 +251,11 @@ public class Trade implements Serializable {
     public Num getPricePerAsset() {
         return pricePerAsset;
     }
-    
+
     /***
      * The trade date time
-     * @return 
+     * 
+     * @return
      */
     public ZonedDateTime getDateTime() {
         return dateTime;
@@ -369,10 +371,10 @@ public class Trade implements Serializable {
     }
 
     /**
-     * @param index  the index the trade is executed
+     * @param index    the index the trade is executed
      * @param dateTime
-     * @param price  the trade price
-     * @param amount the trade amount
+     * @param price    the trade price
+     * @param amount   the trade amount
      * @return a BUY trade
      */
     public static Trade buyAt(int index, ZonedDateTime dateTime, Num price, Num amount) {
@@ -410,10 +412,10 @@ public class Trade implements Serializable {
     }
 
     /**
-     * @param index  the index the trade is executed
+     * @param index    the index the trade is executed
      * @param dateTime
-     * @param price  the trade price
-     * @param amount the trade amount
+     * @param price    the trade price
+     * @param amount   the trade amount
      * @return a SELL trade
      */
     public static Trade sellAt(int index, ZonedDateTime dateTime, Num price, Num amount) {

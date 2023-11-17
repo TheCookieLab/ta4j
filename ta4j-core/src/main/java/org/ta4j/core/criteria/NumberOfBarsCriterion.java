@@ -49,13 +49,14 @@ public class NumberOfBarsCriterion extends AbstractAnalysisCriterion {
     public Num calculate(BarSeries series, TradingRecord tradingRecord) {
         return this.calculate(series, tradingRecord, tradingRecord.getPositionCount());
     }
-    
+
     @Override
     public Num calculate(BarSeries series, TradingRecord tradingRecord, int mostRecentPositions) {
         return tradingRecord.getPositions()
                 .stream()
                 .filter(Position::isClosed)
-                .skip(Math.max(0, tradingRecord.getPositions().stream().filter(Position::isClosed).count() - mostRecentPositions))
+                .skip(Math.max(0,
+                        tradingRecord.getPositions().stream().filter(Position::isClosed).count() - mostRecentPositions))
                 .map(t -> calculate(series, t))
                 .reduce(series.numOf(0), Num::plus);
     }

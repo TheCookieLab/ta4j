@@ -33,8 +33,8 @@ import org.ta4j.core.num.Num;
  *
  * @see <a href=
  *      "https://school.stockcharts.com/doku.php?id=technical_indicators:distance_from_ma">
- * https://school.stockcharts.com/doku.php?id=technical_indicators:distance_from_ma
- * </a>
+ *      https://school.stockcharts.com/doku.php?id=technical_indicators:distance_from_ma
+ *      </a>
  */
 public class DistanceFromMAIndicator extends CachedIndicator<Num> {
 
@@ -44,7 +44,7 @@ public class DistanceFromMAIndicator extends CachedIndicator<Num> {
     /**
      * Constructor.
      *
-     * @param series the bar series {@link BarSeries}.
+     * @param series        the bar series {@link BarSeries}.
      * @param signal
      * @param movingAverage the moving average.
      */
@@ -54,7 +54,7 @@ public class DistanceFromMAIndicator extends CachedIndicator<Num> {
         this.movingAverage = movingAverage;
         this.signal = signal;
     }
-    
+
     public DistanceFromMAIndicator(BarSeries series, Indicator<Num> movingAverage) {
         this(series, new ClosePriceIndicator(series), movingAverage);
     }

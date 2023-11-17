@@ -33,8 +33,8 @@ import org.ta4j.core.num.Num;
  *
  * @see <a href=
  *      "https://school.stockcharts.com/doku.php?id=technical_indicators:distance_from_ma">
- * https://school.stockcharts.com/doku.php?id=technical_indicators:distance_from_ma
- * </a>
+ *      https://school.stockcharts.com/doku.php?id=technical_indicators:distance_from_ma
+ *      </a>
  */
 public class ATRDistanceFromMAIndicator extends CachedIndicator<Num> {
 
@@ -45,17 +45,18 @@ public class ATRDistanceFromMAIndicator extends CachedIndicator<Num> {
     /**
      * Constructor.
      *
-     * @param series the bar series {@link BarSeries}.
+     * @param series        the bar series {@link BarSeries}.
      * @param signal
      * @param movingAverage the moving average.
      * @param atrBarCount
      */
-    public ATRDistanceFromMAIndicator(BarSeries series, Indicator<Num> signal, Indicator<Num> movingAverage, int atrBarCount) {
+    public ATRDistanceFromMAIndicator(BarSeries series, Indicator<Num> signal, Indicator<Num> movingAverage,
+            int atrBarCount) {
         super(series);
 
         this.atr = new ATRIndicator(series, atrBarCount);
         this.movingAverage = movingAverage;
-        this.signal = signal;        
+        this.signal = signal;
     }
 
     public ATRDistanceFromMAIndicator(BarSeries series, Indicator<Num> movingAverage, int atrBarCount) {
@@ -67,7 +68,7 @@ public class ATRDistanceFromMAIndicator extends CachedIndicator<Num> {
         Num signalPrice = this.signal.getValue(index);
         Num maValue = (Num) this.movingAverage.getValue(index);
         Num atrValue = this.atr.getValue(index);
-        
+
         return (signalPrice.minus(maValue)).dividedBy(atrValue);
     }
 }

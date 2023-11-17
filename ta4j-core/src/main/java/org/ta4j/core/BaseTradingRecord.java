@@ -112,7 +112,7 @@ public class BaseTradingRecord implements TradingRecord {
     /**
      * Constructor.
      *
-     * @param name the name of the trading record
+     * @param name      the name of the trading record
      * @param tradeType
      */
     public BaseTradingRecord(String name, TradeType tradeType) {
@@ -130,8 +130,7 @@ public class BaseTradingRecord implements TradingRecord {
     }
 
     /**
-     * *
-     * Constructor.
+     * * Constructor.
      *
      * @param tradeType
      * @param transactionCostModel
@@ -141,8 +140,7 @@ public class BaseTradingRecord implements TradingRecord {
     }
 
     /**
-     * *
-     * Constructor.
+     * * Constructor.
      *
      * @param transactionCostModel
      */
@@ -152,7 +150,8 @@ public class BaseTradingRecord implements TradingRecord {
 
     /***
      * Constructor
-     * @param linearTransactionCost 
+     * 
+     * @param linearTransactionCost
      */
     public BaseTradingRecord(Double linearTransactionCost) {
         this(new LinearTransactionCostModel(linearTransactionCost));
@@ -161,10 +160,10 @@ public class BaseTradingRecord implements TradingRecord {
     /**
      * Constructor.
      *
-     * @param entryTradeType the {@link TradeType trade type} of entries in the
-     * trading session
+     * @param entryTradeType       the {@link TradeType trade type} of entries in
+     *                             the trading session
      * @param transactionCostModel the cost model for transactions of the asset
-     * @param holdingCostModel the cost model for holding asset (e.g. borrowing)
+     * @param holdingCostModel     the cost model for holding asset (e.g. borrowing)
      */
     public BaseTradingRecord(TradeType entryTradeType, CostModel transactionCostModel, CostModel holdingCostModel) {
         if (entryTradeType == null) {
@@ -189,8 +188,8 @@ public class BaseTradingRecord implements TradingRecord {
      * Constructor.
      *
      * @param transactionCostModel the cost model for transactions of the asset
-     * @param holdingCostModel the cost model for holding asset (e.g. borrowing)
-     * @param trades the trades to be recorded (cannot be empty)
+     * @param holdingCostModel     the cost model for holding asset (e.g. borrowing)
+     * @param trades               the trades to be recorded (cannot be empty)
      */
     public BaseTradingRecord(CostModel transactionCostModel, CostModel holdingCostModel, Trade... trades) {
         this(trades[0].getType(), transactionCostModel, holdingCostModel);
@@ -204,7 +203,8 @@ public class BaseTradingRecord implements TradingRecord {
                 // BUY, SELL
                 currentPosition = new Position(o.getType(), transactionCostModel, holdingCostModel);
             }
-            Trade newTrade = currentPosition.operate(o.getIndex(), o.getDateTime(), o.getPricePerAsset(), o.getAmount());
+            Trade newTrade = currentPosition.operate(o.getIndex(), o.getDateTime(), o.getPricePerAsset(),
+                    o.getAmount());
             recordTrade(newTrade, newTradeWillBeAnEntry);
         }
     }
@@ -291,12 +291,12 @@ public class BaseTradingRecord implements TradingRecord {
         }
         return null;
     }
-    
+
     @Override
     public CostModel getTransactionCostModel() {
         return transactionCostModel;
     }
-    
+
     @Override
     public CostModel getHoldingCostModel() {
         return holdingCostModel;
@@ -305,7 +305,7 @@ public class BaseTradingRecord implements TradingRecord {
     /**
      * Records a trade and the corresponding position (if closed).
      *
-     * @param trade the trade to be recorded
+     * @param trade   the trade to be recorded
      * @param isEntry true if the trade is an entry, false otherwise (exit)
      */
     private void recordTrade(Trade trade, boolean isEntry) {

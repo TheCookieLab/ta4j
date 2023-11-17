@@ -53,7 +53,7 @@ public class StopLossRule extends AbstractRule {
     /**
      * Constructor.
      *
-     * @param signalPrice     the close price indicator
+     * @param signalPrice    the close price indicator
      * @param lossPercentage the loss percentage
      */
     public StopLossRule(Indicator<Num> signalPrice, Number lossPercentage) {
@@ -63,7 +63,7 @@ public class StopLossRule extends AbstractRule {
     /**
      * Constructor.
      *
-     * @param signalPrice     the close price indicator
+     * @param signalPrice    the close price indicator
      * @param lossPercentage the loss percentage
      */
     public StopLossRule(Indicator<Num> signalPrice, Num lossPercentage) {
@@ -98,7 +98,7 @@ public class StopLossRule extends AbstractRule {
     private boolean isBuyStopSatisfied(Num entryPrice, Num currentPrice) {
         Num lossRatioThreshold = HUNDRED.minus(lossPercentage).dividedBy(HUNDRED);
         Num threshold = entryPrice.multipliedBy(lossRatioThreshold);
-        
+
         if (log.isDebugEnabled()) {
             log.debug("Long stop loss threshold at {}", threshold);
         }
@@ -108,7 +108,7 @@ public class StopLossRule extends AbstractRule {
     private boolean isSellStopSatisfied(Num entryPrice, Num currentPrice) {
         Num lossRatioThreshold = HUNDRED.plus(lossPercentage).dividedBy(HUNDRED);
         Num threshold = entryPrice.multipliedBy(lossRatioThreshold);
-        
+
         if (log.isDebugEnabled()) {
             log.debug("Short stop loss threshold at {}", threshold);
         }

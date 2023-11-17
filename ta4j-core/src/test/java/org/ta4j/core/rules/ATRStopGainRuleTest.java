@@ -62,7 +62,7 @@ public class ATRStopGainRuleTest extends AbstractIndicatorTest<BarSeries, Num> {
         bars.add(new BaseBar(Duration.ZERO, ZonedDateTime.now(), 115, 125, 110, 110, 1, 0, 0, this::numOf));
         bars.add(new BaseBar(Duration.ZERO, ZonedDateTime.now(), 110, 110, 90, 90, 1, 0, 0, this::numOf));
         bars.add(new BaseBar(Duration.ZERO, ZonedDateTime.now(), 72, 72, 72, 72, 1, 0, 0, this::numOf));
-        
+
         series = new MockBarSeries(bars);
     }
 
@@ -101,7 +101,7 @@ public class ATRStopGainRuleTest extends AbstractIndicatorTest<BarSeries, Num> {
         tradingRecord.enter(0, ZonedDateTime.now(), numOf(99), tradedAmount);
         assertFalse(rule.isSatisfied(1, tradingRecord));
         assertFalse(rule.isSatisfied(2, tradingRecord));
-        assertFalse(rule.isSatisfied(3, tradingRecord));      
+        assertFalse(rule.isSatisfied(3, tradingRecord));
         assertFalse(rule.isSatisfied(4, tradingRecord));
         assertFalse(rule.isSatisfied(5, tradingRecord));
         assertTrue(rule.isSatisfied(6, tradingRecord));

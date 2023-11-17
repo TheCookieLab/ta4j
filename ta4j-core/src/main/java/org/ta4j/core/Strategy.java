@@ -66,19 +66,17 @@ public interface Strategy {
     Strategy or(Strategy strategy);
 
     /**
-     * @param name the name of the strategy
-     * @param strategy the other strategy
-     * @param unstablePeriod number of bars that will be strip off for this
-     * strategy
+     * @param name           the name of the strategy
+     * @param strategy       the other strategy
+     * @param unstablePeriod number of bars that will be strip off for this strategy
      * @return the AND combination of two {@link Strategy strategies}
      */
     Strategy and(String name, Strategy strategy, int unstablePeriod);
 
     /**
-     * @param name the name of the strategy
-     * @param strategy the other strategy
-     * @param unstablePeriod number of bars that will be strip off for this
-     * strategy
+     * @param name           the name of the strategy
+     * @param strategy       the other strategy
+     * @param unstablePeriod number of bars that will be strip off for this strategy
      * @return the OR combination of two {@link Strategy strategies}
      */
     Strategy or(String name, Strategy strategy, int unstablePeriod);
@@ -89,26 +87,25 @@ public interface Strategy {
     Strategy opposite();
 
     /**
-     * @param unstablePeriod number of bars that will be strip off for this
-     * strategy
+     * @param unstablePeriod number of bars that will be strip off for this strategy
      */
     void setUnstablePeriod(int unstablePeriod);
 
     /**
      * @return unstablePeriod number of bars that will be strip off for this
-     * strategy
+     *         strategy
      */
     int getUnstablePeriod();
 
     /**
      * @param index a bar index
      * @return true if this strategy is unstable at the provided index, false
-     * otherwise (stable)
+     *         otherwise (stable)
      */
     boolean isUnstableAt(int index);
 
     /**
-     * @param index the bar index
+     * @param index         the bar index
      * @param tradingRecord the potentially needed trading history
      * @return true to recommend a trade, false otherwise (no recommendation)
      */
@@ -131,7 +128,7 @@ public interface Strategy {
     }
 
     /**
-     * @param index the bar index
+     * @param index         the bar index
      * @param tradingRecord the potentially needed trading history
      * @return true to recommend to enter, false otherwise
      */
@@ -148,7 +145,7 @@ public interface Strategy {
     }
 
     /**
-     * @param index the bar index
+     * @param index         the bar index
      * @param tradingRecord the potentially needed trading history
      * @return true to recommend to exit, false otherwise
      */

@@ -73,7 +73,7 @@ public class BaseStrategy implements Strategy {
      * Constructor.
      *
      * @param entryRule the entry rule
-     * @param exitRule the exit rule
+     * @param exitRule  the exit rule
      */
     public BaseStrategy(Rule entryRule, Rule exitRule) {
         this(null, null, entryRule, exitRule, 0);
@@ -82,20 +82,20 @@ public class BaseStrategy implements Strategy {
     /**
      * Constructor.
      *
-     * @param entryRule the entry rule
-     * @param exitRule the exit rule
+     * @param entryRule      the entry rule
+     * @param exitRule       the exit rule
      * @param unstablePeriod strategy will ignore possible signals at
-     * <code>index</code> < <code>unstablePeriod</code>
+     *                       <code>index</code> < <code>unstablePeriod</code>
      */
     public BaseStrategy(Rule entryRule, Rule exitRule, int unstablePeriod) {
         this(null, null, entryRule, exitRule, unstablePeriod);
     }
-    
+
     /***
      * 
      * @param name
      * @param entryRule
-     * @param exitRule 
+     * @param exitRule
      */
     public BaseStrategy(String name, Rule entryRule, Rule exitRule) {
         this(name, null, entryRule, exitRule);
@@ -104,10 +104,10 @@ public class BaseStrategy implements Strategy {
     /**
      * Constructor.
      *
-     * @param name the name of the strategy
+     * @param name        the name of the strategy
      * @param description
-     * @param entryRule the entry rule
-     * @param exitRule the exit rule
+     * @param entryRule   the entry rule
+     * @param exitRule    the exit rule
      */
     public BaseStrategy(String name, String description, Rule entryRule, Rule exitRule) {
         this(name, description, entryRule, exitRule, 0);
@@ -116,12 +116,12 @@ public class BaseStrategy implements Strategy {
     /**
      * Constructor.
      *
-     * @param name the name of the strategy
+     * @param name           the name of the strategy
      * @param description
-     * @param entryRule the entry rule
-     * @param exitRule the exit rule
+     * @param entryRule      the entry rule
+     * @param exitRule       the exit rule
      * @param unstablePeriod strategy will ignore possible signals at
-     * <code>index</code> < <code>unstablePeriod</code>
+     *                       <code>index</code> < <code>unstablePeriod</code>
      */
     public BaseStrategy(String name, String description, Rule entryRule, Rule exitRule, int unstablePeriod) {
         if (entryRule == null || exitRule == null) {
@@ -207,12 +207,14 @@ public class BaseStrategy implements Strategy {
 
     @Override
     public Strategy and(String name, Strategy strategy, int unstablePeriod) {
-        return new BaseStrategy(name, null, entryRule.and(strategy.getEntryRule()), exitRule.and(strategy.getExitRule()), unstablePeriod);
+        return new BaseStrategy(name, null, entryRule.and(strategy.getEntryRule()),
+                exitRule.and(strategy.getExitRule()), unstablePeriod);
     }
 
     @Override
     public Strategy or(String name, Strategy strategy, int unstablePeriod) {
-        return new BaseStrategy(name, null, entryRule.or(strategy.getEntryRule()), exitRule.or(strategy.getExitRule()), unstablePeriod);
+        return new BaseStrategy(name, null, entryRule.or(strategy.getEntryRule()), exitRule.or(strategy.getExitRule()),
+                unstablePeriod);
     }
 
     /**
@@ -231,7 +233,7 @@ public class BaseStrategy implements Strategy {
      * Traces the shouldExit() method calls.
      *
      * @param index the bar index
-     * @param exit true if the strategy should exit, false otherwise
+     * @param exit  true if the strategy should exit, false otherwise
      */
     protected void traceShouldExit(int index, boolean exit) {
         if (log.isTraceEnabled()) {

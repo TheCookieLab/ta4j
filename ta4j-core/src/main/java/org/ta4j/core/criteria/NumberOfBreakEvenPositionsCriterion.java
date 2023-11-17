@@ -48,7 +48,8 @@ public class NumberOfBreakEvenPositionsCriterion extends AbstractAnalysisCriteri
         long numberOfBreakEvenTrades = tradingRecord.getPositions()
                 .stream()
                 .filter(Position::isClosed)
-                .skip(Math.max(0, tradingRecord.getPositions().stream().filter(Position::isClosed).count() - mostRecentPositions))
+                .skip(Math.max(0,
+                        tradingRecord.getPositions().stream().filter(Position::isClosed).count() - mostRecentPositions))
                 .filter(this::isBreakEvenPosition)
                 .count();
         return series.numOf(numberOfBreakEvenTrades);

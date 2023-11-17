@@ -72,7 +72,8 @@ public class BaseBarSeriesBuilder implements BarSeriesBuilder {
             beginIndex = 0;
             endIndex = bars.size() - 1;
         }
-        BaseBarSeries series = new BaseBarSeries(name, baseCurrency, counterCurrency, bars, beginIndex, endIndex, constrained, numFunction);
+        BaseBarSeries series = new BaseBarSeries(name, baseCurrency, counterCurrency, bars, beginIndex, endIndex,
+                constrained, numFunction);
         series.setMaximumBarCount(maxBarCount);
         initValues(); // reinitialize values for next series
         return series;

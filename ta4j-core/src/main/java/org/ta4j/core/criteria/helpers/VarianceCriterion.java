@@ -68,7 +68,7 @@ public class VarianceCriterion extends AbstractAnalysisCriterion {
     public Num calculate(BarSeries series, TradingRecord tradingRecord) {
         return this.calculate(series, tradingRecord, tradingRecord.getPositionCount());
     }
-    
+
     @Override
     public Num calculate(BarSeries series, TradingRecord tradingRecord, int mostRecentPositions) {
         if (tradingRecord.getPositions().isEmpty()) {
@@ -80,8 +80,9 @@ public class VarianceCriterion extends AbstractAnalysisCriterion {
         Num variance = series.numOf(0);
         Num average = criterionValue.dividedBy(numberOfPositions);
         int startingPositionIndex = Math.max(0, tradingRecord.getPositionCount() - mostRecentPositions);
-        
-        for (Position position : tradingRecord.getPositions().subList(startingPositionIndex, tradingRecord.getPositionCount())) {
+
+        for (Position position : tradingRecord.getPositions()
+                .subList(startingPositionIndex, tradingRecord.getPositionCount())) {
             Num pow = criterion.calculate(series, position).minus(average).pow(2);
             variance = variance.plus(pow);
         }

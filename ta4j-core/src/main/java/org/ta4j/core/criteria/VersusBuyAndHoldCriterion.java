@@ -59,21 +59,23 @@ public class VersusBuyAndHoldCriterion extends AbstractAnalysisCriterion {
     public Num calculate(BarSeries series, TradingRecord tradingRecord) {
         return this.calculate(series, tradingRecord, tradingRecord.getPositionCount());
     }
-    
+
     @Override
     public Num calculate(BarSeries series, TradingRecord tradingRecord, int mostRecentPositions) {
         TradingRecord fakeRecord;
-        
+
         if (tradingRecord.getPositionCount() > 0) {
             int startPositionIndex = Math.max(0, tradingRecord.getPositionCount() - mostRecentPositions);
-            fakeRecord = createBuyAndHoldTradingRecord(series, tradingRecord.getPositions().get(startPositionIndex).getEntry().getIndex(), tradingRecord.getLastExit().getIndex());
+            fakeRecord = createBuyAndHoldTradingRecord(series,
+                    tradingRecord.getPositions().get(startPositionIndex).getEntry().getIndex(),
+                    tradingRecord.getLastExit().getIndex());
         } else {
             fakeRecord = createBuyAndHoldTradingRecord(series);
         }
-        
+
         Num tradingRecordReturn = criterion.calculate(series, tradingRecord, mostRecentPositions);
         Num fakeRecordReturn = criterion.calculate(series, fakeRecord);
-        
+
         return tradingRecordReturn.dividedBy(fakeRecordReturn);
     }
 
@@ -89,8 +91,10 @@ public class VersusBuyAndHoldCriterion extends AbstractAnalysisCriterion {
 
     private TradingRecord createBuyAndHoldTradingRecord(BarSeries series, int beginIndex, int endIndex) {
         TradingRecord fakeRecord = new BaseTradingRecord();
-        fakeRecord.enter(beginIndex, series.getBar(beginIndex).getEndTime(), series.getBar(beginIndex).getClosePrice(), series.numOf(1));
-        fakeRecord.exit(endIndex, series.getBar(beginIndex).getEndTime(), series.getBar(endIndex).getClosePrice(), series.numOf(1));
+        fakeRecord.enter(beginIndex, series.getBar(beginIndex).getEndTime(), series.getBar(beginIndex).getClosePrice(),
+                series.numOf(1));
+        fakeRecord.exit(endIndex, series.getBar(beginIndex).getEndTime(), series.getBar(endIndex).getClosePrice(),
+                series.numOf(1));
         return fakeRecord;
     }
 }

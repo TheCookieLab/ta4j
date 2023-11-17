@@ -58,7 +58,8 @@ public class NetProfitCriterion extends AbstractAnalysisCriterion {
         return tradingRecord.getPositions()
                 .stream()
                 .filter(Position::isClosed)
-                .skip(Math.max(0, tradingRecord.getPositions().stream().filter(Position::isClosed).count() - mostRecentPositions))
+                .skip(Math.max(0,
+                        tradingRecord.getPositions().stream().filter(Position::isClosed).count() - mostRecentPositions))
                 .map(position -> calculate(series, position))
                 .reduce(series.numOf(0), Num::plus);
     }

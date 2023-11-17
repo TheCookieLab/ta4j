@@ -47,7 +47,7 @@ public class ArithmeticGrowthIndicatorTest extends AbstractIndicatorTest<Indicat
 
     @Before
     public void setUp() {
-        this.barData = IntStream.range(0, 1001).asDoubleStream().toArray();     
+        this.barData = IntStream.range(0, 1001).asDoubleStream().toArray();
         this.series = new MockBarSeries(numFunction, this.barData);
     }
 

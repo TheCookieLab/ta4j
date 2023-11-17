@@ -78,10 +78,11 @@ public class BarSeriesManager {
     }
 
     /**
-     * Runs the provided strategy over the managed series.Opens the position with a {@link TradeType} BUY trade.
+     * Runs the provided strategy over the managed series.Opens the position with a
+     * {@link TradeType} BUY trade.
      *
      *
-     * @param strategy 
+     * @param strategy
      * @return the trading record coming from the run
      */
     public TradingRecord run(Strategy strategy) {
@@ -181,7 +182,8 @@ public class BarSeriesManager {
                 // For each bar after the end index of this run...
                 // --> Trying to close the last position
                 if (strategy.shouldOperate(i, tradingRecord)) {
-                    tradingRecord.operate(i, barSeries.getBar(i).getEndTime(), barSeries.getBar(i).getClosePrice(), amount);
+                    tradingRecord.operate(i, barSeries.getBar(i).getEndTime(), barSeries.getBar(i).getClosePrice(),
+                            amount);
                     break;
                 }
             }

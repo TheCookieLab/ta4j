@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  *
- * Copyright (c) 2017-2023 Ta4j Organization & respective
+ * Copyright (c) 2017-2022 Ta4j Organization & respective
  * authors (see AUTHORS)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -53,12 +53,12 @@ public class CumulativeSumIndicator extends CachedIndicator<Num> {
     }
 
     /**
-     * Calculates the cumulative sum of the indicator values within the
-     * specified bar count.
+     * Calculates the cumulative sum of the indicator values within the specified
+     * bar count.
      *
      * @param index the index of the bar to calculate the cumulative sum up to
-     * @return the cumulative sum of the indicator values within the specified
-     * bar count
+     * @return the cumulative sum of the indicator values within the specified bar
+     *         count
      */
     @Override
     protected Num calculate(int index) {

@@ -66,16 +66,13 @@ public class TotalProfitCriterionTest extends AbstractCriterionTest {
 
     @Test
     public void calculateWith30PercentWinRateFor5REachAnd70PercentLoseRateFor1REach() {
-        MockBarSeries series = new MockBarSeries(numFunction, 1, 6, 1, 6, 1, 6, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1);
+        MockBarSeries series = new MockBarSeries(numFunction, 1, 6, 1, 6, 1, 6, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2,
+                1);
         TradingRecord tradingRecord = new BaseTradingRecord(Trade.buyAt(0, series), Trade.sellAt(1, series),
-                Trade.buyAt(2, series), Trade.sellAt(3, series),
-                Trade.buyAt(4, series), Trade.sellAt(5, series),
-                Trade.buyAt(6, series), Trade.sellAt(7, series),
-                Trade.buyAt(8, series), Trade.sellAt(9, series),
-                Trade.buyAt(10, series), Trade.sellAt(11, series),
-                Trade.buyAt(12, series), Trade.sellAt(13, series),
-                Trade.buyAt(14, series), Trade.sellAt(15, series),
-                Trade.buyAt(16, series), Trade.sellAt(17, series),
+                Trade.buyAt(2, series), Trade.sellAt(3, series), Trade.buyAt(4, series), Trade.sellAt(5, series),
+                Trade.buyAt(6, series), Trade.sellAt(7, series), Trade.buyAt(8, series), Trade.sellAt(9, series),
+                Trade.buyAt(10, series), Trade.sellAt(11, series), Trade.buyAt(12, series), Trade.sellAt(13, series),
+                Trade.buyAt(14, series), Trade.sellAt(15, series), Trade.buyAt(16, series), Trade.sellAt(17, series),
                 Trade.buyAt(18, series), Trade.sellAt(19, series));
 
         AnalysisCriterion totalProfit = getCriterion();
@@ -86,20 +83,18 @@ public class TotalProfitCriterionTest extends AbstractCriterionTest {
     public void calculateWithMultipleBreakEvenPositions() {
         MockBarSeries series = new MockBarSeries(numFunction, 1, 1, 1, 1, 1, 1, 1, 1);
         TradingRecord tradingRecord = new BaseTradingRecord(Trade.buyAt(0, series), Trade.sellAt(1, series),
-                Trade.buyAt(2, series), Trade.sellAt(3, series),
-                Trade.buyAt(4, series), Trade.sellAt(5, series),
+                Trade.buyAt(2, series), Trade.sellAt(3, series), Trade.buyAt(4, series), Trade.sellAt(5, series),
                 Trade.buyAt(6, series), Trade.sellAt(7, series));
 
         AnalysisCriterion totalProfit = getCriterion();
         assertNumEquals(1, totalProfit.calculate(series, tradingRecord));
     }
-    
+
     @Test
     public void calculateWithMostRecentBreakEvenPositions() {
         MockBarSeries series = new MockBarSeries(numFunction, 1, 1, 1, 1, 1, 1, 1, 5);
         TradingRecord tradingRecord = new BaseTradingRecord(Trade.buyAt(0, series), Trade.sellAt(1, series),
-                Trade.buyAt(2, series), Trade.sellAt(3, series),
-                Trade.buyAt(4, series), Trade.sellAt(5, series),
+                Trade.buyAt(2, series), Trade.sellAt(3, series), Trade.buyAt(4, series), Trade.sellAt(5, series),
                 Trade.buyAt(6, series), Trade.sellAt(7, series));
 
         AnalysisCriterion totalProfit = getCriterion();
@@ -115,7 +110,7 @@ public class TotalProfitCriterionTest extends AbstractCriterionTest {
         AnalysisCriterion totalProfit = getCriterion();
         assertNumEquals(0.59375, totalProfit.calculate(series, tradingRecord));
     }
-    
+
     @Test
     public void calculateOnlyWithMostRecentLossPosition() {
         MockBarSeries series = new MockBarSeries(numFunction, 100, 95, 80, 70, 60, 50);

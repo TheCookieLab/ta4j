@@ -55,10 +55,11 @@ public class AverageProfitCriterion extends AbstractAnalysisCriterion {
     public Num calculate(BarSeries series, TradingRecord tradingRecord) {
         return this.calculate(series, tradingRecord, tradingRecord.getPositionCount());
     }
-    
+
     @Override
     public Num calculate(BarSeries series, TradingRecord tradingRecord, int mostRecentPositions) {
-        Num numberOfWinningPositions = numberOfWinningPositionsCriterion.calculate(series, tradingRecord, mostRecentPositions);
+        Num numberOfWinningPositions = numberOfWinningPositionsCriterion.calculate(series, tradingRecord,
+                mostRecentPositions);
         if (numberOfWinningPositions.isZero()) {
             return series.numOf(0);
         }

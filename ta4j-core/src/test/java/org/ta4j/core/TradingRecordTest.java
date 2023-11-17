@@ -42,10 +42,11 @@ public class TradingRecordTest {
     @Before
     public void setUp() {
         emptyRecord = new BaseTradingRecord();
-        openedRecord = new BaseTradingRecord(Trade.buyAt(0, ZonedDateTime.now(), NaN, NaN), Trade.sellAt(3, ZonedDateTime.now(), NaN, NaN),
-                Trade.buyAt(7, ZonedDateTime.now(), NaN, NaN));
-        closedRecord = new BaseTradingRecord(Trade.buyAt(0, ZonedDateTime.now(), NaN, NaN), Trade.sellAt(3, ZonedDateTime.now(), NaN, NaN),
-                Trade.buyAt(7, ZonedDateTime.now(), NaN, NaN), Trade.sellAt(8, ZonedDateTime.now(), NaN, NaN));
+        openedRecord = new BaseTradingRecord(Trade.buyAt(0, ZonedDateTime.now(), NaN, NaN),
+                Trade.sellAt(3, ZonedDateTime.now(), NaN, NaN), Trade.buyAt(7, ZonedDateTime.now(), NaN, NaN));
+        closedRecord = new BaseTradingRecord(Trade.buyAt(0, ZonedDateTime.now(), NaN, NaN),
+                Trade.sellAt(3, ZonedDateTime.now(), NaN, NaN), Trade.buyAt(7, ZonedDateTime.now(), NaN, NaN),
+                Trade.sellAt(8, ZonedDateTime.now(), NaN, NaN));
     }
 
     @Test
@@ -72,7 +73,8 @@ public class TradingRecordTest {
         record.operate(3);
         assertTrue(record.getCurrentPosition().isNew());
         assertEquals(1, record.getPositionCount());
-        assertEquals(new Position(Trade.buyAt(1, ZonedDateTime.now(), NaN, NaN), Trade.sellAt(3, ZonedDateTime.now(), NaN, NaN)), record.getLastPosition());
+        assertEquals(new Position(Trade.buyAt(1, ZonedDateTime.now(), NaN, NaN),
+                Trade.sellAt(3, ZonedDateTime.now(), NaN, NaN)), record.getLastPosition());
         assertEquals(Trade.sellAt(3, ZonedDateTime.now(), NaN, NaN), record.getLastTrade());
         assertEquals(Trade.buyAt(1, ZonedDateTime.now(), NaN, NaN), record.getLastTrade(Trade.TradeType.BUY));
         assertEquals(Trade.sellAt(3, ZonedDateTime.now(), NaN, NaN), record.getLastTrade(Trade.TradeType.SELL));
@@ -82,7 +84,8 @@ public class TradingRecordTest {
         record.operate(5);
         assertTrue(record.getCurrentPosition().isOpened());
         assertEquals(1, record.getPositionCount());
-        assertEquals(new Position(Trade.buyAt(1, ZonedDateTime.now(), NaN, NaN), Trade.sellAt(3, ZonedDateTime.now(), NaN, NaN)), record.getLastPosition());
+        assertEquals(new Position(Trade.buyAt(1, ZonedDateTime.now(), NaN, NaN),
+                Trade.sellAt(3, ZonedDateTime.now(), NaN, NaN)), record.getLastPosition());
         assertEquals(Trade.buyAt(5, ZonedDateTime.now(), NaN, NaN), record.getLastTrade());
         assertEquals(Trade.buyAt(5, ZonedDateTime.now(), NaN, NaN), record.getLastTrade(Trade.TradeType.BUY));
         assertEquals(Trade.sellAt(3, ZonedDateTime.now(), NaN, NaN), record.getLastTrade(Trade.TradeType.SELL));
@@ -107,8 +110,10 @@ public class TradingRecordTest {
     @Test
     public void getLastPosition() {
         assertNull(emptyRecord.getLastPosition());
-        assertEquals(new Position(Trade.buyAt(0, ZonedDateTime.now(), NaN, NaN), Trade.sellAt(3, ZonedDateTime.now(), NaN, NaN)), openedRecord.getLastPosition());
-        assertEquals(new Position(Trade.buyAt(7, ZonedDateTime.now(), NaN, NaN), Trade.sellAt(8, ZonedDateTime.now(), NaN, NaN)), closedRecord.getLastPosition());
+        assertEquals(new Position(Trade.buyAt(0, ZonedDateTime.now(), NaN, NaN),
+                Trade.sellAt(3, ZonedDateTime.now(), NaN, NaN)), openedRecord.getLastPosition());
+        assertEquals(new Position(Trade.buyAt(7, ZonedDateTime.now(), NaN, NaN),
+                Trade.sellAt(8, ZonedDateTime.now(), NaN, NaN)), closedRecord.getLastPosition());
     }
 
     @Test
@@ -159,7 +164,8 @@ public class TradingRecordTest {
     @Test
     public void getNetProfitForSellEntry() {
         double transactionCost = 0.025;
-        TradingRecord tradingRecord = new BaseTradingRecord(Trade.TradeType.SELL, new FixedTransactionCostModel(transactionCost));
+        TradingRecord tradingRecord = new BaseTradingRecord(Trade.TradeType.SELL,
+                new FixedTransactionCostModel(transactionCost));
         assertTrue(tradingRecord.enter(0, ZonedDateTime.now(), DoubleNum.valueOf(2), DoubleNum.valueOf(1)));
         assertTrue(tradingRecord.exit(1, ZonedDateTime.now(), DoubleNum.valueOf(1), DoubleNum.valueOf(1)));
         assertEquals(transactionCost, tradingRecord.getTransactionCostModel().getRawCostValue(), 0.000001);
@@ -170,7 +176,8 @@ public class TradingRecordTest {
     @Test
     public void getNetProfitForNumberOfMostRecentTrades() {
         double transactionCost = 0.025;
-        TradingRecord tradingRecord = new BaseTradingRecord(Trade.TradeType.BUY, new FixedTransactionCostModel(transactionCost));
+        TradingRecord tradingRecord = new BaseTradingRecord(Trade.TradeType.BUY,
+                new FixedTransactionCostModel(transactionCost));
         assertTrue(tradingRecord.enter(0, ZonedDateTime.now(), DoubleNum.valueOf(1), DoubleNum.valueOf(1)));
         assertTrue(tradingRecord.exit(1, ZonedDateTime.now(), DoubleNum.valueOf(2), DoubleNum.valueOf(1)));
         assertTrue(tradingRecord.enter(2, ZonedDateTime.now(), DoubleNum.valueOf(1), DoubleNum.valueOf(1)));
@@ -181,7 +188,7 @@ public class TradingRecordTest {
     }
 
     @Test
-    public void getNetProfitForNumberOfMostRecentTradesIsTheSameAsNotSpecifying() {        
+    public void getNetProfitForNumberOfMostRecentTradesIsTheSameAsNotSpecifying() {
         TradingRecord tradingRecord = new BaseTradingRecord(Trade.TradeType.BUY);
         assertTrue(tradingRecord.enter(0, ZonedDateTime.now(), DoubleNum.valueOf(1), DoubleNum.valueOf(1)));
         assertTrue(tradingRecord.exit(1, ZonedDateTime.now(), DoubleNum.valueOf(2), DoubleNum.valueOf(1)));

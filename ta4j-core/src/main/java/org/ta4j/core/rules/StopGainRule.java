@@ -53,7 +53,7 @@ public class StopGainRule extends AbstractRule {
     /**
      * Constructor.
      *
-     * @param signalPrice the close price indicator
+     * @param signalPrice    the close price indicator
      * @param gainPercentage the gain percentage
      */
     public StopGainRule(Indicator<Num> signalPrice, Number gainPercentage) {
@@ -63,7 +63,7 @@ public class StopGainRule extends AbstractRule {
     /**
      * Constructor.
      *
-     * @param signalPrice the close price indicator
+     * @param signalPrice    the close price indicator
      * @param gainPercentage the gain percentage
      */
     public StopGainRule(Indicator<Num> signalPrice, Num gainPercentage) {

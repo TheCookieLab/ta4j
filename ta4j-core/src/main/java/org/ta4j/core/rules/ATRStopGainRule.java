@@ -69,7 +69,10 @@ public class ATRStopGainRule extends AbstractRule {
             return satisfied; // No trading history or no position opened, no loss
         }
 
-        Num entryPrice = tradingRecord.getCurrentPosition().getEntry().getNetPrice().plus(tradingRecord.getCurrentPosition().getPositionCost());
+        Num entryPrice = tradingRecord.getCurrentPosition()
+                .getEntry()
+                .getNetPrice()
+                .plus(tradingRecord.getCurrentPosition().getPositionCost());
         Num currentPrice = signalPrice.getValue(index);
         Num atrValue = this.atr.getValue(index);
 

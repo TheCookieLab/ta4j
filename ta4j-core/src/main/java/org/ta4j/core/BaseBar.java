@@ -401,15 +401,16 @@ public class BaseBar implements Bar {
         amount = amount.plus(tradeVolume.multipliedBy(tradePrice));
         trades++;
     }
-    
+
     /***
      * Adds a trade at the end of bar period.
-     * @param trade 
+     * 
+     * @param trade
      */
     @Override
     public void addTrade(Trade trade) {
         addPrice(trade.getPricePerAsset());
-        
+
         volume = volume.plus(trade.getAmount());
         amount = amount.plus(trade.getValue());
         trades++;

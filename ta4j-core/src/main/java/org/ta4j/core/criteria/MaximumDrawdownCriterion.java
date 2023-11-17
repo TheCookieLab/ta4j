@@ -50,7 +50,7 @@ public class MaximumDrawdownCriterion extends AbstractAnalysisCriterion {
     public Num calculate(BarSeries series, TradingRecord tradingRecord) {
         return this.calculate(series, tradingRecord, tradingRecord.getPositionCount());
     }
-    
+
     @Override
     public Num calculate(BarSeries series, TradingRecord tradingRecord, int mostRecentPositions) {
         CashFlow cashFlow = new CashFlow(series, tradingRecord, mostRecentPositions);

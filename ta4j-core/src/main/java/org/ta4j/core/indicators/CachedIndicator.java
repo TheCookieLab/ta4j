@@ -79,9 +79,9 @@ public abstract class CachedIndicator<T> extends AbstractIndicator<T> {
     @Override
     public synchronized T getValue(int index) {
         BarSeries series = getBarSeries();
-        
+
         // If the series is null, don't use cache and calculate the value directly
-        if (series == null) {            
+        if (series == null) {
             T result = calculate(index);
             if (log.isTraceEnabled()) {
                 log.trace("{}({}): {}", this, index, result);
@@ -138,7 +138,7 @@ public abstract class CachedIndicator<T> extends AbstractIndicator<T> {
     /**
      * Increases the size of cached results buffer.
      *
-     * @param index the index to increase length to
+     * @param index     the index to increase length to
      * @param maxLength the maximum length of the results buffer
      */
     private void increaseLengthTo(int index, int maxLength) {
@@ -159,8 +159,8 @@ public abstract class CachedIndicator<T> extends AbstractIndicator<T> {
     }
 
     /**
-     * Removes the N first results which exceed the maximum bar count. (i.e.
-     * keeps only the last maximumResultCount results)
+     * Removes the N first results which exceed the maximum bar count. (i.e. keeps
+     * only the last maximumResultCount results)
      *
      * @param maximumResultCount the number of results to keep
      */

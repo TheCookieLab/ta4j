@@ -28,8 +28,9 @@ import org.ta4j.core.indicators.CachedIndicator;
 import org.ta4j.core.num.Num;
 
 /**
- * *
- * Counts the number of consecutive bullish bars (close greater than open) starting from the current index and working backwards
+ * * Counts the number of consecutive bullish bars (close greater than open)
+ * starting from the current index and working backwards
+ * 
  * @author David
  */
 public class BullishCandleStreakIndicator extends CachedIndicator<Num> {

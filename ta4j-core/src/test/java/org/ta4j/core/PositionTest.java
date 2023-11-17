@@ -247,14 +247,16 @@ public class PositionTest {
     @Test
     public void testGetGrossReturnForLongPositionsUsingBarCloseOnNaN() {
         MockBarSeries series = new MockBarSeries(DoubleNum::valueOf, 100, 105);
-        Position position = new Position(new Trade(0, ZonedDateTime.now(), TradeType.BUY, NaN, NaN), new Trade(1, ZonedDateTime.now(), TradeType.SELL, NaN, NaN));
+        Position position = new Position(new Trade(0, ZonedDateTime.now(), TradeType.BUY, NaN, NaN),
+                new Trade(1, ZonedDateTime.now(), TradeType.SELL, NaN, NaN));
         assertNumEquals(DoubleNum.valueOf(1.05), position.getGrossReturn(series));
     }
 
     @Test
     public void testGetGrossReturnForShortPositionsUsingBarCloseOnNaN() {
         MockBarSeries series = new MockBarSeries(DoubleNum::valueOf, 100, 95);
-        Position position = new Position(new Trade(0, ZonedDateTime.now(), TradeType.SELL, NaN, NaN), new Trade(1, ZonedDateTime.now(), TradeType.BUY, NaN, NaN));
+        Position position = new Position(new Trade(0, ZonedDateTime.now(), TradeType.SELL, NaN, NaN),
+                new Trade(1, ZonedDateTime.now(), TradeType.BUY, NaN, NaN));
         assertNumEquals(DoubleNum.valueOf(1.05), position.getGrossReturn(series));
     }
 

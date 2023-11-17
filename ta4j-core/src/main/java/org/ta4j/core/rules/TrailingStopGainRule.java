@@ -30,7 +30,9 @@ import org.ta4j.core.indicators.helpers.ClosePriceIndicator;
 import org.ta4j.core.num.Num;
 
 /**
- * A variation on the stop-gain rule where upon reaching the target percentage gain we initiate a trailing stop loss instead of directly closing the position.
+ * A variation on the stop-gain rule where upon reaching the target percentage
+ * gain we initiate a trailing stop loss instead of directly closing the
+ * position.
  *
  * Initiates a trailing stop when the close price reaches the gain threshold.
  */
@@ -52,32 +54,31 @@ public class TrailingStopGainRule extends AbstractRule {
     private final Num gainPercentageTrigger;
 
     /**
-     * *
-     * The trailing stop percentage
+     * * The trailing stop percentage
      */
     private final Num trailingStopPercentage;
 
     /**
-     * *
-     * The trailing stop initiated once the stop gain percentage is reached
+     * * The trailing stop initiated once the stop gain percentage is reached
      */
     private Rule trailingStopLossRule;
 
     /**
      * Constructor.
      *
-     * @param closePrice the close price indicator
+     * @param closePrice             the close price indicator
      * @param gainPercentageTrigger
      * @param trailingStopPercentage
      */
-    public TrailingStopGainRule(ClosePriceIndicator closePrice, Number gainPercentageTrigger, Number trailingStopPercentage) {
+    public TrailingStopGainRule(ClosePriceIndicator closePrice, Number gainPercentageTrigger,
+            Number trailingStopPercentage) {
         this(closePrice, closePrice.numOf(gainPercentageTrigger), closePrice.numOf(trailingStopPercentage));
     }
 
     /**
      * Constructor.
      *
-     * @param closePrice the close price indicator
+     * @param closePrice             the close price indicator
      * @param gainPercentageTrigger
      * @param trailingStopPercentage
      */
@@ -105,7 +106,8 @@ public class TrailingStopGainRule extends AbstractRule {
                 Num entryPrice = currentPosition.getEntry().getNetPrice();
                 Num currentPrice = closePrice.getValue(index);
 
-                if ((currentPosition.getEntry().isBuy() && isBuyGainSatisfied(entryPrice, currentPrice)) || (currentPosition.getEntry().isSell() && isSellGainSatisfied(entryPrice, currentPrice))) {
+                if ((currentPosition.getEntry().isBuy() && isBuyGainSatisfied(entryPrice, currentPrice))
+                        || (currentPosition.getEntry().isSell() && isSellGainSatisfied(entryPrice, currentPrice))) {
                     this.trailingStopLossRule = new TrailingStopLossRule(closePrice, trailingStopPercentage);
                 }
             }

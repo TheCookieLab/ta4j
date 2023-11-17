@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  *
- * Copyright (c) 2014-2017 Marc de Verdelhan, 2017-2021 Ta4j Organization & respective
+ * Copyright (c) 2017-2022 Ta4j Organization & respective
  * authors (see AUTHORS)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -54,7 +54,7 @@ public class ZigZagIndicator extends CachedIndicator<Num> {
     /**
      * Constructs a ZigZagIndicator.
      *
-     * @param indicator the indicator to provide values
+     * @param indicator      the indicator to provide values
      * @param thresholdRatio the threshold ratio, must be positive
      */
     public ZigZagIndicator(Indicator<Num> indicator, Num thresholdRatio) {
@@ -83,8 +83,8 @@ public class ZigZagIndicator extends CachedIndicator<Num> {
      * Calculates the Zig Zag indicator's value for the current index.
      *
      * @param index the bar index
-     * @return the indicator's value if its ratio from the last extreme is equal
-     * to or greater than the threshold, otherwise {@link NaN}
+     * @return the indicator's value if its ratio from the last extreme is equal to
+     *         or greater than the threshold, otherwise {@link NaN}
      */
     @Override
     protected Num calculate(int index) {

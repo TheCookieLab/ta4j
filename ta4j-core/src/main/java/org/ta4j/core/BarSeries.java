@@ -51,36 +51,40 @@ public interface BarSeries extends Serializable {
      * @return the name of the series
      */
     String getName();
-    
+
     /***
      * The base currency identifier used in the series
-     * @return 
+     * 
+     * @return
      */
     public String getBaseCurrency();
 
     /***
      * the counter currency identifier used in the series
-     * @return 
+     * 
+     * @return
      */
     public String getCounterCurrency();
-    
+
     /***
      * The time period of the series
-     * @return 
+     * 
+     * @return
      */
     public Duration getTimePeriod();
 
     /***
      * the base and counter currency identifiers return as a single string
-     * @return 
+     * 
+     * @return
      */
     default String getCurrencyPair() {
         return this.getCurrencyPair("_");
     }
-    
+
     default String getCurrencyPair(String separator) {
         return getBaseCurrency() + separator + getCounterCurrency();
-    }  
+    }
 
     /**
      * @param i an index
@@ -336,10 +340,11 @@ public interface BarSeries extends Serializable {
      * @param tradePrice  the price
      */
     void addTrade(Num tradeVolume, Num tradePrice);
-    
+
     /***
      * Adds a trade at the end of bar period.
-     * @param trade 
+     * 
+     * @param trade
      */
     void addTrade(Trade trade);
 

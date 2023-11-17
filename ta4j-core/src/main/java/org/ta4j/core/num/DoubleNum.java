@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  *
- * Copyright (c) 2017-2023 Ta4j Organization & respective
+ * Copyright (c) 2017-2022 Ta4j Organization & respective
  * authors (see AUTHORS)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -300,18 +300,18 @@ public class DoubleNum implements Num {
     public Num round(int scale) {
         return round(scale, RoundingMode.HALF_EVEN);
     }
-    
+
     @Override
     public Num round(int scale, RoundingMode roundingMode) {
         StringBuilder sb = new StringBuilder("#.");
-        
+
         for (int i = 0; i < scale; i++) {
             sb.append("#");
         }
-        
+
         DecimalFormat decimalFormat = new DecimalFormat(sb.toString());
         decimalFormat.setRoundingMode(roundingMode);
-        
+
         return DoubleNum.valueOf(decimalFormat.format(delegate));
     }
 

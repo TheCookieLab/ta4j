@@ -65,16 +65,13 @@ public class ExpectancyCriterionTest extends AbstractCriterionTest {
 
     @Test
     public void calculateWith30PercentWinRateFor5REachAnd70PercentLoseRateFor1REach() {
-        MockBarSeries series = new MockBarSeries(numFunction, 1, 6, 1, 6, 1, 6, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1);
+        MockBarSeries series = new MockBarSeries(numFunction, 1, 6, 1, 6, 1, 6, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2,
+                1);
         TradingRecord tradingRecord = new BaseTradingRecord(Trade.buyAt(0, series), Trade.sellAt(1, series),
-                Trade.buyAt(2, series), Trade.sellAt(3, series),
-                Trade.buyAt(4, series), Trade.sellAt(5, series),
-                Trade.buyAt(6, series), Trade.sellAt(7, series),
-                Trade.buyAt(8, series), Trade.sellAt(9, series),
-                Trade.buyAt(10, series), Trade.sellAt(11, series),
-                Trade.buyAt(12, series), Trade.sellAt(13, series),
-                Trade.buyAt(14, series), Trade.sellAt(15, series),
-                Trade.buyAt(16, series), Trade.sellAt(17, series),
+                Trade.buyAt(2, series), Trade.sellAt(3, series), Trade.buyAt(4, series), Trade.sellAt(5, series),
+                Trade.buyAt(6, series), Trade.sellAt(7, series), Trade.buyAt(8, series), Trade.sellAt(9, series),
+                Trade.buyAt(10, series), Trade.sellAt(11, series), Trade.buyAt(12, series), Trade.sellAt(13, series),
+                Trade.buyAt(14, series), Trade.sellAt(15, series), Trade.buyAt(16, series), Trade.sellAt(17, series),
                 Trade.buyAt(18, series), Trade.sellAt(19, series));
 
         AnalysisCriterion expectancy = getCriterion();
@@ -85,8 +82,7 @@ public class ExpectancyCriterionTest extends AbstractCriterionTest {
     public void calculateWithMultipleBreakEvenPositions() {
         MockBarSeries series = new MockBarSeries(numFunction, 1, 1, 1, 1, 1, 1, 1, 5);
         TradingRecord tradingRecord = new BaseTradingRecord(Trade.buyAt(0, series), Trade.sellAt(1, series),
-                Trade.buyAt(2, series), Trade.sellAt(3, series),
-                Trade.buyAt(4, series), Trade.sellAt(5, series),
+                Trade.buyAt(2, series), Trade.sellAt(3, series), Trade.buyAt(4, series), Trade.sellAt(5, series),
                 Trade.buyAt(6, series), Trade.sellAt(7, series));
 
         AnalysisCriterion expectancy = getCriterion();

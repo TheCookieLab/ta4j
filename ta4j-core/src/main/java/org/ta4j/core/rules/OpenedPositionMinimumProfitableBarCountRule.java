@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  *
- * Copyright (c) 2017-2023 Ta4j Organization & respective
+ * Copyright (c) 2017-2022 Ta4j Organization & respective
  * authors (see AUTHORS)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -53,11 +53,11 @@ public class OpenedPositionMinimumProfitableBarCountRule extends AbstractRule {
      * Returns true if opened trade reached minimum bar count specified in
      * {@link OpenedPositionMinimumProfitableBarCountRule#barCount}
      *
-     * @param index the bar index
+     * @param index         the bar index
      * @param tradingRecord the required trading history
      * @return true if opened trade reached minimum bar count specified in
-     * {@link OpenedPositionMinimumProfitableBarCountRule#barCount}, otherwise
-     * false
+     *         {@link OpenedPositionMinimumProfitableBarCountRule#barCount},
+     *         otherwise false
      */
     @Override
     public boolean isSatisfied(int index, TradingRecord tradingRecord) {
@@ -71,7 +71,8 @@ public class OpenedPositionMinimumProfitableBarCountRule extends AbstractRule {
 
         for (int i = index; i > entryIndex; i--) {
             Num currentPrice = this.series.getBar(i).getClosePrice();
-            Num estimatedExitFee = tradingRecord.getTransactionCostModel().calculate(currentPrice, tradingRecord.getCurrentPosition().getEntry().getAmount());
+            Num estimatedExitFee = tradingRecord.getTransactionCostModel()
+                    .calculate(currentPrice, tradingRecord.getCurrentPosition().getEntry().getAmount());
 
             if (tradingRecord.getCurrentPosition().getEntry().isBuy()) {
                 Num breakEvenPrice = tradingRecord.getCurrentPosition().getEntry().getNetPrice().plus(estimatedExitFee);
@@ -81,7 +82,10 @@ public class OpenedPositionMinimumProfitableBarCountRule extends AbstractRule {
                     break;
                 }
             } else {
-                Num breakEvenPrice = tradingRecord.getCurrentPosition().getEntry().getNetPrice().minus(estimatedExitFee);
+                Num breakEvenPrice = tradingRecord.getCurrentPosition()
+                        .getEntry()
+                        .getNetPrice()
+                        .minus(estimatedExitFee);
 
                 if (currentPrice.isLessThan(breakEvenPrice)) {
                     profitableBars++;

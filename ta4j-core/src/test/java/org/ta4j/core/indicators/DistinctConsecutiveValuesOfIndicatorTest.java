@@ -37,7 +37,8 @@ import org.ta4j.core.num.Num;
 
 public class DistinctConsecutiveValuesOfIndicatorTest extends AbstractIndicatorTest<Indicator<Num>, Num> {
 
-    private final double[] closePriceValues = new double[]{100, 101, 101, 101, 102, 102, 102, 103, 104, 104, 105, 105, 105, 104, 103, 103, 103, 102, 102, 101, 100, 100};
+    private final double[] closePriceValues = new double[] { 100, 101, 101, 101, 102, 102, 102, 103, 104, 104, 105, 105,
+            105, 104, 103, 103, 103, 102, 102, 101, 100, 100 };
 
     private ClosePriceIndicator closePrice;
 
@@ -53,7 +54,7 @@ public class DistinctConsecutiveValuesOfIndicatorTest extends AbstractIndicatorT
     @Test
     public void getValue() {
         DistinctConsecutiveValuesOfIndicator subject = new DistinctConsecutiveValuesOfIndicator(closePrice);
-                
+
         assertNumEquals(100, subject.getValue(0));
         assertNumEquals(101, subject.getValue(1));
         assertNumEquals(102, subject.getValue(2));
@@ -65,8 +66,8 @@ public class DistinctConsecutiveValuesOfIndicatorTest extends AbstractIndicatorT
         assertNumEquals(102, subject.getValue(8));
         assertNumEquals(101, subject.getValue(9));
         assertNumEquals(100, subject.getValue(10));
-        
+
         assertNumEquals(100, subject.getValue(11));
-        
+
     }
 }

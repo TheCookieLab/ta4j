@@ -27,8 +27,7 @@ import org.ta4j.core.Indicator;
 import org.ta4j.core.num.Num;
 
 /**
- * *
- * https://www.investopedia.com/terms/t/trix.asp
+ * * https://www.investopedia.com/terms/t/trix.asp
  * https://www.investopedia.com/articles/technical/02/092402.asp
  *
  */
@@ -44,7 +43,7 @@ public class TRIXIndicator extends CachedIndicator<Num> {
      * Constructor.
      *
      * @param indicator the indicator
-     * @param barCount the time frame
+     * @param barCount  the time frame
      */
     public TRIXIndicator(Indicator<Num> indicator, int barCount) {
         super(indicator);

@@ -85,7 +85,8 @@ public class BarTest extends AbstractIndicatorTest<BarSeries, Num> {
         Num amount = DoubleNum.valueOf(2);
         long trades = 0;
 
-        Bar subject = new BaseBar(Duration.ofDays(1), ZonedDateTime.now(), openPrice, highPrice, lowPrice, closePrice, volume, amount, trades);
+        Bar subject = new BaseBar(Duration.ofDays(1), ZonedDateTime.now(), openPrice, highPrice, lowPrice, closePrice,
+                volume, amount, trades);
 
         Num tradePricePerAsset = DoubleNum.valueOf(197);
         Num tradeAmount = DoubleNum.valueOf(1);

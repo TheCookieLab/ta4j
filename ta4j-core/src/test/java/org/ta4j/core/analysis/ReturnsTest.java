@@ -124,16 +124,16 @@ public class ReturnsTest extends AbstractIndicatorTest<Indicator<Num>, Num> {
         BarSeries precisionSeries = new MockBarSeries(DecimalNum::valueOf, 1.2d, 1.1d);
 
         TradingRecord fullRecordDouble = new BaseTradingRecord();
-        fullRecordDouble.enter(doubleSeries.getBeginIndex(), doubleSeries.getBar(0).getEndTime(), doubleSeries.getBar(0).getClosePrice(),
-                doubleSeries.numOf(1));
-        fullRecordDouble.exit(doubleSeries.getEndIndex(), doubleSeries.getBar(1).getEndTime(), doubleSeries.getBar(1).getClosePrice(),
-                doubleSeries.numOf(1));
+        fullRecordDouble.enter(doubleSeries.getBeginIndex(), doubleSeries.getBar(0).getEndTime(),
+                doubleSeries.getBar(0).getClosePrice(), doubleSeries.numOf(1));
+        fullRecordDouble.exit(doubleSeries.getEndIndex(), doubleSeries.getBar(1).getEndTime(),
+                doubleSeries.getBar(1).getClosePrice(), doubleSeries.numOf(1));
 
         TradingRecord fullRecordPrecision = new BaseTradingRecord();
-        fullRecordPrecision.enter(precisionSeries.getBeginIndex(), precisionSeries.getBar(0).getEndTime(), precisionSeries.getBar(0).getClosePrice(),
-                precisionSeries.numOf(1));
-        fullRecordPrecision.exit(precisionSeries.getEndIndex(), precisionSeries.getBar(1).getEndTime(), precisionSeries.getBar(1).getClosePrice(),
-                precisionSeries.numOf(1));
+        fullRecordPrecision.enter(precisionSeries.getBeginIndex(), precisionSeries.getBar(0).getEndTime(),
+                precisionSeries.getBar(0).getClosePrice(), precisionSeries.numOf(1));
+        fullRecordPrecision.exit(precisionSeries.getEndIndex(), precisionSeries.getBar(1).getEndTime(),
+                precisionSeries.getBar(1).getClosePrice(), precisionSeries.numOf(1));
 
         // Return calculation DoubleNum vs PrecisionNum
         Num arithDouble = new Returns(doubleSeries, fullRecordDouble, Returns.ReturnType.ARITHMETIC).getValue(1);

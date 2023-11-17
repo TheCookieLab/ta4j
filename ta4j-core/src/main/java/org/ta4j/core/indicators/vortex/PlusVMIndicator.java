@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  *
- * Copyright (c) 2017-2023 Ta4j Organization & respective
+ * Copyright (c) 2017-2022 Ta4j Organization & respective
  * authors (see AUTHORS)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -34,8 +34,9 @@ import org.ta4j.core.num.Num;
 /**
  * Vortex VM+ (Plus) Indicator.
  * <p>
- * The Vortex Indicator (VI) is composed of two lines - VI+ (Plus) and VI- (Minus). The VM+ is calculated
- * using the previous low price and the current high price.
+ * The Vortex Indicator (VI) is composed of two lines - VI+ (Plus) and VI-
+ * (Minus). The VM+ is calculated using the previous low price and the current
+ * high price.
  * <p>
  * For more information:
  * https://www.investopedia.com/terms/v/vortex-indicator-vi.asp

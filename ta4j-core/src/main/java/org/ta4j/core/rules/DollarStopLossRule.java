@@ -49,7 +49,7 @@ public class DollarStopLossRule extends AbstractRule {
      * Constructor.
      *
      * @param signalPrice the close price indicator
-     * @param lossValue the loss percentage
+     * @param lossValue   the loss percentage
      */
     public DollarStopLossRule(Indicator<Num> signalPrice, Number lossValue) {
         this(signalPrice, signalPrice.numOf(lossValue));
@@ -59,7 +59,7 @@ public class DollarStopLossRule extends AbstractRule {
      * Constructor.
      *
      * @param signalPrice the close price indicator
-     * @param lossValue the loss percentage
+     * @param lossValue   the loss percentage
      */
     public DollarStopLossRule(Indicator<Num> signalPrice, Num lossValue) {
         this.signalPrice = signalPrice;

@@ -68,7 +68,7 @@ public class TripleEMAIndicator extends CachedIndicator<Num> {
         Num first = three.multipliedBy(ema.getValue(index));
         Num second = three.multipliedBy(emaEma.getValue(index));
         Num third = emaEmaEma.getValue(index);
-        
+
         return (first).minus(second).plus(third);
     }
 

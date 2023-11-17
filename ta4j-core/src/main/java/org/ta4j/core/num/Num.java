@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  *
- * Copyright (c) 2017-2023 Ta4j Organization & respective
+ * Copyright (c) 2017-2022 Ta4j Organization & respective
  * authors (see AUTHORS)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -276,8 +276,7 @@ public interface Num extends Comparable<Num> {
     Num max(Num other);
 
     /**
-     * *
-     * Returns this value rounded (half-even) to the specified decimal places
+     * * Returns this value rounded (half-even) to the specified decimal places
      *
      * @param scale
      * @return
@@ -285,9 +284,8 @@ public interface Num extends Comparable<Num> {
     Num round(int scale);
 
     /**
-     * *
-     * Returns this value rounded by the rounding mode of choice to the
-     * specified decimal places
+     * * Returns this value rounded by the rounding mode of choice to the specified
+     * decimal places
      *
      * @param scale
      * @param roundingMode

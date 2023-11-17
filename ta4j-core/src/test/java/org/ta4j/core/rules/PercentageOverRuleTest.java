@@ -40,13 +40,13 @@ public class PercentageOverRuleTest {
         FixedDecimalIndicator fd2 = new FixedDecimalIndicator(series, 109, 80, 100, 110, 18, 18);
 
         PercentageOverRule rule = new PercentageOverRule(fd1, fd2, DoubleNum.valueOf(0.1));
-        
+
         assertFalse(rule.isSatisfied(0));
         assertTrue(rule.isSatisfied(1));
         assertFalse(rule.isSatisfied(2));
         assertFalse(rule.isSatisfied(3));
         assertFalse(rule.isSatisfied(4));
         assertTrue(rule.isSatisfied(5));
-    
+
     }
 }

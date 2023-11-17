@@ -70,7 +70,8 @@ public class TrailingStopGainRuleTest extends AbstractIndicatorTest<Object, Obje
 
     @Test
     public void testBuyIsSatisfied() {
-        BarSeries series = new BaseBarSeries(100d, 101d, 102d, 103d, 104d, 105d, 106d, 107d, 108d, 109d, 110d, 111d, 112d, 113d, 114d, 115d, 114d, 113d, 112d, 111d, 110d, 109d);        
+        BarSeries series = new BaseBarSeries(100d, 101d, 102d, 103d, 104d, 105d, 106d, 107d, 108d, 109d, 110d, 111d,
+                112d, 113d, 114d, 115d, 114d, 113d, 112d, 111d, 110d, 109d);
         ClosePriceIndicator closePrice = new ClosePriceIndicator(series);
 
         TrailingStopGainRule rule = new TrailingStopGainRule(closePrice, DoubleNum.valueOf(10), DoubleNum.valueOf(5));
@@ -89,25 +90,26 @@ public class TrailingStopGainRuleTest extends AbstractIndicatorTest<Object, Obje
         assertFalse(rule.isSatisfied(8, tradingRecord));
         assertFalse(rule.isSatisfied(9, tradingRecord));
         assertFalse(rule.isSatisfied(10, tradingRecord)); // Trailing Stop initiated
-        
+
         assertFalse(rule.isSatisfied(11, tradingRecord));
         assertFalse(rule.isSatisfied(12, tradingRecord));
         assertFalse(rule.isSatisfied(13, tradingRecord));
         assertFalse(rule.isSatisfied(14, tradingRecord));
         assertFalse(rule.isSatisfied(15, tradingRecord));
-        
+
         assertFalse(rule.isSatisfied(16, tradingRecord));
         assertFalse(rule.isSatisfied(17, tradingRecord));
         assertFalse(rule.isSatisfied(18, tradingRecord));
         assertFalse(rule.isSatisfied(19, tradingRecord));
         assertFalse(rule.isSatisfied(20, tradingRecord));
-        
+
         assertTrue(rule.isSatisfied(21, tradingRecord));
     }
-    
+
     @Test
     public void testSellIsSatisfied() {
-        BarSeries series = new BaseBarSeries(100d, 99d, 98d, 97d, 96d, 95d, 94d, 93d, 92d, 91d, 90d, 91d, 92d, 93d, 94d, 95d);        
+        BarSeries series = new BaseBarSeries(100d, 99d, 98d, 97d, 96d, 95d, 94d, 93d, 92d, 91d, 90d, 91d, 92d, 93d, 94d,
+                95d);
         ClosePriceIndicator closePrice = new ClosePriceIndicator(series);
 
         TrailingStopGainRule rule = new TrailingStopGainRule(closePrice, DoubleNum.valueOf(10), DoubleNum.valueOf(5));
@@ -126,7 +128,7 @@ public class TrailingStopGainRuleTest extends AbstractIndicatorTest<Object, Obje
         assertFalse(rule.isSatisfied(8, tradingRecord));
         assertFalse(rule.isSatisfied(9, tradingRecord));
         assertFalse(rule.isSatisfied(10, tradingRecord)); // Trailing Stop initiated
-        
+
         assertFalse(rule.isSatisfied(11, tradingRecord));
         assertFalse(rule.isSatisfied(12, tradingRecord));
         assertFalse(rule.isSatisfied(13, tradingRecord));

@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  *
- * Copyright (c) 2017-2023 Ta4j Organization & respective
+ * Copyright (c) 2017-2022 Ta4j Organization & respective
  * authors (see AUTHORS)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -39,9 +39,9 @@ public class ConsecutiveBooleanStreakIndicator extends CachedIndicator<Num> {
     /**
      * Constructor.
      *
-     * @param indicator the boolean indicator to check for streaks
-     * @param checkValue the value (true or false) for which to count
-     * consecutive streaks
+     * @param indicator  the boolean indicator to check for streaks
+     * @param checkValue the value (true or false) for which to count consecutive
+     *                   streaks
      */
     public ConsecutiveBooleanStreakIndicator(Indicator<Boolean> indicator, boolean checkValue) {
         super(indicator.getBarSeries());
@@ -50,8 +50,7 @@ public class ConsecutiveBooleanStreakIndicator extends CachedIndicator<Num> {
     }
 
     /**
-     * Calculates the length of the current consecutive streak of the
-     * checkValue.
+     * Calculates the length of the current consecutive streak of the checkValue.
      *
      * @param index the bar index
      * @return the length of the streak as a Num

@@ -28,7 +28,8 @@ import org.ta4j.core.TradingRecord;
 /**
  * An alternating rule.
  *
- * Flips between satisfied and not satisfied with starting value specified in constructor
+ * Flips between satisfied and not satisfied with starting value specified in
+ * constructor
  */
 public class FlipFlopRule extends AbstractRule {
 

@@ -49,8 +49,10 @@ public class LosingPositionsRatioCriterion extends AbstractAnalysisCriterion {
 
     @Override
     public Num calculate(BarSeries series, TradingRecord tradingRecord, int mostRecentPositions) {
-        Num numberOfLosingPositions = numberOfLosingPositionsCriterion.calculate(series, tradingRecord, mostRecentPositions);
-        return numberOfLosingPositions.dividedBy(series.numOf(Math.min(tradingRecord.getPositionCount(), mostRecentPositions)));
+        Num numberOfLosingPositions = numberOfLosingPositionsCriterion.calculate(series, tradingRecord,
+                mostRecentPositions);
+        return numberOfLosingPositions
+                .dividedBy(series.numOf(Math.min(tradingRecord.getPositionCount(), mostRecentPositions)));
     }
 
     /**

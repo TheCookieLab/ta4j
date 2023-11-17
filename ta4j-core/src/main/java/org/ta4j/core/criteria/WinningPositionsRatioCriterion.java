@@ -49,7 +49,8 @@ public class WinningPositionsRatioCriterion extends AbstractAnalysisCriterion {
 
     @Override
     public Num calculate(BarSeries series, TradingRecord tradingRecord, int mostRecentPositions) {
-        Num numberOfWinningPositions = numberOfWinningPositionsCriterion.calculate(series, tradingRecord, mostRecentPositions);
+        Num numberOfWinningPositions = numberOfWinningPositionsCriterion.calculate(series, tradingRecord,
+                mostRecentPositions);
         return numberOfWinningPositions.dividedBy(series.numOf(mostRecentPositions));
     }
 

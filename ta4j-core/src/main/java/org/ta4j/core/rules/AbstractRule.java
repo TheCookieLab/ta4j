@@ -43,15 +43,14 @@ public abstract class AbstractRule implements Rule {
     private final String className = getClass().getSimpleName();
 
     /**
-     * *
-     * The rule name
+     * * The rule name
      */
     private String name;
 
     /**
      * Traces the isSatisfied() method calls.
      *
-     * @param index the bar index
+     * @param index       the bar index
      * @param isSatisfied true if the rule is satisfied, false otherwise
      */
     protected void traceIsSatisfied(int index, boolean isSatisfied) {

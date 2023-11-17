@@ -61,9 +61,9 @@ public class FixedTransactionCostModel implements CostModel {
     /**
      * Calculates the transaction cost of a position.
      *
-     * @param position the position
+     * @param position     the position
      * @param currentIndex current bar index (irrelevant for the
-     * FixedTransactionCostModel)
+     *                     FixedTransactionCostModel)
      * @return the absolute position cost
      */
     @Override
@@ -89,10 +89,9 @@ public class FixedTransactionCostModel implements CostModel {
 
     /**
      * Calculates the transaction cost based on the price and the amount (both
-     * irrelevant for the FixedTransactionCostModel as the fee is always the
-     * same).
+     * irrelevant for the FixedTransactionCostModel as the fee is always the same).
      *
-     * @param price the price per asset
+     * @param price  the price per asset
      * @param amount number of traded assets
      */
     @Override
@@ -104,7 +103,7 @@ public class FixedTransactionCostModel implements CostModel {
      * Evaluate if two models are equal
      *
      * @param otherModel model to compare with
-     * @return 
+     * @return
      */
     @Override
     public boolean equals(CostModel otherModel) {

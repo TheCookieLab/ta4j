@@ -55,7 +55,7 @@ public class CashFlow implements Indicator<Num> {
      * Constructor for cash flows of a closed position.
      *
      * @param barSeries the bar series
-     * @param position a single position
+     * @param position  a single position
      */
     public CashFlow(BarSeries barSeries, Position position) {
         this.barSeries = barSeries;
@@ -77,8 +77,8 @@ public class CashFlow implements Indicator<Num> {
     /**
      * Constructor for cash flows of closed positions of a trading record.
      *
-     * @param barSeries the bar series
-     * @param tradingRecord the trading record
+     * @param barSeries           the bar series
+     * @param tradingRecord       the trading record
      * @param mostRecentPositions
      */
     public CashFlow(BarSeries barSeries, TradingRecord tradingRecord, int mostRecentPositions) {
@@ -92,11 +92,11 @@ public class CashFlow implements Indicator<Num> {
     /**
      * Constructor.
      *
-     * @param barSeries the bar series
-     * @param tradingRecord the trading record
+     * @param barSeries           the bar series
+     * @param tradingRecord       the trading record
      * @param mostRecentPositions
-     * @param finalIndex index up until cash flows of open positions are
-     * considered
+     * @param finalIndex          index up until cash flows of open positions are
+     *                            considered
      */
     public CashFlow(BarSeries barSeries, TradingRecord tradingRecord, int mostRecentPositions, int finalIndex) {
         this.barSeries = barSeries;
@@ -146,12 +146,11 @@ public class CashFlow implements Indicator<Num> {
     }
 
     /**
-     * Calculates the cash flow for a single position (including accrued
-     * cashflow for open positions).
+     * Calculates the cash flow for a single position (including accrued cashflow
+     * for open positions).
      *
-     * @param position a single position
-     * @param finalIndex index up until cash flow of open positions is
-     * considered
+     * @param position   a single position
+     * @param finalIndex index up until cash flow of open positions is considered
      */
     private void calculate(Position position, int finalIndex) {
         boolean isLongTrade = position.getEntry().isBuy();
@@ -194,8 +193,8 @@ public class CashFlow implements Indicator<Num> {
      * Calculates the ratio of intermediate prices.
      *
      * @param isLongTrade true, if the entry trade type is BUY
-     * @param entryPrice price ratio denominator
-     * @param exitPrice price ratio numerator
+     * @param entryPrice  price ratio denominator
+     * @param exitPrice   price ratio numerator
      */
     private static Num getIntermediateRatio(boolean isLongTrade, Num entryPrice, Num exitPrice) {
         Num ratio;
@@ -222,8 +221,8 @@ public class CashFlow implements Indicator<Num> {
      * accrued cash flow of an open position.
      *
      * @param tradingRecord the trading record
-     * @param finalIndex index up until cash flows of open positions are
-     * considered
+     * @param finalIndex    index up until cash flows of open positions are
+     *                      considered
      */
     private void calculate(TradingRecord tradingRecord, int mostRecentPositions, int finalIndex) {
         calculate(tradingRecord, mostRecentPositions);
@@ -237,7 +236,7 @@ public class CashFlow implements Indicator<Num> {
     /**
      * Adjusts (intermediate) price to incorporate trading costs.
      *
-     * @param rawPrice the gross asset price
+     * @param rawPrice    the gross asset price
      * @param holdingCost share of the holding cost per period
      * @param isLongTrade true, if the entry trade type is BUY
      */
@@ -264,10 +263,9 @@ public class CashFlow implements Indicator<Num> {
     /**
      * Determines the the valid final index to be considered.
      *
-     * @param position the position
-     * @param finalIndex index up until cash flows of open positions are
-     * considered
-     * @param maxIndex maximal valid index
+     * @param position   the position
+     * @param finalIndex index up until cash flows of open positions are considered
+     * @param maxIndex   maximal valid index
      */
     static int determineEndIndex(Position position, int finalIndex, int maxIndex) {
         int idx = finalIndex;

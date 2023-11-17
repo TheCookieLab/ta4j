@@ -32,7 +32,7 @@ import org.ta4j.core.num.Num;
  * Number of maximum consecutive winning or losing positions criterion.
  */
 public class NumberOfConsecutivePositionsCriterion extends AbstractAnalysisCriterion {
-    
+
     private final PositionFilter positionFilter;
 
     /**
@@ -43,24 +43,25 @@ public class NumberOfConsecutivePositionsCriterion extends AbstractAnalysisCrite
     public NumberOfConsecutivePositionsCriterion(PositionFilter positionFilter) {
         this.positionFilter = positionFilter;
     }
-    
+
     @Override
     public Num calculate(BarSeries series, Position position) {
         return isConsecutive(position) ? series.numOf(1) : series.numOf(0);
     }
-    
+
     @Override
     public Num calculate(BarSeries series, TradingRecord tradingRecord) {
         return this.calculate(series, tradingRecord, tradingRecord.getPositionCount());
     }
-    
+
     @Override
     public Num calculate(BarSeries series, TradingRecord tradingRecord, int mostRecentPositions) {
         int maxConsecutive = 0;
         int consecutives = 0;
         int startingPositionIndex = Math.max(0, tradingRecord.getPositionCount() - mostRecentPositions);
-        
-        for (Position position : tradingRecord.getPositions().subList(startingPositionIndex, tradingRecord.getPositionCount())) {
+
+        for (Position position : tradingRecord.getPositions()
+                .subList(startingPositionIndex, tradingRecord.getPositionCount())) {
             if (isConsecutive(position)) {
                 consecutives = consecutives + 1;
             } else {
@@ -75,14 +76,14 @@ public class NumberOfConsecutivePositionsCriterion extends AbstractAnalysisCrite
         if (maxConsecutive < consecutives) {
             maxConsecutive = consecutives;
         }
-        
+
         return series.numOf(maxConsecutive);
     }
 
     /**
      * <ul>
-     * <li>For {@link PositionFilter#PROFIT}: The higher the criterion value,
-     * the better.
+     * <li>For {@link PositionFilter#PROFIT}: The higher the criterion value, the
+     * better.
      * <li>For {@link PositionFilter#LOSS}: The lower the criterion value, the
      * better.
      * </ul>
@@ -92,7 +93,7 @@ public class NumberOfConsecutivePositionsCriterion extends AbstractAnalysisCrite
         return positionFilter == PositionFilter.PROFIT ? criterionValue1.isGreaterThan(criterionValue2)
                 : criterionValue1.isLessThan(criterionValue2);
     }
-    
+
     private boolean isConsecutive(Position position) {
         if (position.isClosed()) {
             Num pnl = position.getProfit();
@@ -100,5 +101,5 @@ public class NumberOfConsecutivePositionsCriterion extends AbstractAnalysisCrite
         }
         return false;
     }
-    
+
 }

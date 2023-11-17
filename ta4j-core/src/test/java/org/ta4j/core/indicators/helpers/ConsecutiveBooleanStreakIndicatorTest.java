@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  *
- * Copyright (c) 2017-2023 Ta4j Organization & respective
+ * Copyright (c) 2017-2022 Ta4j Organization & respective
  * authors (see AUTHORS)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -49,7 +49,8 @@ public class ConsecutiveBooleanStreakIndicatorTest extends AbstractIndicatorTest
 
     @Test
     public void givenTrueCheckValue_whenGetValue_thenReturnsCorrectStreak() {
-        FixedBooleanIndicator booleanValues = new FixedBooleanIndicator(barSeries, true, true, true, false, true, true, false, false, true, false);
+        FixedBooleanIndicator booleanValues = new FixedBooleanIndicator(barSeries, true, true, true, false, true, true,
+                false, false, true, false);
 
         ConsecutiveBooleanStreakIndicator subject = new ConsecutiveBooleanStreakIndicator(booleanValues, true);
 
@@ -61,7 +62,8 @@ public class ConsecutiveBooleanStreakIndicatorTest extends AbstractIndicatorTest
 
     @Test
     public void givenFalseCheckValue_whenGetValue_thenReturnsCorrectStreak() {
-        FixedBooleanIndicator booleanValues = new FixedBooleanIndicator(barSeries, true, true, true, false, true, true, false, false, true, false);
+        FixedBooleanIndicator booleanValues = new FixedBooleanIndicator(barSeries, true, true, true, false, true, true,
+                false, false, true, false);
 
         ConsecutiveBooleanStreakIndicator subject = new ConsecutiveBooleanStreakIndicator(booleanValues, false);
 
@@ -73,7 +75,8 @@ public class ConsecutiveBooleanStreakIndicatorTest extends AbstractIndicatorTest
 
     @Test
     public void testEdgeCases() {
-        FixedBooleanIndicator booleanValues = new FixedBooleanIndicator(barSeries, true, false, false, false, false, false, false, false, false, false);
+        FixedBooleanIndicator booleanValues = new FixedBooleanIndicator(barSeries, true, false, false, false, false,
+                false, false, false, false, false);
 
         ConsecutiveBooleanStreakIndicator subjectTrue = new ConsecutiveBooleanStreakIndicator(booleanValues, true);
         ConsecutiveBooleanStreakIndicator subjectFalse = new ConsecutiveBooleanStreakIndicator(booleanValues, false);
@@ -81,7 +84,8 @@ public class ConsecutiveBooleanStreakIndicatorTest extends AbstractIndicatorTest
         assertNumEquals(1, subjectTrue.getValue(0));
         assertNumEquals(9, subjectFalse.getValue(9));
 
-        booleanValues = new FixedBooleanIndicator(barSeries, true, true, true, true, true, true, true, true, true, true);
+        booleanValues = new FixedBooleanIndicator(barSeries, true, true, true, true, true, true, true, true, true,
+                true);
         subjectTrue = new ConsecutiveBooleanStreakIndicator(booleanValues, true);
         subjectFalse = new ConsecutiveBooleanStreakIndicator(booleanValues, false);
 

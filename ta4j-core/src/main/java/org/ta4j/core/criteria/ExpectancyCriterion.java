@@ -67,7 +67,8 @@ public class ExpectancyCriterion extends AbstractAnalysisCriterion {
         Num averageProfit = averageProfitCriterion.calculate(series, tradingRecord, mostRecentPositions);
         Num averageLoss = averageLossCriterion.calculate(series, tradingRecord, mostRecentPositions);
         Num numberOfPositions = numberOfPositionsCriterion.calculate(series, tradingRecord, mostRecentPositions);
-        Num numberOfWinningPositions = numberOfWinningPositionsCriterion.calculate(series, tradingRecord, mostRecentPositions);
+        Num numberOfWinningPositions = numberOfWinningPositionsCriterion.calculate(series, tradingRecord,
+                mostRecentPositions);
         return calculate(series, averageProfit, averageLoss, numberOfWinningPositions, numberOfPositions);
     }
 
@@ -79,7 +80,8 @@ public class ExpectancyCriterion extends AbstractAnalysisCriterion {
         return criterionValue1.isGreaterThan(criterionValue2);
     }
 
-    private Num calculate(BarSeries series, Num averageProfit, Num averageLoss, Num numberOfWinningPositions, Num numberOfAllPositions) {
+    private Num calculate(BarSeries series, Num averageProfit, Num averageLoss, Num numberOfWinningPositions,
+            Num numberOfAllPositions) {
         Num one = series.numOf(1);
         if (numberOfAllPositions.isZero() || averageProfit.isZero()) {
             return series.numOf(0);

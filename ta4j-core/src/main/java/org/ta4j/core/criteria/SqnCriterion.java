@@ -45,8 +45,8 @@ public class SqnCriterion extends AbstractAnalysisCriterion {
 
     /**
      * The number to be used for the part of <code>√(numberOfPositions)</code>
-     * within the SQN-Formula when there are more than 100 trades. If this value
-     * is <code>null</code>, then the number of positions calculated by
+     * within the SQN-Formula when there are more than 100 trades. If this value is
+     * <code>null</code>, then the number of positions calculated by
      * {@link #numberOfPositionsCriterion} is used instead.
      */
     private final Integer nPositions;
@@ -65,7 +65,7 @@ public class SqnCriterion extends AbstractAnalysisCriterion {
      * Constructor.
      *
      * @param criterion the Criterion (e.g. ProfitLossCriterion or
-     * ExpectancyCriterion)
+     *                  ExpectancyCriterion)
      */
     public SqnCriterion(AnalysisCriterion criterion) {
         this(criterion, null);
@@ -74,8 +74,8 @@ public class SqnCriterion extends AbstractAnalysisCriterion {
     /**
      * Constructor.
      *
-     * @param criterion the Criterion (e.g. ProfitLossCriterion or
-     * ExpectancyCriterion)
+     * @param criterion  the Criterion (e.g. ProfitLossCriterion or
+     *                   ExpectancyCriterion)
      * @param nPositions the {@link #nPositions} (optional)
      */
     public SqnCriterion(AnalysisCriterion criterion, Integer nPositions) {

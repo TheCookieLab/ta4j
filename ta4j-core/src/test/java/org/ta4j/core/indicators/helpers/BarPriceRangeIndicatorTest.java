@@ -56,9 +56,7 @@ public class BarPriceRangeIndicatorTest extends AbstractIndicatorTest<Indicator<
     public void indicatorShouldRetrieveBarHighPrice() {
         for (int i = 0; i < 10; i++) {
             Bar bar = barSeries.getBar(i);
-            Num typicalPrice = bar.getHighPrice()
-                    .plus(bar.getLowPrice())
-                    .dividedBy(barSeries.numOf(2));
+            Num typicalPrice = bar.getHighPrice().plus(bar.getLowPrice()).dividedBy(barSeries.numOf(2));
             assertEquals(typicalPrice, barPriceRange.getValue(i));
         }
     }

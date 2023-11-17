@@ -44,10 +44,12 @@ public class NumberOfWinningPositionsCriterion extends AbstractAnalysisCriterion
     }
 
     @Override
-    public Num calculate(BarSeries series, TradingRecord tradingRecord, int mostRecentPositions) {        
-        long numberOfWinningPositions = tradingRecord.getPositions().stream()
+    public Num calculate(BarSeries series, TradingRecord tradingRecord, int mostRecentPositions) {
+        long numberOfWinningPositions = tradingRecord.getPositions()
+                .stream()
                 .skip(Math.max(0, tradingRecord.getPositionCount() - mostRecentPositions))
-                .filter(Position::hasProfit).count();
+                .filter(Position::hasProfit)
+                .count();
         return series.numOf(numberOfWinningPositions);
     }
 

@@ -169,7 +169,8 @@ public final class BarSeriesUtils {
                     .build();
             convertedBars.add(convertedBar);
         }
-        BarSeries convertedBarSeries = new BaseBarSeries(barSeries.getName(), barSeries.getBaseCurrency(), barSeries.getCounterCurrency(), convertedBars, conversionFunction);
+        BarSeries convertedBarSeries = new BaseBarSeries(barSeries.getName(), barSeries.getBaseCurrency(),
+                barSeries.getCounterCurrency(), convertedBars, conversionFunction);
         if (barSeries.getMaximumBarCount() > 0) {
             convertedBarSeries.setMaximumBarCount(barSeries.getMaximumBarCount());
         }

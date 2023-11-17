@@ -84,7 +84,8 @@ public class AverageWinStreakCriterionTest extends AbstractCriterionTest {
     @Test
     public void calculateWithWinningShortPositions() {
         series = new MockBarSeries(numFunction, 100d, 90d, 80, 70d, 60d, 50d);
-        TradingRecord tradingRecord = new BaseTradingRecord(Trade.sellAt(0, series), Trade.buyAt(1, series), Trade.sellAt(2, series), Trade.buyAt(3, series), Trade.sellAt(4, series), Trade.buyAt(5, series));
+        TradingRecord tradingRecord = new BaseTradingRecord(Trade.sellAt(0, series), Trade.buyAt(1, series),
+                Trade.sellAt(2, series), Trade.buyAt(3, series), Trade.sellAt(4, series), Trade.buyAt(5, series));
         AnalysisCriterion averageWinStreak = getCriterion();
         assertNumEquals(numOf(3), averageWinStreak.calculate(series, tradingRecord));
     }
@@ -92,7 +93,8 @@ public class AverageWinStreakCriterionTest extends AbstractCriterionTest {
     @Test
     public void calculateWithOnlyBreakEvenShortPositions() {
         series = new MockBarSeries(numFunction, 100d, 100d, 100d, 100d, 100d, 100d);
-        TradingRecord tradingRecord = new BaseTradingRecord(Trade.sellAt(0, series), Trade.buyAt(1, series), Trade.sellAt(2, series), Trade.buyAt(3, series), Trade.sellAt(4, series), Trade.buyAt(5, series));
+        TradingRecord tradingRecord = new BaseTradingRecord(Trade.sellAt(0, series), Trade.buyAt(1, series),
+                Trade.sellAt(2, series), Trade.buyAt(3, series), Trade.sellAt(4, series), Trade.buyAt(5, series));
         AnalysisCriterion averageWinStreak = getCriterion();
         assertNumEquals(numOf(0), averageWinStreak.calculate(series, tradingRecord));
     }
@@ -100,7 +102,8 @@ public class AverageWinStreakCriterionTest extends AbstractCriterionTest {
     @Test
     public void calculateWithOnlyBreakEvenLongPositions() {
         series = new MockBarSeries(numFunction, 100d, 100d, 100d, 100d, 100d, 100d);
-        TradingRecord tradingRecord = new BaseTradingRecord(Trade.buyAt(0, series), Trade.sellAt(1, series), Trade.buyAt(2, series), Trade.sellAt(3, series), Trade.buyAt(4, series), Trade.sellAt(5, series));
+        TradingRecord tradingRecord = new BaseTradingRecord(Trade.buyAt(0, series), Trade.sellAt(1, series),
+                Trade.buyAt(2, series), Trade.sellAt(3, series), Trade.buyAt(4, series), Trade.sellAt(5, series));
         AnalysisCriterion averageWinStreak = getCriterion();
         assertNumEquals(numOf(0), averageWinStreak.calculate(series, tradingRecord));
     }
@@ -108,8 +111,7 @@ public class AverageWinStreakCriterionTest extends AbstractCriterionTest {
     @Test
     public void calculateWithMixedPerformanceLongPositions() {
         series = new MockBarSeries(numFunction, 100d, 101d, 102d, 102d, 104d, 100d, 99d, 100d, 102d, 105d, 108d);
-        TradingRecord tradingRecord = new BaseTradingRecord(
-                Trade.buyAt(0, series), Trade.sellAt(1, series), // Win 1.1
+        TradingRecord tradingRecord = new BaseTradingRecord(Trade.buyAt(0, series), Trade.sellAt(1, series), // Win 1.1
                 Trade.buyAt(1, series), Trade.sellAt(2, series), // Win 1.2
                 Trade.buyAt(2, series), Trade.sellAt(3, series), // Breakeven
                 Trade.buyAt(3, series), Trade.sellAt(4, series), // Win 2.1
@@ -123,12 +125,11 @@ public class AverageWinStreakCriterionTest extends AbstractCriterionTest {
         AnalysisCriterion averageWinStreak = getCriterion();
         assertNumEquals(numOf((2 + 1 + 4) / 3), averageWinStreak.calculate(series, tradingRecord));
     }
-    
+
     @Test
     public void calculateWithMixedPerformanceMostRecentLongPositions() {
         series = new MockBarSeries(numFunction, 100d, 101d, 102d, 102d, 104d, 100d, 99d, 100d, 102d, 105d, 108d);
-        TradingRecord tradingRecord = new BaseTradingRecord(
-                Trade.buyAt(0, series), Trade.sellAt(1, series), // Win 1.1
+        TradingRecord tradingRecord = new BaseTradingRecord(Trade.buyAt(0, series), Trade.sellAt(1, series), // Win 1.1
                 Trade.buyAt(1, series), Trade.sellAt(2, series), // Win 1.2
                 Trade.buyAt(2, series), Trade.sellAt(3, series), // Breakeven
                 Trade.buyAt(3, series), Trade.sellAt(4, series), // Win 2.1
@@ -146,8 +147,7 @@ public class AverageWinStreakCriterionTest extends AbstractCriterionTest {
     @Test
     public void calculateWithMixedPerformanceShortPositions() {
         series = new MockBarSeries(numFunction, 110d, 109d, 107d, 107d, 104d, 105d, 107d, 106d, 104d, 101d, 97d);
-        TradingRecord tradingRecord = new BaseTradingRecord(
-                Trade.sellAt(0, series), Trade.buyAt(1, series), // Win 1.1
+        TradingRecord tradingRecord = new BaseTradingRecord(Trade.sellAt(0, series), Trade.buyAt(1, series), // Win 1.1
                 Trade.sellAt(1, series), Trade.buyAt(2, series), // Win 1.2
                 Trade.sellAt(2, series), Trade.buyAt(3, series), // Breakeven
                 Trade.sellAt(3, series), Trade.buyAt(4, series), // Win 2.1
@@ -161,12 +161,11 @@ public class AverageWinStreakCriterionTest extends AbstractCriterionTest {
         AnalysisCriterion averageWinStreak = getCriterion();
         assertNumEquals(numOf((2 + 1 + 4) / 3), averageWinStreak.calculate(series, tradingRecord));
     }
-    
+
     @Test
     public void calculateWithMixedPerformanceMostRecentShortPositions() {
         series = new MockBarSeries(numFunction, 110d, 109d, 107d, 107d, 104d, 105d, 107d, 106d, 104d, 101d, 97d);
-        TradingRecord tradingRecord = new BaseTradingRecord(
-                Trade.sellAt(0, series), Trade.buyAt(1, series), // Win 1.1
+        TradingRecord tradingRecord = new BaseTradingRecord(Trade.sellAt(0, series), Trade.buyAt(1, series), // Win 1.1
                 Trade.sellAt(1, series), Trade.buyAt(2, series), // Win 1.2
                 Trade.sellAt(2, series), Trade.buyAt(3, series), // Breakeven
                 Trade.sellAt(3, series), Trade.buyAt(4, series), // Win 2.1

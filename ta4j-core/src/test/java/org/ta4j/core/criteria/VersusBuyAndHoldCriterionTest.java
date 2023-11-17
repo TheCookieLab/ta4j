@@ -100,8 +100,9 @@ public class VersusBuyAndHoldCriterionTest extends AbstractCriterionTest {
     @Test
     public void calculateWithAverageProfit() {
         MockBarSeries series = new MockBarSeries(numFunction, 100, 95, 100, 80, 85, 130);
-        TradingRecord tradingRecord = new BaseTradingRecord(Trade.buyAt(0, ZonedDateTime.now(), NaN, NaN), Trade.sellAt(1, ZonedDateTime.now(), NaN, NaN),
-                Trade.buyAt(2, ZonedDateTime.now(), NaN, NaN), Trade.sellAt(5, ZonedDateTime.now(), NaN, NaN));
+        TradingRecord tradingRecord = new BaseTradingRecord(Trade.buyAt(0, ZonedDateTime.now(), NaN, NaN),
+                Trade.sellAt(1, ZonedDateTime.now(), NaN, NaN), Trade.buyAt(2, ZonedDateTime.now(), NaN, NaN),
+                Trade.sellAt(5, ZonedDateTime.now(), NaN, NaN));
 
         AnalysisCriterion buyAndHold = getCriterion(new AverageReturnPerBarCriterion());
 

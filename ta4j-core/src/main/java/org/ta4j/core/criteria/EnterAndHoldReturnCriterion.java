@@ -77,7 +77,7 @@ public class EnterAndHoldReturnCriterion extends AbstractAnalysisCriterion {
     public Num calculate(BarSeries series, TradingRecord tradingRecord) {
         return createEnterAndHoldTrade(series).getGrossReturn(series);
     }
-    
+
     @Override
     public Num calculate(BarSeries series, TradingRecord tradingRecord, int mostRecentPositions) {
         return this.calculate(series, tradingRecord);
@@ -95,8 +95,10 @@ public class EnterAndHoldReturnCriterion extends AbstractAnalysisCriterion {
 
     private Position createEnterAndHoldTrade(BarSeries series, int beginIndex, int endIndex) {
         Position position = new Position(this.tradeType);
-        position.operate(beginIndex, series.getBar(beginIndex).getEndTime(), series.getBar(beginIndex).getClosePrice(), series.numOf(1));
-        position.operate(endIndex, series.getBar(beginIndex).getEndTime(), series.getBar(endIndex).getClosePrice(), series.numOf(1));
+        position.operate(beginIndex, series.getBar(beginIndex).getEndTime(), series.getBar(beginIndex).getClosePrice(),
+                series.numOf(1));
+        position.operate(endIndex, series.getBar(beginIndex).getEndTime(), series.getBar(endIndex).getClosePrice(),
+                series.numOf(1));
         return position;
     }
 }

@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  *
- * Copyright (c) 2017-2023 Ta4j Organization & respective
+ * Copyright (c) 2017-2022 Ta4j Organization & respective
  * authors (see AUTHORS)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -48,7 +48,7 @@ public class PlusVITrendLineIndicator extends CachedIndicator<Num> {
     /**
      * Constructor.
      *
-     * @param series the BarSeries
+     * @param series   the BarSeries
      * @param barCount the number of bars to consider for the calculation
      */
     public PlusVITrendLineIndicator(BarSeries series, int barCount) {
