@@ -40,11 +40,11 @@ import org.ta4j.core.Bar;
 import static org.ta4j.core.TestUtils.assertNumEquals;
 import org.ta4j.core.mocks.MockBar;
 
-public class RecentSwingHighIndicatorTest extends AbstractIndicatorTest<Indicator<Num>, Num> {
+public class RecentSwingLowIndicatorTest extends AbstractIndicatorTest<Indicator<Num>, Num> {
 
     BarSeries series;
 
-    public RecentSwingHighIndicatorTest(Function<Number, Num> numFunction) {
+    public RecentSwingLowIndicatorTest(Function<Number, Num> numFunction) {
         super(numFunction);
     }
 
@@ -52,43 +52,43 @@ public class RecentSwingHighIndicatorTest extends AbstractIndicatorTest<Indicato
     public void setUp() {
         List<Bar> bars = new ArrayList<>();
         bars.add(new MockBar(10, 10, 10, 10, numFunction));
-        bars.add(new MockBar(11, 11, 11, 11, numFunction));
-        bars.add(new MockBar(12, 12, 12, 12, numFunction));
-        bars.add(new MockBar(11, 11, 11, 11, numFunction));
+        bars.add(new MockBar(9, 9, 9, 9, numFunction));
+        bars.add(new MockBar(8, 8, 8, 8, numFunction));
+        bars.add(new MockBar(9, 9, 9, 9, numFunction));
         bars.add(new MockBar(10, 10, 10, 10, numFunction));
-        bars.add(new MockBar(13, 13, 13, 13, numFunction));
+        bars.add(new MockBar(7, 7, 7, 7, numFunction));
         bars.add(new MockBar(10, 10, 10, 10, numFunction));
         this.series = new MockBarSeries(bars);
     }
 
     @Test
     public void testCalculate_BelowSurroundingBars_ReturnsNaN() {
-        RecentSwingHighIndicator swingHighIndicator = new RecentSwingHighIndicator(series, 2);
+        RecentSwingLowIndicator swingLowIndicator = new RecentSwingLowIndicator(series, 2);
 
-        assertNumEquals(NaN.NaN, swingHighIndicator.getValue(0));
-        assertNumEquals(NaN.NaN, swingHighIndicator.getValue(1));
-        assertNumEquals(NaN.NaN, swingHighIndicator.getValue(2));
+        assertNumEquals(NaN.NaN, swingLowIndicator.getValue(0));
+        assertNumEquals(NaN.NaN, swingLowIndicator.getValue(1));
+        assertNumEquals(NaN.NaN, swingLowIndicator.getValue(2));
     }
 
     @Test
     public void testCalculate_AboveSurroundingBars_ReturnsValue() {
-        RecentSwingHighIndicator swingHighIndicator = new RecentSwingHighIndicator(series, 2);
+        RecentSwingLowIndicator swingLowIndicator = new RecentSwingLowIndicator(series, 2);
 
-        assertNumEquals(12, swingHighIndicator.getValue(3));
-        assertNumEquals(12, swingHighIndicator.getValue(4));
-        assertNumEquals(12, swingHighIndicator.getValue(5));
+        assertNumEquals(8, swingLowIndicator.getValue(3));
+        assertNumEquals(8, swingLowIndicator.getValue(4));
+        assertNumEquals(8, swingLowIndicator.getValue(5));
     }
 
     @Test
     public void testCalculate_NotEnoughSurroundingBarsAfter_ReturnsPreviousValue() {
-        RecentSwingHighIndicator swingHighIndicator = new RecentSwingHighIndicator(series, 2);
+        RecentSwingLowIndicator swingLowIndicator = new RecentSwingLowIndicator(series, 2);
 
-        assertNumEquals(12, swingHighIndicator.getValue(6));
+        assertNumEquals(8, swingLowIndicator.getValue(6));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testConstructor_SurroundingBarsZero() {
-        RecentSwingHighIndicator swingHighIndicator = new RecentSwingHighIndicator(series, 0);
+        RecentSwingLowIndicator swingLowIndicator = new RecentSwingLowIndicator(series, 0);
     }
 
 }

@@ -30,14 +30,14 @@ import static org.ta4j.core.num.NaN.NaN;
 import org.ta4j.core.num.Num;
 
 /**
- * Recent Swing High Indicator.
+ * Recent Swing Low Indicator.
  */
-public class RecentSwingHighIndicator extends CachedIndicator<Num> {
+public class RecentSwingLowIndicator extends CachedIndicator<Num> {
 
     /**
-     * A swing high is a bar with a higher high than the bars both before and after
-     * it. Defines the number of bars to consider on each side (e.g., 2 bars on each
-     * side).
+     * A swing low is a bar with a lower low than the bars both before and after
+     * it. Defines the number of bars to consider on each side (e.g., 2 bars on
+     * each side).
      */
     private final int surroundingBars;
 
@@ -47,7 +47,7 @@ public class RecentSwingHighIndicator extends CachedIndicator<Num> {
      * @param series
      * @param surroundingBars
      */
-    public RecentSwingHighIndicator(BarSeries series, int surroundingBars) {
+    public RecentSwingLowIndicator(BarSeries series, int surroundingBars) {
         super(series);
 
         if (surroundingBars <= 0) {
@@ -61,15 +61,15 @@ public class RecentSwingHighIndicator extends CachedIndicator<Num> {
      *
      * @param series
      */
-    public RecentSwingHighIndicator(BarSeries series) {
+    public RecentSwingLowIndicator(BarSeries series) {
         this(series, 2);
     }
 
     /**
-     * Calculates the value of the most recent swing high
+     * Calculates the value of the most recent swing low
      *
      * @param index the bar index
-     * @return the value of the most recent swing high, otherwise {@link NaN}
+     * @return the value of the most recent swing low, otherwise {@link NaN}
      */
     @Override
     protected Num calculate(int index) {
@@ -78,20 +78,20 @@ public class RecentSwingHighIndicator extends CachedIndicator<Num> {
         }
 
         for (int i = index - 1; i >= surroundingBars; i--) {
-            boolean isSwingHigh = true;
+            boolean isSwingLow = true;
             Bar currentBar = getBarSeries().getBar(i);
 
             for (int j = 1; j <= surroundingBars; j++) {
                 if (i + j > getBarSeries().getEndIndex()
-                        || currentBar.getHighPrice().isLessThanOrEqual(getBarSeries().getBar(i - j).getHighPrice())
-                        || currentBar.getHighPrice().isLessThanOrEqual(getBarSeries().getBar(i + j).getHighPrice())) {
-                    isSwingHigh = false;
+                        || currentBar.getLowPrice().isGreaterThanOrEqual(getBarSeries().getBar(i - j).getLowPrice())
+                        || currentBar.getLowPrice().isGreaterThanOrEqual(getBarSeries().getBar(i + j).getLowPrice())) {
+                    isSwingLow = false;
                     break;
                 }
             }
 
-            if (isSwingHigh) {
-                return currentBar.getHighPrice();
+            if (isSwingLow) {
+                return currentBar.getLowPrice();
             }
         }
 
