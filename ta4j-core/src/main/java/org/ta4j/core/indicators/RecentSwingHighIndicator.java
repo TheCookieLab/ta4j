@@ -35,14 +35,15 @@ import org.ta4j.core.num.Num;
 public class RecentSwingHighIndicator extends CachedIndicator<Num> {
 
     /**
-     * A swing high is a bar with a higher high than the bars both before and after
-     * it. Defines the number of bars to consider on each side (e.g., 2 bars on each
-     * side).
+     * A swing high is a bar with a higher high than the bars both before and
+     * after it. Defines the number of bars to consider on each side (e.g., 2
+     * bars on each side).
      */
     private final int surroundingBars;
 
     /**
      * *
+     * Full constructor
      *
      * @param series
      * @param surroundingBars
@@ -57,7 +58,8 @@ public class RecentSwingHighIndicator extends CachedIndicator<Num> {
     }
 
     /**
-     * * g
+     * *
+     * Convenience constructor defaulting surroundingBars to 2
      *
      * @param series
      */
@@ -77,12 +79,14 @@ public class RecentSwingHighIndicator extends CachedIndicator<Num> {
             return NaN;
         }
 
-        for (int i = index - 1; i >= surroundingBars; i--) {
+        int endIndex = getBarSeries().getEndIndex();
+
+        for (int i = Math.min(index - 1, endIndex); i >= surroundingBars; i--) {
             boolean isSwingHigh = true;
             Bar currentBar = getBarSeries().getBar(i);
 
             for (int j = 1; j <= surroundingBars; j++) {
-                if (i + j > getBarSeries().getEndIndex()
+                if (i + j > endIndex || i - j < 0
                         || currentBar.getHighPrice().isLessThanOrEqual(getBarSeries().getBar(i - j).getHighPrice())
                         || currentBar.getHighPrice().isLessThanOrEqual(getBarSeries().getBar(i + j).getHighPrice())) {
                     isSwingHigh = false;

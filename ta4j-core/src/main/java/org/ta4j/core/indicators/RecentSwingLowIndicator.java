@@ -42,7 +42,7 @@ public class RecentSwingLowIndicator extends CachedIndicator<Num> {
     private final int surroundingBars;
 
     /**
-     * *
+     * Full constructor
      *
      * @param series
      * @param surroundingBars
@@ -57,7 +57,7 @@ public class RecentSwingLowIndicator extends CachedIndicator<Num> {
     }
 
     /**
-     * * g
+     * Convenience constructor defaulting surroundingBars to 2
      *
      * @param series
      */
@@ -77,12 +77,14 @@ public class RecentSwingLowIndicator extends CachedIndicator<Num> {
             return NaN;
         }
 
-        for (int i = index - 1; i >= surroundingBars; i--) {
+        int endIndex = getBarSeries().getEndIndex();
+
+        for (int i = Math.min(index - 1, endIndex); i >= surroundingBars; i--) {
             boolean isSwingLow = true;
             Bar currentBar = getBarSeries().getBar(i);
 
             for (int j = 1; j <= surroundingBars; j++) {
-                if (i + j > getBarSeries().getEndIndex()
+                if (i + j > endIndex || i - j < 0
                         || currentBar.getLowPrice().isGreaterThanOrEqual(getBarSeries().getBar(i - j).getLowPrice())
                         || currentBar.getLowPrice().isGreaterThanOrEqual(getBarSeries().getBar(i + j).getLowPrice())) {
                     isSwingLow = false;
