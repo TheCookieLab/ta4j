@@ -35,9 +35,9 @@ import org.ta4j.core.num.Num;
 public class RecentSwingLowIndicator extends CachedIndicator<Num> {
 
     /**
-     * A swing low is a bar with a lower low than the bars both before and after
-     * it. Defines the number of bars to consider on each side (e.g., 2 bars on
-     * each side).
+     * A swing low is a bar (or sequence of bars) with a lower low than the bars
+     * both before and after it. Defines the number of bars to consider on each side
+     * (e.g., 2 bars on each side).
      */
     private final int surroundingBars;
 
@@ -85,8 +85,8 @@ public class RecentSwingLowIndicator extends CachedIndicator<Num> {
 
             for (int j = 1; j <= surroundingBars; j++) {
                 if (i + j > endIndex || i - j < 0
-                        || currentBar.getLowPrice().isGreaterThanOrEqual(getBarSeries().getBar(i - j).getLowPrice())
-                        || currentBar.getLowPrice().isGreaterThanOrEqual(getBarSeries().getBar(i + j).getLowPrice())) {
+                        || currentBar.getLowPrice().isGreaterThan(getBarSeries().getBar(i - j).getLowPrice())
+                        || currentBar.getLowPrice().isGreaterThan(getBarSeries().getBar(i + j).getLowPrice())) {
                     isSwingLow = false;
                     break;
                 }

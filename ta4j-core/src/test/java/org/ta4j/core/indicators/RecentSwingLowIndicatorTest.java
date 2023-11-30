@@ -21,7 +21,6 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 package org.ta4j.core.indicators;
 
 import java.util.ArrayList;
@@ -82,6 +81,23 @@ public class RecentSwingLowIndicatorTest extends AbstractIndicatorTest<Indicator
     @Test
     public void testCalculate_NotEnoughSurroundingBarsAfter_ReturnsPreviousValue() {
         RecentSwingLowIndicator swingLowIndicator = new RecentSwingLowIndicator(series, 2);
+
+        assertNumEquals(8, swingLowIndicator.getValue(6));
+    }
+
+    @Test
+    public void testCalculate_ExtendedPriceValley_ReturnsValue() {
+        List<Bar> bars = new ArrayList<>();
+        bars.add(new MockBar(10, 10, 10, 10, numFunction));
+        bars.add(new MockBar(9, 9, 9, 9, numFunction));
+        bars.add(new MockBar(8, 8, 8, 8, numFunction));
+        bars.add(new MockBar(8, 8, 8, 8, numFunction));
+        bars.add(new MockBar(8, 8, 8, 8, numFunction));
+        bars.add(new MockBar(9, 9, 9, 9, numFunction));
+        bars.add(new MockBar(10, 10, 10, 10, numFunction));
+        BarSeries newSeries = new MockBarSeries(bars);
+
+        RecentSwingLowIndicator swingLowIndicator = new RecentSwingLowIndicator(newSeries, 2);
 
         assertNumEquals(8, swingLowIndicator.getValue(6));
     }

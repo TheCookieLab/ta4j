@@ -21,7 +21,6 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 package org.ta4j.core.indicators;
 
 import java.util.ArrayList;
@@ -35,6 +34,7 @@ import org.ta4j.core.num.NaN;
 import org.ta4j.core.num.Num;
 
 import java.util.function.Function;
+import static org.junit.Assert.assertEquals;
 
 import org.ta4j.core.Bar;
 import static org.ta4j.core.TestUtils.assertNumEquals;
@@ -82,6 +82,23 @@ public class RecentSwingHighIndicatorTest extends AbstractIndicatorTest<Indicato
     @Test
     public void testCalculate_NotEnoughSurroundingBarsAfter_ReturnsPreviousValue() {
         RecentSwingHighIndicator swingHighIndicator = new RecentSwingHighIndicator(series, 2);
+
+        assertNumEquals(12, swingHighIndicator.getValue(6));
+    }
+
+    @Test
+    public void testCalculate_PricePlateau_ReturnsValue() {
+        List<Bar> bars = new ArrayList<>();
+        bars.add(new MockBar(10, 10, 10, 10, numFunction));
+        bars.add(new MockBar(11, 11, 11, 11, numFunction));
+        bars.add(new MockBar(12, 12, 12, 12, numFunction));
+        bars.add(new MockBar(12, 12, 12, 12, numFunction));
+        bars.add(new MockBar(12, 12, 12, 12, numFunction));
+        bars.add(new MockBar(11, 11, 11, 11, numFunction));
+        bars.add(new MockBar(10, 10, 10, 10, numFunction));
+        BarSeries newSeries = new MockBarSeries(bars);
+
+        RecentSwingHighIndicator swingHighIndicator = new RecentSwingHighIndicator(newSeries, 2);
 
         assertNumEquals(12, swingHighIndicator.getValue(6));
     }
