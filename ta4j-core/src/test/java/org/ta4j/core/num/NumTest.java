@@ -21,22 +21,10 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-/**
- * This copy of Woodstox XML processor is licensed under the
- * Apache (Software) License, version 2.0 ("the License").
- * See the License for details about distribution rights, and the
- * specific rights regarding derivate works.
- *
- * You may obtain a copy of the License at:
- *
- * http://www.apache.org/licenses/
- *
- * A copy is also included in the downloadable source code package
- * containing Woodstox, in file "ASL2.0", under the same directory
- * as this file.
- */
 package org.ta4j.core.num;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -46,11 +34,14 @@ import static org.ta4j.core.num.NaN.NaN;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
 import java.util.Properties;
 import java.util.function.Function;
+import static org.junit.Assert.assertNotSame;
 
 import org.junit.Test;
 import org.ta4j.core.indicators.AbstractIndicatorTest;
@@ -358,6 +349,31 @@ public class NumTest extends AbstractIndicatorTest<Object, Num> {
         BigDecimal numBD = BigDecimal.valueOf(Double.valueOf("3E11"));
         Num sqrt = numOf(numBD).sqrt();
         assertNumEquals("547722.55750516611345696978280080", sqrt);
+    }
+
+    @Test
+    public void testSerialization() throws Exception {
+        Num numVal = numFunction.apply(1.3);
+        serializeDeserialize(numVal);
+    }
+
+    private static void serializeDeserialize(Num o) throws IOException, ClassNotFoundException {
+        byte[] array;
+        try (var baos = new ByteArrayOutputStream()) {
+            try (var out = new ObjectOutputStream(baos)) {
+                out.writeObject(o);
+                array = baos.toByteArray();
+            }
+
+        }
+        try (var baos = new ByteArrayInputStream(array)) {
+            try (var out = new ObjectInputStream(baos)) {
+                var deserialized = (Num) out.readObject();
+                assertNotSame(o, deserialized);
+                assertEquals(deserialized.doubleValue(), o.doubleValue());
+            }
+
+        }
     }
 
 }
